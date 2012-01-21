@@ -1,0 +1,9 @@
+import http
+from re import RegExp
+
+@http.handle(:ANY, RegExp("/blog/.*"))
+def dispatch_to_old_site(method, uri, request_info, response):
+	""" We have not yet migrated the old blog out of WordPress and into Resourceful.Blog. So, proxy all of those
+	requests on to the original blog server, which we've left running on an internally-visible host.
+	"""
+	http.proxy(response).from(method, http.Uri(uri, host="oldwebsite.internal.example.com", port=8822))

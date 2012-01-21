@@ -1,0 +1,18 @@
+import http, resourceful
+import resources, special_handlers
+
+# for development
+def dev_server(port):
+	server_minion = http.server(8080)
+	server_minion | production_handlers
+
+	await [environment]:
+		when !cancel_execution:
+			server_minion.cancel()
+
+# for production.
+#   The server's request source gets bound to this. Each request should come in on its own Minion; the server manages that.
+production_handlers = resourceful.host(resourceful.make_resource_map([resources])) | all_my_handlers()
+
+def all_my_handlers():
+	return http.load_handlers_from(special_handlers)

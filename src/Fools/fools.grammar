@@ -1,0 +1,42 @@
+﻿
+namespace Fools:
+	import Fools.Ast;
+	import MetaSharp.Transformation;
+	import MetaSharp.Transformation.Parsing;
+	import MetaSharp.Transformation.Parsing.Common;
+	import MetaSharp.Transformation.Lang.Ast;
+
+	grammar FoolsStructure < BasicParser:
+
+		Main = Block;
+
+		Block = st:Statement+
+			-> Block {
+				statements = st };
+
+		Statement = PrintStatement
+			| AssignmentStatement
+			| UnrecognizedStatement;
+
+		PrintStatement = "print" "(" var:(!")" any)* ")"
+			-> PrintStatement {
+				variable = var.AsString() };
+
+		AssignmentStatement = var:(!"=" any)* "=" val:Expression
+			-> AssignmentStatement {
+				variable = var.AsString().Trim(),
+				value = val };
+
+		Expression = val:any*
+			-> NumberLiteral {
+				value = val.ToNumber()
+			} ;
+
+		UnrecognizedStatement =  s:any*
+			-> UnrecognizedStatement {
+				text = s.AsString() };
+
+		override WhitespaceInterleave = !default;
+
+	end
+end

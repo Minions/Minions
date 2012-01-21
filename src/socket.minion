@@ -1,0 +1,21 @@
+import __lowlevel.system.sockets as sock
+
+class Socket:
+	pass
+
+new_type TCP wraps [Socket]:
+	delegate_to [Socket.send, Socket.close]
+
+	@static
+	def listening_at(port):
+		return _listen_at(Socket(Socket.PF_INET, Socket.SOCK_STREAM, Socket.IPPROTO_TCP), sock.Ipv4Addr(Socket.IF_ADDR_ANY, port))
+
+	@static
+	def listening_at(Ipv6Address addr):
+		return _listen_at(Socket(Socket.PF_INETV6, Socket.SOCK_STREAM, Socket.IPPROTO_TCP), addr)
+
+	@static
+	def _listen_at(socket, addr):
+		impl.bind(addr)
+		impl.listen()
+		return TCP(impl)

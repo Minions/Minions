@@ -1,0 +1,50 @@
+def foo():
+	foo()
+
+
+@minion
+def generate_many_numbers():
+	all_the_values = range(0,_,2) | (p) => !another_number, p
+	yield_all all_the_values
+
+
+@minion
+def is_even_prime():
+	await [app.main_reactor]:
+		when !another_number, p:
+			if p == 2:
+				yield !is_prime, p
+				console.write("got a prime {0}".format(p))
+				system.request_shutdown()
+
+@minion
+def aware_prime_looker():
+	generator = spawn_minion(generate_many_numbers)
+	await [generator]:
+		when !another_number, p:
+			if p == 2:
+				yield !is_prime, p
+				system.request_exit()
+
+@register_as_paralelltest
+def just_these_minions_find_2(reactor_context):
+	reactor_context.spawn_minion(generate_many_numbers)
+	reactor_context.spawn_minion(is_even_prime)
+	await [reactor_context]:
+		when !is_prime, p:
+			assert p == 2
+	reactor_context.begin_processing()
+
+
+test just_these_minions_find_2:
+	initialization:
+		generator = spawn_minion(generate_many_numbers)
+		spawn_minion(is_even_prime)
+	when !is_prime, p:
+		assert p == 2
+	when generator.is_done:
+		assert false
+
+
+def range(start, end=INF, increment=1):
+	#stuff
