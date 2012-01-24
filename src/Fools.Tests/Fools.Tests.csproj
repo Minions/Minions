@@ -36,13 +36,6 @@
     <Reference Include="ApprovalTests">
       <HintPath>..\..\lib\ApprovalTests\ApprovalTests.dll</HintPath>
     </Reference>
-    <Reference Include="MetaSharp.Build">
-      <HintPath>..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Build.dll</HintPath>
-    </Reference>
-    <Reference Include="MetaSharp.Transformation, Version=0.1.0.11, Culture=neutral, PublicKeyToken=69061f07610482b9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Transformation.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
     </Reference>
@@ -72,7 +65,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Transformation.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

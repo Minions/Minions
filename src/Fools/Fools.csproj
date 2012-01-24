@@ -37,12 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetaSharp.Build">
-      <HintPath>..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Build.dll</HintPath>
-    </Reference>
-    <Reference Include="MetaSharp.Transformation">
-      <HintPath>..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Transformation.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -80,11 +74,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <Grammar Include="Fools.g" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Import Project="..\packages\metasharp.0.1.0.11\lib\net40-full\MetaSharp.Transformation.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
