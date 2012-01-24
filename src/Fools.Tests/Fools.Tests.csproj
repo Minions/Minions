@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockAndStatementParsing.cs" />
+    <Compile Include="Tokenization.cs" />
     <Compile Include="CompilerAcceptanceTests.cs" />
     <Compile Include="EmitCode.cs" />
     <Compile Include="Interpreter.cs" />

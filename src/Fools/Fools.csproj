@@ -60,6 +60,9 @@
     <Compile Include="MethodBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tokenization\FoolsTokenStream.cs" />
+    <Compile Include="Tokenization\IndentationToken.cs" />
+    <Compile Include="Tokenization\Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
