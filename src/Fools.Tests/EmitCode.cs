@@ -3,7 +3,6 @@ using System.Reflection.Emit;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using Fools.Ast;
-using MetaSharp.Transformation;
 using NUnit.Framework;
 
 namespace Fools.Tests

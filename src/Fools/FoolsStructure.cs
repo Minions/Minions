@@ -1,6 +1,12 @@
-﻿using MetaSharp.Transformation;
+﻿using Fools.Ast;
 
 namespace Fools
 {
-	public partial class FoolsStructure {}
+	public class FoolsStructure
+	{
+		public INode Parse(string fool)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

@@ -1,5 +1,4 @@
 ﻿using Fools.Ast;
-using MetaSharp.Transformation;
 using NUnit.Framework;
 
 namespace Fools.Tests

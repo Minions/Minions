@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Fools.Ast;
-using MetaSharp.Transformation;
 
 namespace Fools.Tests
 {
