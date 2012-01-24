@@ -46,26 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ast\AssignmentStatement.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Ast\AssignmentStatement.cs" />
     <Compile Include="Ast\Block.cs" />
     <Compile Include="Ast\INode.cs" />
-    <Compile Include="Ast\IStatement.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ast\NumberLiteral.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ast\PrintStatement.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ast\UnparsedText.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ast\UnrecognizedStatement.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Ast\IStatement.cs" />
+    <Compile Include="Ast\NumberLiteral.cs" />
+    <Compile Include="Ast\PrintStatement.cs" />
+    <Compile Include="Ast\UnparsedText.cs" />
+    <Compile Include="Ast\UnrecognizedStatement.cs" />
     <Compile Include="FoolsStructure.cs" />
     <Compile Include="Require.cs" />
     <Compile Include="CodeUnit.cs" />
@@ -78,7 +66,6 @@
     <Grammar Include="Fools.g" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

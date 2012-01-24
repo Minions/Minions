@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Fools.Tests
 {
-	[TestFixture]
+	[TestFixture, Ignore]
 	public class BlockAndStatementParsing
 	{
 		[SetUp] public void SetUp() { _testSubject = new FoolsStructure(); }

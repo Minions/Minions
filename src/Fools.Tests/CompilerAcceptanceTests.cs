@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Fools.Ast;
 using NUnit.Framework;
+using FluentAssertions;
 
 namespace Fools.Tests
 {
-	[TestFixture]
+	[TestFixture, Ignore]
 	public class CompilerAcceptanceTests
 	{
 		[Test]
@@ -14,15 +13,15 @@ namespace Fools.Tests
 //         var fool = @"
 //def foo():
 //	p";
-			var fool = "a=3";
+			string fool = "a=3";
 			var interpreter = new Interpreter();
 			interpreter.evalute(Compile(fool));
-			Assert.That(interpreter.Variables["a"], Is.EqualTo(3));
+			interpreter.Variables.Should().Contain("a", 3);
 		}
 
 		private CodeUnit Compile(string fool)
 		{
-			var node = new FoolsStructure().Parse(fool);
+			INode node = new FoolsStructure().Parse(fool);
 			return new CodeUnit(node);
 		}
 	}

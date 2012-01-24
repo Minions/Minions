@@ -7,20 +7,19 @@ using NUnit.Framework;
 
 namespace Fools.Tests
 {
-	[TestFixture, UseReporter(typeof(DiffReporter))]
+	[TestFixture, UseReporter(typeof(QuietReporter))]
 	public class EmitCode
 	{
-		[Test] public void assignment() { ApproveResultOfExecution("a=3"); }
+		[Test] public void assignment() { ApproveResultOfExecution(new AssignmentStatement{ variable = "a", value = new NumberLiteral(3)}); }
 
-		private static void ApproveResultOfExecution(string fool)
+		private static void ApproveResultOfExecution(INode node)
 		{
-			var frame = _evaluate_and_return_frame(fool);
+			var frame = _evaluate_and_return_frame(node);
 			Approvals.Approve(frame, kv => string.Format("{0} = {1} [{2}]", kv.Key, kv.Value, kv.Value.GetType()));
 		}
 
-		private static Dictionary<string, object> _evaluate_and_return_frame(string fool)
+		private static Dictionary<string, object> _evaluate_and_return_frame(INode node)
 		{
-			var node = new FoolsStructure().Parse(fool);
 			var method = _make_an_assignment(node);
 			var frame = new Dictionary<string, object>();
 			method.Invoke(null, new[] {frame});
