@@ -1,8 +1,12 @@
 namespace Fools:
+	import System;
+	import System.Linq;
 	import Fools.Ast;
 	import MetaSharp.Transformation;
 
 	grammar FoolsStructure < Parser:
+
+		override WhitespaceInterleave = !default;
 
 		Main = Block;
 
@@ -13,18 +17,23 @@ namespace Fools:
 				return result;
 				}
 
-		Statement = PrintStatement
+		Statement = s:(PrintStatement
 			| AssignmentStatement
-			| UnrecognizedStatement;
+			| UnrecognizedStatement
+			)
+			error unless StatementEnd
+			-> s;
 
-		PrintStatement = "print" "(" var:(!")" any)* ")"
+		PrintStatement = "print(" var:(!")" any)* ")"
 			-> {
 				var result = new PrintStatement();
 				result.variable = var as string;
 				return result;
 				}
 
-		AssignmentStatement = var:(!'=' any)* '=' val:Expression
+		AssignmentStatement = var:(!'=' !' ' !'\t' any)+
+			OptionalWhitespace '=' OptionalWhitespace
+			val:Expression
 			-> {
 				var result = new AssignmentStatement();
 				result.variable = (var as string).Trim();
@@ -37,14 +46,20 @@ namespace Fools:
 				return new NumberLiteral(val as int);
 				}
 
-		UnrecognizedStatement =  s:(!'\n' !'\r' any)*
+		UnrecognizedStatement =  s:(!'\n' !'\r' any)+
 			-> {
 				var result = new UnrecognizedStatement();
-				result.text = s.ToString();
+				result.text = (s as Nodes).Select(n=>n.value);
 				return result;
 				}
 
-		override WhitespaceInterleave = !default;
+		StatementEnd = WhitespaceOrComment "\r\n" | '\r' | '\n' | Eof;
+
+		WhitespaceOrComment = OptionalWhitespace ('#' (!'\r' !'\n' any)*)?;
+
+		OptionalWhitespace = (' ' | '\t')*;
+
+		Eof = !any;
 
 	end
 end
