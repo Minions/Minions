@@ -1,0 +1,82 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--Reference the assembly where our tasks are defined-->
+	<PropertyGroup>
+		<!-- VS will not recognize generated files after the first build if this is not set. -->
+		<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+
+		<!--32-bit SDK installation location-->
+		<MetaSharpBuildRegistryPath>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\MetaSharp\$(Version)\MetaSharp.Build@Path)</MetaSharpBuildRegistryPath>
+		<MetaSharpBuildAssemblyPath Condition="'$(MetaSharpBuildAssemblyPath)' == ''">$(MetaSharpBuildAssemblyPath)</MetaSharpBuildAssemblyPath>
+
+		<!--64-bit SDK installation location-->
+		<MetaSharpBuildRegistryPath>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\MetaSharp\$(Version)\MetaSharp.Build@Path)</MetaSharpBuildRegistryPath>
+		<MetaSharpBuildAssemblyPath Condition="'$(MetaSharpBuildAssemblyPath)' == ''">$(MetaSharpBuildRegistryPath)</MetaSharpBuildAssemblyPath>
+
+		<!-- This should be true in the development environment -->
+		<MetaSharpBuildAssemblyPath Condition="'$(MetaSharpBuildAssemblyPath)' == ''">MetaSharp.Build.dll</MetaSharpBuildAssemblyPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AvailableItemName Include="Grammar" />
+	</ItemGroup>
+
+	<UsingTask TaskName="MetaSharp.Build.MetaSharpBuildTask" AssemblyFile="$(MetaSharpBuildAssemblyPath)" />
+	<UsingTask TaskName="MetaSharp.Build.MetaSharpCleanTask" AssemblyFile="$(MetaSharpBuildAssemblyPath)" />
+
+	<PropertyGroup>
+		<MetaSharpBuildDependsOn />
+		<MetaSharpCleanDependsOn />
+
+		<CoreCompileDependsOn>
+			MetaSharpBuild;
+			$(CoreCompileDependsOn);
+		</CoreCompileDependsOn>
+		<PrepareResourcesDependsOn>
+			MetaSharpBuild;
+			$(PrepareResourcesDependsOn);
+		</PrepareResourcesDependsOn>
+		<CleanDependsOn>
+			$(CleanDependsOn);
+			MetaSharpClean;
+		</CleanDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="MetaSharpBuild"
+		Inputs="
+			$(ProjectPath);
+			$(Language);
+			$(Configuration);
+			$(RootNamespace);
+			$(IntermediateOutputPath);
+			@(Grammar);
+			$(AssemblyName);"
+		Outputs="@(Compile)"
+		DependsOnTargets="$(MetaSharpBuildDependsOn)">
+
+		<Message Text="Transforming DSLs..." />
+
+		<MetaSharpBuildTask Condition="'@(Grammar)'!=''"
+			ProjectPath="$(ProjectPath)"
+			Language="$(Language)"
+			Configuration="$(Configuration)"
+			DefaultNamespace="$(RootNamespace)"
+			IntermediateOutputPath="$(IntermediateOutputPath)"
+			AssemblyName="$(AssemblyName)"
+			InputFiles="@(Grammar)">
+			<Output TaskParameter="GeneratedCompiles" ItemName="GeneratedGrammarCompiles" />
+		</MetaSharpBuildTask>
+
+		<ItemGroup>
+			<Compile Include="@(GeneratedGrammarCompiles)" />
+		</ItemGroup>
+
+		<OnError ExecuteTargets="MetaSharpClean" />
+	</Target>
+
+	<Target Name='MetaSharpClean' DependsOnTargets="$(MetaSharpCleanDependsOn)">
+		<Message Text="Cleaning DSLs - Generated files..." />
+
+		<MetaSharpCleanTask IntermediateOutputPath="$(IntermediateOutputPath)" />
+	</Target>
+</Project>
