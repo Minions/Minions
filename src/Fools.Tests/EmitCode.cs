@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Fools.Tests
 {
-	[TestFixture, UseReporter(typeof(QuietReporter))]
+	[TestFixture, Ignore, UseReporter(typeof(QuietReporter))]
 	public class EmitCode
 	{
 		[Test] public void assignment() { ApproveResultOfExecution(new AssignmentStatement{ variable = "a", value = new NumberLiteral(3)}); }
