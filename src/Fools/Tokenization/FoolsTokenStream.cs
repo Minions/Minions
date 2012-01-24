@@ -8,6 +8,6 @@ namespace Fools.Tokenization
 		{
 		}
 
-		public IEnumerable<Token> Tokens { get { return new[] {new IndentationToken(0)}; } }
+		public IEnumerable<Token> Tokens { get { return new Token[] {new IndentationToken(0), new EndOfStatementToken()}; } }
 	}
 }

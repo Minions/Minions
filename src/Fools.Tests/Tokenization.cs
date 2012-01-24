@@ -11,7 +11,7 @@ namespace Fools.Tests
 		public void ShouldGetCorrectIndentationLevelForEmptyLine()
 		{
 			var tokens = new FoolsTokenStream("");
-			tokens.Tokens.Should().Equal(new[] {new IndentationToken(0)});
+			tokens.Tokens.Should().Equal(new Token[] {new IndentationToken(0), new EndOfStatementToken()});
 		}
 	}
 }
