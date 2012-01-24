@@ -66,7 +66,7 @@ def serve_http(port):
 			return
 		when (!listen_heard, socket):
 			new_uni = Universe(Universe.Access.SET_ONLY)
- 			
+			
 			# Option 1: Make a subminion for listening, then chain it to more minions for processing the results.
 			with default_universe(new_uni):
 				socket = socket.accept()

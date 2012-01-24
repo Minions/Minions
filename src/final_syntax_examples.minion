@@ -1,0 +1,186 @@
+# This file shows the final syntax for Minions. The other ones around here were
+# sketches as I figured out stuff that I wanted to support. This contains the
+# decisions.
+
+###############################
+# First, the basics of Fools:
+###############################
+
+# Fools is a simple, functional language based on continuations. Functions
+# are the only allowed declarations. The fundamental function calls are all
+# continuation-based. Thus fools functions may evaluate synchronously or
+# asyncronously.
+#
+# Fools, the language, also allows the instantiation of Fools. A Fool follows
+# the actor pattern, wrapping some set of instructions. At this point, I
+# don't know of anything that Minions can do and Fools cannot. That will
+# probably change eventually.
+
+# Functions
+# ------------------
+
+# Functions are required to be named with a valid identifier. An identifier
+# can be any sequence of unicode characters that starts with a letter or
+# underscore (as defined by corresponding unicode character classes), and
+# whose subsequent characters are letters, underscores, numbers, or the period
+# (.) character.
+
+# Note that . is also used as the dereference operator. This is intentional.
+# Thus, the invocation of do.something() with the following declarations
+
+class Something:
+	def something():
+		pass
+
+do = Something()
+
+def do.something():
+	pass
+
+# could map to either the something function on the do class or the do.something
+# method. This ambiguity is resolved by the "longest match" rule. Starting at the
+# left hand side of the expression, the match is chosen that matches the largest number
+# of segments. Then the result is matched against any remaining segments
+# recursively.
+
+# Classes
+# ------------------
+
+# You can use class definitions to define new types. However, these types are not
+# what you're used to in OO languages. They can contain fields, but nothing else.
+# There is no concept of a member function, no inheritance, and so on. A Fools
+# class is basically a struct. It really only exists so that you can define
+# new types for your functions to operate on.
+
+class ast.FunctionNode:
+	String name
+	List(ast.ParameterNode) parameters
+	ast.Block body
+
+# Notice List. List is actually a function that synthesizes types. Given a type,
+# it makes a custom list type based on that type. It might be defined as follows:
+
+def List(item_type):
+	static type_cache = Cache(Type) # Yup, this causes threading problems. Yup, Minions is supposed to eliminate them. But I don't know how much of the Minions async model I want to require in Fools. The static keyword probably doesn't exist in Minions.
+	return.if_valid type_cache.look_up(item_type)
+	class ListNode:
+		item_type value
+		ListNode next
+		ListNode previous
+	class ListWrapper:
+		ListNode first
+		ListNode last
+	return type_cache.store(item_type, ListWrapper)
+
+# Universes and Fools
+# ------------------
+
+# Universes are used to store variables. Fools are used to indicate separable execution.
+# Both can be requested/defined by a function declaration or a function call. At the call
+# site, you can just make explicit calls to spawn.minion, create.universe, join.universe,
+# and so-on. But that doesn't work for declarations.
+
+# For declarations, you use a set of keywords that look and behave like the decorators
+# in minions. Thus, the following code compiles the same and runs the same in Minions and
+# in fools, but it is actually implemented slightly differently by the compiler.
+
+@with_universe(read and write)
+def List(item_type):
+# this isn't optimal. Can we do a conditionally-locking read? Grab a read lock, and
+# release it if we find a match. If not, await an upgrade to write. After each write,
+# recheck those who are blocked (some might have unblocked), then release the next write.
+# only go back to allowing readers once we've drained all those waiting to write.
+# This is a common pattern. We should probably pull it out somewhere.
+	type_cache = List.universe.create_once(Cache(Type))
+	return.if_valid type_cache.look_up(item_type)
+	class ListNode:
+		item_type value
+		ListNode next
+		ListNode previous
+	class ListWrapper:
+		ListNode first
+		ListNode last
+	return type_cache.store(item_type, ListWrapper)
+
+# Packages
+# ------------------
+
+# Packages can contain functions and classes. They are just there for organization.
+# The packages define a hierarchical namespace, and mostly serve to separate
+# the core Fools built-in methods from the user's custom methods.
+
+###############################
+# Second, the full syntax in Minions:
+###############################
+
+# Adds support for decorators:
+# ------------------------
+
+@foo(bar)
+@thud
+def something(args):
+	pass
+
+# These are allowed on classes, fields, functions, and any other declaration
+# in the language. This includes future types of declarations.
+# Any attribute operates like in Python. The above is equivalent to:
+
+something = foo(bar)(thud()(something))
+
+# Improves support for classes and objects:
+# ------------------------
+
+# Classes do not support inheritance. Use decoration instead.
+
+# There are 3 ways to define a new type. First, you can simply create a
+# new type (like in Fools):
+
+class Something:
+	pass
+
+# However, classes can now contain member functions:
+
+class Something:
+	Int a_field
+	def do_something_awesome():
+		a_field = 3 # modifies a_field on this instance. Each method has an implicit "this" reference.
+
+# The second is to clone an existing type, and modify from there:
+
+copy class Something as SomethingSpecial:
+	pass
+
+# The third is to define a type alias.
+
+alias class Something as StillSomethingButWithANewName
+
+# Note that an alias is not a block. An alias is identical to the
+# type that it aliases, so there is nothing for the block to do.
+
+# Note that any of these can be used with a computed type. For example:
+
+def make_signalable(Type decorated_type) -> Type:
+	copy class decorated_type to SignalableWrapper:
+		def tell_me_something_interesting():
+			pass
+	return SignalableWrapper
+
+alias class make_signalable(Int) as PureWackiness
+
+copy class make_signalable(Something) as Something.Cooler:
+	def yet_more_stuff():
+		pass
+
+# Type adaptors
+# --------------------
+
+# You can also provide an adaptor to specify how one type may be
+# used as another.
+
+use class some_library.Frog as another_library.Animal where:
+	eat is catch_bugs # for Aminal.eat, use Frog.catch_bugs. eat's signature must be a callable subset of catch_bugs
+	def move(the_right_args): # we're defining a local function for Animal.move, which uses functions from Frog.
+		if in_water:
+			swim() # the 'this' instance is a Frog, so this is Frog.swim()
+		else
+			jump() # same as swim
