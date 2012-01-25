@@ -14,7 +14,7 @@ namespace Fools.Tests
 		{
 			IEnumerable<Token> tokens = lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
 			ReadOnlyListSubject<Token> tokensObserved = testSubject.Collect();
-			testSubject.Read(); // force completion of the read method.
+			testSubject.Read();
 			tokensObserved.Should().Equal(tokens);
 		}
 	}
@@ -87,7 +87,7 @@ namespace Fools.Tests
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void AnEscapedNewlineShouldBeTreatedAsAContiuationOfThePreviousLine()
 		{
 			AssertThat(@"eh\

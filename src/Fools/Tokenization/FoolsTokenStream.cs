@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Fools.Utils;
 
 namespace Fools.Tokenization
@@ -27,10 +28,21 @@ namespace Fools.Tokenization
 		{
 			string line;
 			bool hadContents = false;
+			var effectiveLine = new StringBuilder();
 			while(null != (line = _fileContents.ReadLine()))
 			{
 				hadContents = true;
-				TokenizeLine(line);
+				if(line.EndsWith("\\"))
+				{
+					effectiveLine.Append(line, 0, line.Length - 1);
+					effectiveLine.Append(' ');
+				}
+				else
+				{
+					effectiveLine.Append(line);
+					TokenizeLine(effectiveLine.ToString());
+					effectiveLine.Clear();
+				}
 			}
 			if(!hadContents)
 			{
