@@ -9,8 +9,8 @@ namespace Fools.Tokenization
 		public IdentifierToken(string value)
 		{
 			Require.that(
-				!string.IsNullOrEmpty(value),
-				() => new ArgumentNullException("value", "An identifier token must always have a non-null, non-empty value."));
+				!string.IsNullOrWhiteSpace(value),
+				() => new ArgumentNullException("value", "An identifier token must always have a non-null, non-empty, non-whitespace value."));
 			Value = value;
 		}
 

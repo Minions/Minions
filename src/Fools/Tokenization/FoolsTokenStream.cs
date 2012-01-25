@@ -17,13 +17,16 @@ namespace Fools.Tokenization
 			get
 			{
 				string line;
-				var hadContents = false;
+				bool hadContents = false;
 				while(null != (line = _fileContents.ReadLine()))
 				{
 					hadContents = true;
 					yield return new IndentationToken(0);
-					if(!string.IsNullOrEmpty(line))
-						yield return new IdentifierToken(line);
+					foreach(string token in line.Split(' '))
+					{
+						if(!string.IsNullOrEmpty(token))
+							yield return new IdentifierToken(token);
+					}
 					yield return new EndOfStatementToken();
 				}
 				if(!hadContents)
