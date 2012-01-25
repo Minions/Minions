@@ -45,5 +45,10 @@ namespace Fools.Tokenization
 		{
 			return !Equals(left, right);
 		}
+
+		public override string ToString()
+		{
+			return string.Format("Identifier({0})", Value);
+		}
 	}
 }

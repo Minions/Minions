@@ -17,10 +17,39 @@ namespace Fools.Tests
 		}
 
 		[Test]
+		public void FileContainingOnlyANewlineShouldBeSameAsEmptyFile()
+		{
+			var tokens = new FoolsTokenStream(@"
+");
+			tokens.Tokens.Should().Equal(EmptyLine);
+		}
+
+		[Test]
 		public void OneCharacterFileShouldBeSingleStatementWithThatToken()
 		{
 			var tokens = new FoolsTokenStream("a");
 			tokens.Tokens.Should().Equal(LineContaining(Identifier("a")));
+		}
+
+		[Test]
+		public void OneCharacterFileWithFinalNewlineShouldBeEquivalentToOneCharacterFile()
+		{
+			var tokens = new FoolsTokenStream(@"a
+");
+			tokens.Tokens.Should().Equal(LineContaining(Identifier("a")));
+		}
+
+		[Test]
+		public void TwoLineFileShouldResultInTwoStatements()
+		{
+			var tokens = new FoolsTokenStream(@"a
+b");
+			tokens.Tokens.Should().Equal(Lines(LineContaining(Identifier("a")), LineContaining(Identifier("b"))));
+		}
+
+		private IEnumerable<Token> Lines(params IEnumerable<Token>[] lines)
+		{
+			return lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
 		}
 
 		private static IEnumerable<Token> EmptyLine { get { return LineContaining(); } }

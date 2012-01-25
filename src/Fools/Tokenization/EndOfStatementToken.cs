@@ -33,5 +33,10 @@ namespace Fools.Tokenization
 		{
 			return !Equals(left, right);
 		}
+
+		public override string ToString()
+		{
+			return "EndOfStatement";
+		}
 	}
 }
