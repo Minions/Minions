@@ -23,19 +23,19 @@ namespace Fools.Tokenization
 			_fileContents = fileContents;
 		}
 
-		public IEnumerable<Token> Read()
+		public void Read()
 		{
 			string line;
 			bool hadContents = false;
 			while(null != (line = _fileContents.ReadLine()))
 			{
 				hadContents = true;
-				foreach(Token token in TokenizeLine(line)) yield return token;
+				TokenizeLine(line);
 			}
 			if(!hadContents)
 			{
-				yield return Indent(0);
-				yield return EndStatement();
+				Indent(0);
+				EndStatement();
 			}
 			NotifyDone();
 		}
@@ -47,44 +47,43 @@ namespace Fools.Tokenization
 			return new StackJanitor(() => _observers.RemoveAll(p => p.Key == nextId));
 		}
 
-		private IEnumerable<Token> TokenizeLine(string line)
+		private void TokenizeLine(string line)
 		{
-			yield return Indent(0);
+			Indent(0);
 			foreach(string token in line.Split(' '))
 			{
 				if(!string.IsNullOrEmpty(token))
-					yield return Identifier(token);
+					Identifier(token);
 			}
-			yield return EndStatement();
+			EndStatement();
 		}
 
-		private Token Indent(int indentationLevel)
+		private void Indent(int indentationLevel)
 		{
-			return Notify(new IndentationToken(indentationLevel));
+			Notify(new IndentationToken(indentationLevel));
 		}
 
-		private Token Identifier(string token)
+		private void Identifier(string token)
 		{
-			return Notify(new IdentifierToken(token));
+			Notify(new IdentifierToken(token));
 		}
 
-		private Token EndStatement()
+		private void EndStatement()
 		{
-			return Notify(new EndOfStatementToken());
+			Notify(new EndOfStatementToken());
 		}
 
-		private Token Notify(Token token)
+		private void Notify(Token token)
 		{
-			foreach(var observer in _observers.Select(p=>p.Value))
+			foreach(IObserver<Token> observer in _observers.Select(p => p.Value))
 			{
 				observer.OnNext(token);
 			}
-			return token;
 		}
 
 		private void NotifyDone()
 		{
-			foreach(var observer in _observers.Select(p => p.Value))
+			foreach(IObserver<Token> observer in _observers.Select(p => p.Value))
 			{
 				observer.OnCompleted();
 			}

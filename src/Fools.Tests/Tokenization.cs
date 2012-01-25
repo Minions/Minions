@@ -14,7 +14,7 @@ namespace Fools.Tests
 		{
 			IEnumerable<Token> tokens = lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
 			ReadOnlyListSubject<Token> tokensObserved = testSubject.Collect();
-			testSubject.Read().ToList(); // force completion of the read method.
+			testSubject.Read(); // force completion of the read method.
 			tokensObserved.Should().Equal(tokens);
 		}
 	}
