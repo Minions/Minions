@@ -90,8 +90,13 @@ namespace Fools.Tests
 		[Test]
 		public void AnEscapedNewlineShouldBeTreatedAsAContiuationOfThePreviousLine()
 		{
-			AssertThat(@"eh\
-bee")
+			AssertThat("eh\\\nbee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
+			AssertThat("eh\\\rbee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
+			AssertThat("eh\\\r\nbee")
 				.TokenizesTo(
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
