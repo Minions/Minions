@@ -37,8 +37,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Rxx">
+      <HintPath>..\packages\Rxx.1.2.4329.35077\lib\net40\Rxx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net4\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,10 +70,12 @@
     <Compile Include="Tokenization\FoolsTokenStream.cs" />
     <Compile Include="Tokenization\IdentifierToken.cs" />
     <Compile Include="Tokenization\IndentationToken.cs" />
+    <Compile Include="Utils\StackJanitor.cs" />
     <Compile Include="Tokenization\Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

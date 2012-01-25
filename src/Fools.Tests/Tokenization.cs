@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using FluentAssertions;
 using Fools.Tokenization;
 using NUnit.Framework;
@@ -11,7 +13,9 @@ namespace Fools.Tests
 		public static void TokenizesTo(this FoolsTokenStream testSubject, params IEnumerable<Token>[] lines)
 		{
 			IEnumerable<Token> tokens = lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
-			testSubject.Tokens.Should().Equal(tokens);
+			ReadOnlyListSubject<Token> tokensObserved = testSubject.Collect();
+			testSubject.Read().ToList(); // force completion of the read method.
+			tokensObserved.Should().Equal(tokens);
 		}
 	}
 
@@ -28,8 +32,11 @@ namespace Fools.Tests
 		[Test]
 		public void FileContainingOnlyANewlineShouldBeSameAsEmptyFile()
 		{
-			AssertThat(@"
-")
+			AssertThat("\n")
+				.TokenizesTo(EmptyLine);
+			AssertThat("\r")
+				.TokenizesTo(EmptyLine);
+			AssertThat("\r\n")
 				.TokenizesTo(EmptyLine);
 		}
 
@@ -44,8 +51,13 @@ namespace Fools.Tests
 		[Test]
 		public void OneCharacterFileWithFinalNewlineShouldBeEquivalentToOneCharacterFile()
 		{
-			AssertThat(@"a
-")
+			AssertThat("a\n")
+				.TokenizesTo(
+					LineContaining(Identifier("a")));
+			AssertThat("a\r")
+				.TokenizesTo(
+					LineContaining(Identifier("a")));
+			AssertThat("a\r\n")
 				.TokenizesTo(
 					LineContaining(Identifier("a")));
 		}
@@ -53,8 +65,7 @@ namespace Fools.Tests
 		[Test]
 		public void TwoLineFileShouldResultInTwoStatements()
 		{
-			AssertThat(@"a
-b")
+			AssertThat("a\nb")
 				.TokenizesTo(
 					LineContaining(Identifier("a")),
 					LineContaining(Identifier("b")));
