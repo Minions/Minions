@@ -6,72 +6,88 @@ using NUnit.Framework;
 
 namespace Fools.Tests
 {
+	public static class TemporaryExtensions
+	{
+		public static void TokenizesTo(this FoolsTokenStream testSubject, params IEnumerable<Token>[] lines)
+		{
+			IEnumerable<Token> tokens = lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
+			testSubject.Tokens.Should().Equal(tokens);
+		}
+	}
+
 	[TestFixture]
 	public class Tokenization
 	{
 		[Test]
 		public void EmptyFileShouldTokenizeToSingleEmptyStatementWithNoIndentation()
 		{
-			var tokens = new FoolsTokenStream("");
-			tokens.Tokens.Should().Equal(EmptyLine);
+			AssertThat("")
+				.TokenizesTo(EmptyLine);
 		}
 
 		[Test]
 		public void FileContainingOnlyANewlineShouldBeSameAsEmptyFile()
 		{
-			var tokens = new FoolsTokenStream(@"
-");
-			tokens.Tokens.Should().Equal(EmptyLine);
+			AssertThat(@"
+")
+				.TokenizesTo(EmptyLine);
 		}
 
 		[Test]
 		public void OneCharacterFileShouldBeSingleStatementWithThatToken()
 		{
-			var tokens = new FoolsTokenStream("a");
-			tokens.Tokens.Should().Equal(LineContaining(Identifier("a")));
+			AssertThat("a")
+				.TokenizesTo(
+					LineContaining(Identifier("a")));
 		}
 
 		[Test]
 		public void OneCharacterFileWithFinalNewlineShouldBeEquivalentToOneCharacterFile()
 		{
-			var tokens = new FoolsTokenStream(@"a
-");
-			tokens.Tokens.Should().Equal(LineContaining(Identifier("a")));
+			AssertThat(@"a
+")
+				.TokenizesTo(
+					LineContaining(Identifier("a")));
 		}
 
 		[Test]
 		public void TwoLineFileShouldResultInTwoStatements()
 		{
-			var tokens = new FoolsTokenStream(@"a
-b");
-			tokens.Tokens.Should().Equal(Lines(LineContaining(Identifier("a")), LineContaining(Identifier("b"))));
+			AssertThat(@"a
+b")
+				.TokenizesTo(
+					LineContaining(Identifier("a")),
+					LineContaining(Identifier("b")));
 		}
 
 		[Test]
 		public void MultipartIdentifiersShouldComeAsOneToken()
 		{
-			var tokens = new FoolsTokenStream("eh.bee.si.Dee");
-			tokens.Tokens.Should().Equal(LineContaining(Identifier("eh.bee.si.Dee")));
+			AssertThat("eh.bee.si.Dee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh.bee.si.Dee")));
 		}
 
 		[Test]
 		public void IdentifiersSeparatedBySpacesShouldComeAsTwoTokens()
 		{
-			var tokens = new FoolsTokenStream("eh bee");
-			tokens.Tokens.Should().Equal(LineContaining(Identifier("eh"), Identifier("bee")));
+			AssertThat("eh bee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
 		[Test, Ignore]
 		public void AnEscapedNewlineShouldBeTreatedAsAContiuationOfThePreviousLine()
 		{
-			var tokens = new FoolsTokenStream(@"eh\
-bee");
-			tokens.Tokens.Should().Equal(Lines(LineContaining(Identifier("eh"), Identifier("bee"))));
+			AssertThat(@"eh\
+bee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
-		private IEnumerable<Token> Lines(params IEnumerable<Token>[] lines)
+		private static FoolsTokenStream AssertThat(string fileContents)
 		{
-			return lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
+			return new FoolsTokenStream(fileContents);
 		}
 
 		private static IEnumerable<Token> EmptyLine { get { return LineContaining(); } }
