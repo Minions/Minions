@@ -13,5 +13,13 @@ namespace Fools.Tests
 			var tokens = new FoolsTokenStream("");
 			tokens.Tokens.Should().Equal(new Token[] {new IndentationToken(0), new EndOfStatementToken()});
 		}
+
+		[Test]
+		public void OneCharacterFileShouldBeSingleStatementWithThatToken()
+		{
+			var tokens = new FoolsTokenStream("a");
+			tokens.Tokens.Should().Equal(
+				new Token[] {new IndentationToken(0), new IdentifierToken("a"), new EndOfStatementToken()});
+		}
 	}
 }
