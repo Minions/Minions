@@ -21,13 +21,7 @@ namespace Fools.Tokenization
 				while(null != (line = _fileContents.ReadLine()))
 				{
 					hadContents = true;
-					yield return new IndentationToken(0);
-					foreach(string token in line.Split(' '))
-					{
-						if(!string.IsNullOrEmpty(token))
-							yield return new IdentifierToken(token);
-					}
-					yield return new EndOfStatementToken();
+					foreach(Token token in TokenizeLine(line)) yield return token;
 				}
 				if(!hadContents)
 				{
@@ -35,6 +29,17 @@ namespace Fools.Tokenization
 					yield return new EndOfStatementToken();
 				}
 			}
+		}
+
+		private static IEnumerable<Token> TokenizeLine(string line)
+		{
+			yield return new IndentationToken(0);
+			foreach(string token in line.Split(' '))
+			{
+				if(!string.IsNullOrEmpty(token))
+					yield return new IdentifierToken(token);
+			}
+			yield return new EndOfStatementToken();
 		}
 	}
 }

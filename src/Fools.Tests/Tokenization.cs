@@ -61,6 +61,13 @@ b");
 			tokens.Tokens.Should().Equal(LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
+		[Test, Ignore]
+		public void AnEscapedNewlineShouldBeTreatedAsAContiuationOfThePreviousLine()
+		{
+			var tokens = new FoolsTokenStream(@"eh\
+bee");
+			tokens.Tokens.Should().Equal(Lines(LineContaining(Identifier("eh"), Identifier("bee"))));
+		}
 
 		private IEnumerable<Token> Lines(params IEnumerable<Token>[] lines)
 		{
