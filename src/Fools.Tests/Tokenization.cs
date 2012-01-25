@@ -8,7 +8,7 @@ namespace Fools.Tests
 	public class Tokenization
 	{
 		[Test]
-		public void ShouldGetCorrectIndentationLevelForEmptyLine()
+		public void EmptyFileShouldTokenizeToSingleEmptyStatementWithNoIndentation()
 		{
 			var tokens = new FoolsTokenStream("");
 			tokens.Tokens.Should().Equal(new Token[] {new IndentationToken(0), new EndOfStatementToken()});
