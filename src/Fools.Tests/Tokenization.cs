@@ -118,7 +118,7 @@ namespace Fools.Tests
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void LeadingWhitespaceShouldBeIgnoredOnContinuationLines()
 		{
 			AssertThat("eh\\\n  \t \t \t\v\t bee")
