@@ -10,11 +10,11 @@ namespace Fools.Tokenization
 	public class FoolsTokenStream : IObservable<Token>
 	{
 		private readonly StringReader _fileContents;
+		private ITokenizationState _currentState;
+		private readonly LookingThroughCode _lookingThroughCode;
 
 		private readonly List<KeyValuePair<int, IObserver<Token>>> _observers =
 			new List<KeyValuePair<int, IObserver<Token>>>();
-
-		private StringBuilder _currentIdentifier = new StringBuilder();
 
 		public FoolsTokenStream(string fileContents)
 			: this(new StringReader(fileContents))
@@ -24,6 +24,8 @@ namespace Fools.Tokenization
 		public FoolsTokenStream(StringReader fileContents)
 		{
 			_fileContents = fileContents;
+			_lookingThroughCode = new LookingThroughCode(this);
+			_currentState = _lookingThroughCode;
 		}
 
 		public void Read()
@@ -64,34 +66,8 @@ namespace Fools.Tokenization
 		private void TokenizeLine(string line)
 		{
 			Indent(0);
-			line.Each(HandleCharacter);
-			HandleEndOfLine();
-		}
-
-		private void HandleEndOfLine()
-		{
-			EmitToken();
-			EndStatement();
-		}
-
-		private void HandleCharacter(Char ch)
-		{
-			if (ch == ' ')
-			{
-				EmitToken();
-			}
-			else
-			{
-				_currentIdentifier.Append(ch);
-			}
-		}
-
-		private void EmitToken()
-		{
-			var token = _currentIdentifier.ToString();
-			if(!string.IsNullOrEmpty(token))
-				Identifier(token);
-			_currentIdentifier.Clear();
+			line.Each(_currentState.HandleCharacter);
+			_currentState.HandleEndOfLine();
 		}
 
 		private void Indent(int indentationLevel)
@@ -99,12 +75,12 @@ namespace Fools.Tokenization
 			Notify(new IndentationToken(indentationLevel));
 		}
 
-		private void Identifier(string token)
+		public void Identifier(string token)
 		{
 			Notify(new IdentifierToken(token));
 		}
 
-		private void EndStatement()
+		public void EndStatement()
 		{
 			Notify(new EndOfStatementToken());
 		}
