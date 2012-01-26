@@ -70,6 +70,7 @@
     <Compile Include="Tokenization\FoolsTokenStream.cs" />
     <Compile Include="Tokenization\IdentifierToken.cs" />
     <Compile Include="Tokenization\IndentationToken.cs" />
+    <Compile Include="Utils\HelperExtensions.cs" />
     <Compile Include="Utils\StackJanitor.cs" />
     <Compile Include="Tokenization\Token.cs" />
   </ItemGroup>

@@ -87,6 +87,14 @@ namespace Fools.Tests
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
+		[Test, Ignore]
+		public void SpacesAroundPeriodsInIdentifiersShouldBeStripped()
+		{
+			AssertThat("eh. bee .si . Dee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh.bee.si.Dee")));
+		}
+
 		[Test]
 		public void AnEscapedNewlineShouldBeTreatedAsAContiuationOfThePreviousLine()
 		{

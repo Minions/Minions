@@ -14,6 +14,8 @@ namespace Fools.Tokenization
 		private readonly List<KeyValuePair<int, IObserver<Token>>> _observers =
 			new List<KeyValuePair<int, IObserver<Token>>>();
 
+		private StringBuilder _currentIdentifier = new StringBuilder();
+
 		public FoolsTokenStream(string fileContents)
 			: this(new StringReader(fileContents))
 		{
@@ -62,12 +64,34 @@ namespace Fools.Tokenization
 		private void TokenizeLine(string line)
 		{
 			Indent(0);
-			foreach(string token in line.Split(' '))
-			{
-				if(!string.IsNullOrEmpty(token))
-					Identifier(token);
-			}
+			line.Each(HandleCharacter);
+			HandleEndOfLine();
+		}
+
+		private void HandleEndOfLine()
+		{
+			EmitToken();
 			EndStatement();
+		}
+
+		private void HandleCharacter(Char ch)
+		{
+			if (ch == ' ')
+			{
+				EmitToken();
+			}
+			else
+			{
+				_currentIdentifier.Append(ch);
+			}
+		}
+
+		private void EmitToken()
+		{
+			var token = _currentIdentifier.ToString();
+			if(!string.IsNullOrEmpty(token))
+				Identifier(token);
+			_currentIdentifier.Clear();
 		}
 
 		private void Indent(int indentationLevel)
