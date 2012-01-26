@@ -72,6 +72,15 @@ namespace Fools.Tests
 		}
 
 		[Test]
+		public void ShouldCalculateCorrectIndentationOnEachLine()
+		{
+			AssertThat("\ta\n\t\tb")
+				.TokenizesTo(
+					LineContaining(1, Identifier("a")),
+					LineContaining(2, Identifier("b")));
+		}
+
+		[Test]
 		public void MultipartIdentifiersShouldComeAsOneToken()
 		{
 			AssertThat("eh.bee.si.Dee")
@@ -124,9 +133,15 @@ namespace Fools.Tests
 
 		private static IEnumerable<Token> EmptyLine { get { return LineContaining(); } }
 
+		private static IEnumerable<Token> LineContaining(int indentationLevel, params Token[] tokens)
+		{
+			return
+				new Token[] {new IndentationToken(indentationLevel)}.Concat(tokens).Concat(new Token[] {new EndOfStatementToken()});
+		}
+
 		private static IEnumerable<Token> LineContaining(params Token[] tokens)
 		{
-			return new Token[] {new IndentationToken(0)}.Concat(tokens).Concat(new Token[] {new EndOfStatementToken()});
+			return LineContaining(0, tokens);
 		}
 
 		private static IdentifierToken Identifier(string value)
