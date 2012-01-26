@@ -109,6 +109,14 @@ namespace Fools.Tests
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
+		[Test, Ignore]
+		public void LeadingWhitespaceShouldBeIgnoredOnContinuationLines()
+		{
+			AssertThat("eh\\\n  \t \t \t\v\t bee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
+		}
+
 		private static FoolsTokenStream AssertThat(string fileContents)
 		{
 			return new FoolsTokenStream(fileContents);

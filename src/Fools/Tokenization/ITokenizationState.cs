@@ -6,5 +6,6 @@ namespace Fools.Tokenization
 	{
 		void HandleEndOfLine();
 		void HandleCharacter(Char ch);
+		void EnterState();
 	}
 }

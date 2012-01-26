@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Fools.Utils;
 
 namespace Fools.Tokenization
@@ -11,7 +10,6 @@ namespace Fools.Tokenization
 	{
 		private readonly StringReader _fileContents;
 		private ITokenizationState _currentState;
-		private readonly LookingThroughCode _lookingThroughCode;
 
 		private readonly List<KeyValuePair<int, IObserver<Token>>> _observers =
 			new List<KeyValuePair<int, IObserver<Token>>>();
@@ -21,32 +19,33 @@ namespace Fools.Tokenization
 		{
 		}
 
+		public LookingThroughCode StateLookingThroughCode { get; private set; }
+		public SkippingWhitespace StateSkippingWhitespace { get; private set; }
+		public MeasureIndentation StateMeasureIndentation { get; private set; }
+
 		public FoolsTokenStream(StringReader fileContents)
 		{
 			_fileContents = fileContents;
-			_lookingThroughCode = new LookingThroughCode(this);
-			_currentState = _lookingThroughCode;
+			StateLookingThroughCode = new LookingThroughCode(this);
+			StateSkippingWhitespace = new SkippingWhitespace(this);
+			StateMeasureIndentation = new MeasureIndentation(this);
+			SetStateTo(StateMeasureIndentation);
+		}
+
+		public void SetStateTo(ITokenizationState nextState)
+		{
+			_currentState = nextState;
+			nextState.EnterState();
 		}
 
 		public void Read()
 		{
 			string line;
 			bool hadContents = false;
-			var effectiveLine = new StringBuilder();
 			while(null != (line = _fileContents.ReadLine()))
 			{
+				TokenizeLine(line);
 				hadContents = true;
-				if(line.EndsWith("\\"))
-				{
-					effectiveLine.Append(line, 0, line.Length - 1);
-					effectiveLine.Append(' ');
-				}
-				else
-				{
-					effectiveLine.Append(line);
-					TokenizeLine(effectiveLine.ToString());
-					effectiveLine.Clear();
-				}
 			}
 			if(!hadContents)
 			{
@@ -65,12 +64,11 @@ namespace Fools.Tokenization
 
 		private void TokenizeLine(string line)
 		{
-			Indent(0);
-			line.Each(_currentState.HandleCharacter);
+			line.Each(ch => _currentState.HandleCharacter(ch));
 			_currentState.HandleEndOfLine();
 		}
 
-		private void Indent(int indentationLevel)
+		public void Indent(int indentationLevel)
 		{
 			Notify(new IndentationToken(indentationLevel));
 		}

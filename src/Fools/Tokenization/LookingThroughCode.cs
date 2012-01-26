@@ -7,25 +7,39 @@ namespace Fools.Tokenization
 	{
 		private readonly FoolsTokenStream _tokens;
 		private readonly StringBuilder _currentIdentifier = new StringBuilder();
+		private char _prevChar;
 
 		public LookingThroughCode(FoolsTokenStream tokens)
 		{
 			_tokens = tokens;
 		}
 
+		public void EnterState()
+		{
+		}
+
 		public void HandleEndOfLine()
 		{
 			EmitToken();
-			_tokens.EndStatement();
+			if (_prevChar == '\\')
+			{
+				_tokens.SetStateTo(_tokens.StateSkippingWhitespace);
+			}
+			else
+			{
+				_tokens.EndStatement();
+				_tokens.SetStateTo(_tokens.StateMeasureIndentation);
+			}
 		}
 
 		public void HandleCharacter(Char ch)
 		{
-			if(ch == ' ')
+			_prevChar = ch;
+			if (ch == ' ')
 			{
 				EmitToken();
 			}
-			else
+			else if(ch != '\\')
 			{
 				_currentIdentifier.Append(ch);
 			}

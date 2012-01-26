@@ -72,6 +72,8 @@
     <Compile Include="Tokenization\IndentationToken.cs" />
     <Compile Include="Tokenization\ITokenizationState.cs" />
     <Compile Include="Tokenization\LookingThroughCode.cs" />
+    <Compile Include="Tokenization\MeasureIndentation.cs" />
+    <Compile Include="Tokenization\SkippingWhitespace.cs" />
     <Compile Include="Utils\HelperExtensions.cs" />
     <Compile Include="Utils\StackJanitor.cs" />
     <Compile Include="Tokenization\Token.cs" />
