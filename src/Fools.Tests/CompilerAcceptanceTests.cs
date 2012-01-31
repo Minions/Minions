@@ -13,7 +13,7 @@ namespace Fools.Tests
 //         var fool = @"
 //def foo():
 //	p";
-			string fool = "a=3";
+			const string fool = "a=3";
 			var interpreter = new Interpreter();
 			interpreter.evalute(Compile(fool));
 			interpreter.Variables.Should().Contain("a", 3);
@@ -21,8 +21,9 @@ namespace Fools.Tests
 
 		private CodeUnit Compile(string fool)
 		{
-			INode node = new FoolsStructure().Parse(fool);
-			return new CodeUnit(node);
+			//INode node = new FoolsStructure().Parse(fool);
+			//return new CodeUnit(node);
+			return null;
 		}
 	}
 }

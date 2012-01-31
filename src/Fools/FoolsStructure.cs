@@ -1,12 +1,40 @@
-﻿using Fools.Ast;
+﻿using System;
+using System.Collections.Generic;
+using Fools.Ast;
+using Fools.Tokenization;
+using Fools.Utils;
 
 namespace Fools
 {
-	public class FoolsStructure
+	public class FoolsStructure : IObservable<INode>, IObserver<Token>
 	{
-		public INode Parse(string fool)
+		private readonly ObservableMulticaster<INode> _observers = new ObservableMulticaster<INode>();
+		private readonly List<Token> _tokens = new List<Token>();
+
+		public IDisposable Subscribe(IObserver<INode> observer)
 		{
-			throw new System.NotImplementedException();
+			return _observers.Subscribe(observer);
+		}
+
+		public void OnNext(Token value)
+		{
+			if (value is EndOfStatementToken)
+			{
+				_observers.Notify(new UnrecognizedStatement(_tokens.ToArray()));
+			}
+			else if(value is IdentifierToken)
+			{
+				_tokens.Add(value);
+			}
+		}
+
+		public void OnError(Exception error)
+		{
+		}
+
+		public void OnCompleted()
+		{
+			_observers.NotifyDone();
 		}
 	}
 }

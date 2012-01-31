@@ -1,0 +1,11 @@
+This is a list of things that I will do in a future MMF.
+
+* string literals
+* operators
+* function calls (paren syntax - I might do a temporary thing with function calls using haskell's adjacency syntax, just so that I can get some interesting cases working top to bottom.)
+* syntax errors
+ * escaped tab at start of line
+ * tab anywhere during a line
+ * incorrect indentation level at beginning of any statement or block.
+* report errors that are found.
+* report multiple errors, along with partial parse. Aka, parse every statement you can, as much as you can, and report the errors for the rest.

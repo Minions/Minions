@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Fools.Utils;
 
 namespace Fools.Tokenization
@@ -10,9 +8,7 @@ namespace Fools.Tokenization
 	{
 		private readonly StringReader _fileContents;
 		private ITokenizationState _currentState;
-
-		private readonly List<KeyValuePair<int, IObserver<Token>>> _observers =
-			new List<KeyValuePair<int, IObserver<Token>>>();
+		private readonly ObservableMulticaster<Token> _observers = new ObservableMulticaster<Token>();
 
 		public FoolsTokenStream(string fileContents)
 			: this(new StringReader(fileContents))
@@ -54,14 +50,7 @@ namespace Fools.Tokenization
 				Indent(0);
 				EndStatement();
 			}
-			NotifyDone();
-		}
-
-		public IDisposable Subscribe(IObserver<Token> observer)
-		{
-			int nextId = 1 + (_observers.Any() ? _observers.Max(p => p.Key) : 0);
-			_observers.Add(new KeyValuePair<int, IObserver<Token>>(nextId, observer));
-			return new StackJanitor(() => _observers.RemoveAll(p => p.Key == nextId));
+			_observers.NotifyDone();
 		}
 
 		private void TokenizeLine(string line)
@@ -72,33 +61,22 @@ namespace Fools.Tokenization
 
 		public void Indent(int indentationLevel)
 		{
-			Notify(new IndentationToken(indentationLevel));
+			_observers.Notify(new IndentationToken(indentationLevel));
 		}
 
 		public void Identifier(string token)
 		{
-			Notify(new IdentifierToken(token));
+			_observers.Notify(new IdentifierToken(token));
 		}
 
 		public void EndStatement()
 		{
-			Notify(new EndOfStatementToken());
+			_observers.Notify(new EndOfStatementToken());
 		}
 
-		private void Notify(Token token)
+		public IDisposable Subscribe(IObserver<Token> observer)
 		{
-			foreach(IObserver<Token> observer in _observers.Select(p => p.Value))
-			{
-				observer.OnNext(token);
-			}
-		}
-
-		private void NotifyDone()
-		{
-			foreach(IObserver<Token> observer in _observers.Select(p => p.Value))
-			{
-				observer.OnCompleted();
-			}
+			return _observers.Subscribe(observer);
 		}
 	}
 }

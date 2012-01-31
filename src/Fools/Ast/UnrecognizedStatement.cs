@@ -1,23 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using Fools.Tokenization;
+using System.Linq;
 
 namespace Fools.Ast
 {
 	public class UnrecognizedStatement : INode, IEquatable<UnrecognizedStatement>, IStatement
 	{
+		public UnrecognizedStatement(params Token[] tokens)
+		{
+			contents = tokens;
+		}
+
 		public bool Equals(UnrecognizedStatement other)
 		{
 			if (ReferenceEquals(null, other))
 				return false;
 			if (ReferenceEquals(this, other))
 				return true;
-			return Equals(other.text, text);
+			return contents.SequenceEqual(other.contents);
 		}
 
-		public string text { get; set; }
+		public IEnumerable<Token> contents { get; private set; }
 
 		public override string ToString()
 		{
-			return string.Format("Statement.Unknown({0})", text);
+			return string.Format("Statement.Unknown({0})", string.Join(", ", contents));
 		}
 
 		public override bool Equals(object obj)
@@ -27,7 +35,7 @@ namespace Fools.Ast
 
 		public override int GetHashCode()
 		{
-			return (text != null ? text.GetHashCode() : 0);
+			return contents.GetHashCode();
 		}
 
 		public static bool operator ==(UnrecognizedStatement left, UnrecognizedStatement right)

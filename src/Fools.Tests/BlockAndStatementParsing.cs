@@ -1,9 +1,12 @@
 ﻿using Fools.Ast;
+using Fools.Tokenization;
 using NUnit.Framework;
+using System.Reactive.Linq;
+using FluentAssertions;
 
 namespace Fools.Tests
 {
-	[TestFixture, Ignore]
+	[TestFixture]
 	public class BlockAndStatementParsing
 	{
 		[SetUp]
@@ -15,45 +18,53 @@ namespace Fools.Tests
 		[Test]
 		public void ParseOneInvalidStatement()
 		{
-			_AssertParsesAs(
-				"some statement",
-				new Block(
-					new UnrecognizedStatement
-					{
-						text = "some statement"
-					}));
+			_AssertTokensParseAs(
+				new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")),
+				new IndentationToken(0),
+				new IdentifierToken("some"),
+				new IdentifierToken("statement"),
+				new EndOfStatementToken());
 		}
 
-		[Test]
-		public void ParseOneAssignmentStatement()
+		private void _AssertTokensParseAs(INode expected, params Token[] tokenStream)
 		{
-			_AssertParsesAs(
-				"foo = 1",
-				new Block(
-					new AssignmentStatement
-					{
-						variable = "foo",
-						value = new NumberLiteral(1)
-					}));
+			var results = _testSubject.Collect();
+			foreach(var token in tokenStream)
+			{
+				_testSubject.OnNext(token);
+			}
+			_testSubject.OnCompleted();
+			results.Should().Equal(expected);
 		}
 
-		[Test]
-		public void ParseOnePrintStatement()
-		{
-			_AssertParsesAs(
-				"print(foo)",
-				new Block(
-					new PrintStatement
-					{
-						variable = "foo"
-					}));
-		}
+		//[Test, Ignore]
+		//public void ParseOneAssignmentStatement()
+		//{
+		//   _AssertParsesAs(
+		//      "foo = 1",
+		//      new AssignmentStatement
+		//      {
+		//         variable = "foo",
+		//         value = new NumberLiteral(1)
+		//      });
+		//}
 
-		private void _AssertParsesAs(string code, INode parseTree)
-		{
-			INode actualParse = _testSubject.Parse(code);
-			Assert.That(actualParse, Is.EqualTo(parseTree));
-		}
+		//[Test, Ignore]
+		//public void ParseOnePrintStatement()
+		//{
+		//   _AssertParsesAs(
+		//      "print(foo)",
+		//      new PrintStatement
+		//      {
+		//         variable = "foo"
+		//      });
+		//}
+
+		//private void _AssertParsesAs(string code, INode parseTree)
+		//{
+		//   INode actualParse = _testSubject.Parse(code);
+		//   Assert.That(actualParse, Is.EqualTo(parseTree));
+		//}
 
 		private FoolsStructure _testSubject;
 	}
