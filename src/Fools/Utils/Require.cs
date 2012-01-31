@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fools
+namespace Fools.Utils
 {
 	public static class Require
 	{

@@ -1,4 +1,5 @@
 using System;
+using Fools.Utils;
 
 namespace Fools.Tokenization
 {

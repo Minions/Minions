@@ -61,7 +61,7 @@
     <Compile Include="Ast\UnparsedText.cs" />
     <Compile Include="Ast\UnrecognizedStatement.cs" />
     <Compile Include="Recognizing\RecognizeBlocksAndStatements.cs" />
-    <Compile Include="Require.cs" />
+    <Compile Include="Utils\Require.cs" />
     <Compile Include="CodeUnit.cs" />
     <Compile Include="MethodBuilder.cs" />
     <Compile Include="Program.cs" />
