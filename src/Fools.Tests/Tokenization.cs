@@ -80,6 +80,15 @@ namespace Fools.Tests
 		}
 
 		[Test]
+		public void EscapedNewlineShouldBehaveJustLikeNewlineCharacter()
+		{
+			AssertThat("a\\nb")
+				.TokenizesTo(
+					LineContaining(Identifier("a")),
+					LineContaining(Identifier("b")));
+		}
+
+		[Test]
 		public void ShouldCalculateCorrectIndentationOnEachLine()
 		{
 			AssertThat("\ta\n\t\tb")

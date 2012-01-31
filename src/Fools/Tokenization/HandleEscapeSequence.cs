@@ -46,7 +46,18 @@ namespace Fools.Tokenization
 				_escapeSequence = string.Empty;
 				return;
 			}
-			throw new NotImplementedException();
+			if (ch == 'n')
+			{
+				FinishAsNewline();
+				return;
+			}
+			throw new NotImplementedException("The tokenizer does recognize this escape sequence.");
+		}
+
+		private void FinishAsNewline()
+		{
+			_tokens.SetStateTo(_resultHandler);
+			_resultHandler.HandleEndOfLine();
 		}
 
 		private void FinishAsCharacter(char ch)
