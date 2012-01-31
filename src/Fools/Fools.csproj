@@ -60,7 +60,7 @@
     <Compile Include="Ast\PrintStatement.cs" />
     <Compile Include="Ast\UnparsedText.cs" />
     <Compile Include="Ast\UnrecognizedStatement.cs" />
-    <Compile Include="FoolsStructure.cs" />
+    <Compile Include="Recognizing\RecognizeBlocksAndStatements.cs" />
     <Compile Include="Require.cs" />
     <Compile Include="CodeUnit.cs" />
     <Compile Include="MethodBuilder.cs" />

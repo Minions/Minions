@@ -21,7 +21,7 @@ namespace Fools.Tests
 
 		private CodeUnit Compile(string fool)
 		{
-			//INode node = new FoolsStructure().Parse(fool);
+			//INode node = new RecognizeBlocksAndStatements().Parse(fool);
 			//return new CodeUnit(node);
 			return null;
 		}

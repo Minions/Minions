@@ -1,4 +1,5 @@
 ﻿using Fools.Ast;
+using Fools.Recognizing;
 using Fools.Tokenization;
 using NUnit.Framework;
 using System.Reactive.Linq;
@@ -12,7 +13,7 @@ namespace Fools.Tests
 		[SetUp]
 		public void SetUp()
 		{
-			_testSubject = new FoolsStructure();
+			_testSubject = new RecognizeBlocksAndStatements();
 		}
 
 		[Test]
@@ -66,6 +67,6 @@ namespace Fools.Tests
 		//   Assert.That(actualParse, Is.EqualTo(parseTree));
 		//}
 
-		private FoolsStructure _testSubject;
+		private RecognizeBlocksAndStatements _testSubject;
 	}
 }

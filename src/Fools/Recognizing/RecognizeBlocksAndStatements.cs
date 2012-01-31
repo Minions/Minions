@@ -4,9 +4,9 @@ using Fools.Ast;
 using Fools.Tokenization;
 using Fools.Utils;
 
-namespace Fools
+namespace Fools.Recognizing
 {
-	public class FoolsStructure : IObservable<INode>, IObserver<Token>
+	public class RecognizeBlocksAndStatements : IObservable<INode>, IObserver<Token>
 	{
 		private readonly ObservableMulticaster<INode> _observers = new ObservableMulticaster<INode>();
 		private readonly List<Token> _tokens = new List<Token>();
