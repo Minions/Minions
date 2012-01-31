@@ -49,6 +49,14 @@ namespace Fools.Tests
 		}
 
 		[Test]
+		public void UnicodeEscapeSequencesShouldBeAllowedInIdentifiers()
+		{
+			AssertThat("a\\u4018")
+				.TokenizesTo(
+					LineContaining(Identifier("a\u4018")));
+		}
+
+		[Test]
 		public void OneCharacterFileWithFinalNewlineShouldBeEquivalentToOneCharacterFile()
 		{
 			AssertThat("a\n")
@@ -96,10 +104,18 @@ namespace Fools.Tests
 					LineContaining(Identifier("eh"), Identifier("bee")));
 		}
 
+		[Test]
+		public void MultipleSpacesShouldBehaveLikeSingleSpaces()
+		{
+			AssertThat("eh   bee")
+				.TokenizesTo(
+					LineContaining(Identifier("eh"), Identifier("bee")));
+		}
+
 		[Test, Ignore]
 		public void SpacesAroundPeriodsInIdentifiersShouldBeStripped()
 		{
-			AssertThat("eh. bee .si . Dee")
+			AssertThat("eh. bee .si .  Dee")
 				.TokenizesTo(
 					LineContaining(Identifier("eh.bee.si.Dee")));
 		}

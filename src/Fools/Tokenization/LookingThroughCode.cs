@@ -7,7 +7,6 @@ namespace Fools.Tokenization
 	{
 		private readonly FoolsTokenStream _tokens;
 		private readonly StringBuilder _currentIdentifier = new StringBuilder();
-		private char _prevChar;
 
 		public LookingThroughCode(FoolsTokenStream tokens)
 		{
@@ -21,27 +20,24 @@ namespace Fools.Tokenization
 		public void HandleEndOfLine()
 		{
 			EmitToken();
-			if (_prevChar == '\\')
-			{
-				_tokens.SetStateTo(_tokens.StateSkippingWhitespace);
-			}
-			else
-			{
-				_tokens.EndStatement();
-				_tokens.SetStateTo(_tokens.StateMeasureIndentation);
-			}
+			_tokens.EndStatement();
+			_tokens.SetStateTo(_tokens.StateMeasureIndentation);
 		}
 
 		public void HandleCharacter(Char ch)
 		{
-			_prevChar = ch;
-			if (ch == ' ')
+			switch(ch)
 			{
-				EmitToken();
-			}
-			else if(ch != '\\')
-			{
-				_currentIdentifier.Append(ch);
+				case ' ':
+					EmitToken();
+					break;
+				case '\\':
+					_tokens.SetStateTo(_tokens.StateHandleEscapeSequence);
+					_tokens.StateHandleEscapeSequence.ReturnTo(this);
+					break;
+				default:
+					_currentIdentifier.Append(ch);
+					break;
 			}
 		}
 

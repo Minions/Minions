@@ -22,6 +22,7 @@ namespace Fools.Tokenization
 		public LookingThroughCode StateLookingThroughCode { get; private set; }
 		public SkippingWhitespace StateSkippingWhitespace { get; private set; }
 		public MeasureIndentation StateMeasureIndentation { get; private set; }
+		public HandleEscapeSequence StateHandleEscapeSequence { get; private set; }
 
 		public FoolsTokenStream(StringReader fileContents)
 		{
@@ -29,6 +30,7 @@ namespace Fools.Tokenization
 			StateLookingThroughCode = new LookingThroughCode(this);
 			StateSkippingWhitespace = new SkippingWhitespace(this);
 			StateMeasureIndentation = new MeasureIndentation(this);
+			StateHandleEscapeSequence = new HandleEscapeSequence(this);
 			SetStateTo(StateMeasureIndentation);
 		}
 
