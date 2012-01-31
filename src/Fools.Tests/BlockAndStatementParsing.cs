@@ -26,47 +26,36 @@ namespace Fools.Tests
 	public class BlockAndStatementParsing
 	{
 		[Test]
-		public void ParseOneInvalidStatement()
+		public void ShouldDetectASimpleStatement()
 		{
 			The.File(
-				Line.Containing(Identifier("some"), Identifier("statement"))
+				With.Line(Identifier("some"), Identifier("statement"))
 				)
 				.ShouldBeRecognizedAs(
-					new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")));
+					Statement(Identifier("some"), Identifier("statement")));
 		}
 
-		//[Test, Ignore]
-		//public void ParseOneAssignmentStatement()
-		//{
-		//   _AssertParsesAs(
-		//      "foo = 1",
-		//      new AssignmentStatement
-		//      {
-		//         variable = "foo",
-		//         value = new NumberLiteral(1)
-		//      });
-		//}
-
-		//[Test, Ignore]
-		//public void ParseOnePrintStatement()
-		//{
-		//   _AssertParsesAs(
-		//      "print(foo)",
-		//      new PrintStatement
-		//      {
-		//         variable = "foo"
-		//      });
-		//}
-
-		//private void _AssertParsesAs(string code, INode parseTree)
-		//{
-		//   INode actualParse = _testSubject.Parse(code);
-		//   Assert.That(actualParse, Is.EqualTo(parseTree));
-		//}
+		[Test, Ignore]
+		public void ShouldDetectANonNestedBlock()
+		{
+			The.File(
+				With.Line(Identifier("some"), Identifier("statement"), Identifier(":")),
+				With.Line(1, Identifier("pass"))
+				)
+				.ShouldBeRecognizedAs(
+					new Block(
+						With.Tokens(Identifier("some"), Identifier("statement")),
+						Statement(Identifier("pass"))));
+		}
 
 		private static IdentifierToken Identifier(string value)
 		{
 			return new IdentifierToken(value);
+		}
+
+		private static UnrecognizedStatement Statement(params Token[] tokens)
+		{
+			return new UnrecognizedStatement(tokens);
 		}
 	}
 }

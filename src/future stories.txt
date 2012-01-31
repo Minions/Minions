@@ -6,6 +6,7 @@ This is a list of things that I will do in a future MMF.
 * syntax errors
  * escaped tab at start of line
  * tab anywhere during a line
- * incorrect indentation level at beginning of any statement or block.
+ * incorrect indentation level at beginning of any statement or block
+ * missing colon on block header line
 * report errors that are found.
 * report multiple errors, along with partial parse. Aka, parse every statement you can, as much as you can, and report the errors for the rest.

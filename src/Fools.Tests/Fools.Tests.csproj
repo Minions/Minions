@@ -59,7 +59,7 @@
   <ItemGroup>
     <Compile Include="BlockAndStatementParsing.cs" />
     <Compile Include="Support\The.cs" />
-    <Compile Include="Support\Line.cs" />
+    <Compile Include="Support\With.cs" />
     <Compile Include="Tokenization.cs" />
     <Compile Include="CompilerAcceptanceTests.cs" />
     <Compile Include="EmitCode.cs" />
