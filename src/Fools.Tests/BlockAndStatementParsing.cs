@@ -1,41 +1,38 @@
-﻿using Fools.Ast;
-using Fools.Recognizing;
-using Fools.Tokenization;
-using NUnit.Framework;
+﻿using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using FluentAssertions;
+using Fools.Ast;
+using Fools.Recognizing;
+using Fools.Tests.Support;
+using Fools.Tokenization;
+using Fools.Utils;
+using NUnit.Framework;
 
 namespace Fools.Tests
 {
+	public static class BlockAndStatementParsingHelpers
+	{
+		public static void ShouldBeRecognizedAs(this IEnumerable<Token> tokenStream, params INode[] expected)
+		{
+			var testSubject = new RecognizeBlocksAndStatements();
+			ReadOnlyListSubject<INode> results = testSubject.Collect();
+			tokenStream.SendTo(testSubject);
+			results.Should().Equal(expected);
+		}
+	}
+
 	[TestFixture]
 	public class BlockAndStatementParsing
 	{
-		[SetUp]
-		public void SetUp()
-		{
-			_testSubject = new RecognizeBlocksAndStatements();
-		}
-
 		[Test]
 		public void ParseOneInvalidStatement()
 		{
-			_AssertTokensParseAs(
-				new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")),
-				new IndentationToken(0),
-				new IdentifierToken("some"),
-				new IdentifierToken("statement"),
-				new EndOfStatementToken());
-		}
-
-		private void _AssertTokensParseAs(INode expected, params Token[] tokenStream)
-		{
-			var results = _testSubject.Collect();
-			foreach(var token in tokenStream)
-			{
-				_testSubject.OnNext(token);
-			}
-			_testSubject.OnCompleted();
-			results.Should().Equal(expected);
+			The.File(
+				Line.Containing(Identifier("some"), Identifier("statement"))
+				)
+				.ShouldBeRecognizedAs(
+					new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")));
 		}
 
 		//[Test, Ignore]
@@ -67,6 +64,9 @@ namespace Fools.Tests
 		//   Assert.That(actualParse, Is.EqualTo(parseTree));
 		//}
 
-		private RecognizeBlocksAndStatements _testSubject;
+		private static IdentifierToken Identifier(string value)
+		{
+			return new IdentifierToken(value);
+		}
 	}
 }

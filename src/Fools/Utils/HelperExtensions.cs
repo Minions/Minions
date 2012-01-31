@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Fools.Tokenization;
 
 namespace Fools.Utils
 {
@@ -11,6 +13,20 @@ namespace Fools.Utils
 			{
 				operation(item);
 			}
+		}
+
+		public static IEnumerable<Token> Flatten(this IEnumerable<IEnumerable<Token>> lists)
+		{
+			return lists.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
+		}
+
+		public static void SendTo<T>(this IEnumerable<T> stream, IObserver<T> destination)
+		{
+			foreach(var token in stream)
+			{
+				destination.OnNext(token);
+			}
+			destination.OnCompleted();
 		}
 	}
 }

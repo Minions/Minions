@@ -3,7 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FluentAssertions;
+using Fools.Tests.Support;
 using Fools.Tokenization;
+using Fools.Utils;
 using NUnit.Framework;
 
 namespace Fools.Tests
@@ -12,10 +14,9 @@ namespace Fools.Tests
 	{
 		public static void TokenizesTo(this FoolsTokenStream testSubject, params IEnumerable<Token>[] lines)
 		{
-			IEnumerable<Token> tokens = lines.Aggregate(Enumerable.Empty<Token>(), (current, line) => current.Concat(line));
-			ReadOnlyListSubject<Token> tokensObserved = testSubject.Collect();
+			var tokensObserved = testSubject.Collect();
 			testSubject.Read();
-			tokensObserved.Should().Equal(tokens);
+			tokensObserved.Should().Equal(lines.Flatten());
 		}
 	}
 
@@ -26,18 +27,18 @@ namespace Fools.Tests
 		public void EmptyFileShouldTokenizeToSingleEmptyStatementWithNoIndentation()
 		{
 			AssertThat("")
-				.TokenizesTo(EmptyLine);
+				.TokenizesTo(Line.Empty);
 		}
 
 		[Test]
 		public void FileContainingOnlyANewlineShouldBeSameAsEmptyFile()
 		{
 			AssertThat("\n")
-				.TokenizesTo(EmptyLine);
+				.TokenizesTo(Line.Empty);
 			AssertThat("\r")
-				.TokenizesTo(EmptyLine);
+				.TokenizesTo(Line.Empty);
 			AssertThat("\r\n")
-				.TokenizesTo(EmptyLine);
+				.TokenizesTo(Line.Empty);
 		}
 
 		[Test]
@@ -45,7 +46,7 @@ namespace Fools.Tests
 		{
 			AssertThat("a")
 				.TokenizesTo(
-					LineContaining(Identifier("a")));
+					Line.Containing(Identifier("a")));
 		}
 
 		[Test]
@@ -53,7 +54,7 @@ namespace Fools.Tests
 		{
 			AssertThat("a\\u4018")
 				.TokenizesTo(
-					LineContaining(Identifier("a\u4018")));
+					Line.Containing(Identifier("a\u4018")));
 		}
 
 		[Test]
@@ -61,13 +62,13 @@ namespace Fools.Tests
 		{
 			AssertThat("a\n")
 				.TokenizesTo(
-					LineContaining(Identifier("a")));
+					Line.Containing(Identifier("a")));
 			AssertThat("a\r")
 				.TokenizesTo(
-					LineContaining(Identifier("a")));
+					Line.Containing(Identifier("a")));
 			AssertThat("a\r\n")
 				.TokenizesTo(
-					LineContaining(Identifier("a")));
+					Line.Containing(Identifier("a")));
 		}
 
 		[Test]
@@ -75,8 +76,8 @@ namespace Fools.Tests
 		{
 			AssertThat("a\nb")
 				.TokenizesTo(
-					LineContaining(Identifier("a")),
-					LineContaining(Identifier("b")));
+					Line.Containing(Identifier("a")),
+					Line.Containing(Identifier("b")));
 		}
 
 		[Test]
@@ -84,8 +85,8 @@ namespace Fools.Tests
 		{
 			AssertThat("a\\nb")
 				.TokenizesTo(
-					LineContaining(Identifier("a")),
-					LineContaining(Identifier("b")));
+					Line.Containing(Identifier("a")),
+					Line.Containing(Identifier("b")));
 		}
 
 		[Test]
@@ -93,8 +94,8 @@ namespace Fools.Tests
 		{
 			AssertThat("\ta\n\t\tb")
 				.TokenizesTo(
-					LineContaining(1, Identifier("a")),
-					LineContaining(2, Identifier("b")));
+					Line.Containing(1, Identifier("a")),
+					Line.Containing(2, Identifier("b")));
 		}
 
 		[Test]
@@ -102,7 +103,7 @@ namespace Fools.Tests
 		{
 			AssertThat("eh.bee.si.Dee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh.bee.si.Dee")));
+					Line.Containing(Identifier("eh.bee.si.Dee")));
 		}
 
 		[Test]
@@ -110,7 +111,7 @@ namespace Fools.Tests
 		{
 			AssertThat("eh bee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 		}
 
 		[Test]
@@ -118,7 +119,7 @@ namespace Fools.Tests
 		{
 			AssertThat("eh   bee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 		}
 
 		[Test, Ignore]
@@ -126,7 +127,7 @@ namespace Fools.Tests
 		{
 			AssertThat("eh. bee .si .  Dee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh.bee.si.Dee")));
+					Line.Containing(Identifier("eh.bee.si.Dee")));
 		}
 
 		[Test]
@@ -134,13 +135,13 @@ namespace Fools.Tests
 		{
 			AssertThat("eh\\\nbee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 			AssertThat("eh\\\rbee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 			AssertThat("eh\\\r\nbee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 		}
 
 		[Test]
@@ -148,25 +149,12 @@ namespace Fools.Tests
 		{
 			AssertThat("eh\\\n  \t \t \t\v\t bee")
 				.TokenizesTo(
-					LineContaining(Identifier("eh"), Identifier("bee")));
+					Line.Containing(Identifier("eh"), Identifier("bee")));
 		}
 
 		private static FoolsTokenStream AssertThat(string fileContents)
 		{
 			return new FoolsTokenStream(fileContents);
-		}
-
-		private static IEnumerable<Token> EmptyLine { get { return LineContaining(); } }
-
-		private static IEnumerable<Token> LineContaining(int indentationLevel, params Token[] tokens)
-		{
-			return
-				new Token[] {new IndentationToken(indentationLevel)}.Concat(tokens).Concat(new Token[] {new EndOfStatementToken()});
-		}
-
-		private static IEnumerable<Token> LineContaining(params Token[] tokens)
-		{
-			return LineContaining(0, tokens);
 		}
 
 		private static IdentifierToken Identifier(string value)
