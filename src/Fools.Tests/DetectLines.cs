@@ -8,20 +8,6 @@ using Fools.Tests.Support;
 using Fools.Tokenization;
 using NUnit.Framework;
 
-namespace Fools.Tests.DetectingLines
-{
-	public static class BlockAndStatementParsingHelpers
-	{
-		public static void ShouldContainLines(this IEnumerable<Token> tokenStream, params INode[] expected)
-		{
-			var source = new ObserveLists<Token>();
-			ReadOnlyListSubject<INode> results = source.DetectLines().Collect();
-			source.Send(tokenStream);
-			results.Should().Equal(expected);
-		}
-	}
-}
-
 namespace Fools.Tests
 {
 	[TestFixture]
@@ -38,6 +24,20 @@ namespace Fools.Tests
 		private static IdentifierToken Identifier(string value)
 		{
 			return new IdentifierToken(value);
+		}
+	}
+}
+
+namespace Fools.Tests.DetectingLines
+{
+	public static class BlockAndStatementParsingHelpers
+	{
+		public static void ShouldContainLines(this IEnumerable<Token> tokenStream, params INode[] expected)
+		{
+			var source = new ObserveLists<Token>();
+			ReadOnlyListSubject<INode> results = source.DetectLines().Collect();
+			source.Send(tokenStream);
+			results.Should().Equal(expected);
 		}
 	}
 }

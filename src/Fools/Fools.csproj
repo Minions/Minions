@@ -61,6 +61,7 @@
     <Compile Include="Ast\PrintStatement.cs" />
     <Compile Include="Ast\UnparsedText.cs" />
     <Compile Include="Ast\UnrecognizedStatement.cs" />
+    <Compile Include="UnderstandFools.cs" />
     <Compile Include="Recognizing\LineDetector.cs" />
     <Compile Include="Recognizing\RecognizeBlocksAndStatements.cs" />
     <Compile Include="Stage.cs" />
