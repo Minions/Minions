@@ -17,7 +17,33 @@ namespace Fools
 
 		public static IObservable<INode> RecognizeBlocksAndStatements(this IObservable<INode> source)
 		{
-			return source.Select(line => new UnrecognizedStatement(((Line) line).Tokens));
+			//var result = new BlockFinder();
+			//source.Subscribe(result);
+			//return result;
+			return source.Select(line => new UnrecognizedStatement(((Line)line).Tokens));
+		}
+	}
+
+	public class BlockFinder : IObserver<INode>, IObservable<INode>
+	{
+		public void OnNext(INode value)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OnError(Exception error)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OnCompleted()
+		{
+			throw new NotImplementedException();
+		}
+
+		public IDisposable Subscribe(IObserver<INode> observer)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
