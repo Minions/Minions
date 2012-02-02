@@ -65,7 +65,6 @@
     <Compile Include="Recognizing\Transformation.cs" />
     <Compile Include="UnderstandFools.cs" />
     <Compile Include="Recognizing\LineDetector.cs" />
-    <Compile Include="Recognizing\RecognizeBlocksAndStatements.cs" />
     <Compile Include="Stage.cs" />
     <Compile Include="Utils\Require.cs" />
     <Compile Include="CodeUnit.cs" />
