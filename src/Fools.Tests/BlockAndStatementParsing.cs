@@ -10,20 +10,6 @@ using Fools.Tokenization;
 using Fools.Utils;
 using NUnit.Framework;
 
-namespace Fools.Tests.BlocksAndStatements
-{
-	public static class BlockAndStatementParsingHelpers
-	{
-		public static void ShouldBeRecognizedAs(this IEnumerable<Token> tokenStream, params INode[] expected)
-		{
-			var testSubject = new RecognizeBlocksAndStatements();
-			ReadOnlyListSubject<INode> results = testSubject.Collect();
-			tokenStream.SendTo(testSubject);
-			results.Should().Equal(expected);
-		}
-	}
-}
-
 namespace Fools.Tests
 {
 	[TestFixture]
@@ -32,8 +18,8 @@ namespace Fools.Tests
 		[Test]
 		public void ShouldDetectASimpleStatement()
 		{
-			The.File(
-				With.Line(Identifier("some"), Identifier("statement"))
+			Lines(
+				Line(0, Identifier("some"), Identifier("statement"))
 				)
 				.ShouldBeRecognizedAs(
 					Statement(Identifier("some"), Identifier("statement")));
@@ -42,14 +28,24 @@ namespace Fools.Tests
 		[Test, Ignore]
 		public void ShouldDetectANonNestedBlock()
 		{
-			The.File(
-				With.Line(Identifier("some"), Identifier("statement"), Identifier(":")),
-				With.Line(1, Identifier("pass"))
+			Lines(
+				Line(0, Identifier("some"), Identifier("statement"), Identifier(":")),
+				Line(1, Identifier("pass"))
 				)
 				.ShouldBeRecognizedAs(
 					new Block(
 						With.Tokens(Identifier("some"), Identifier("statement")),
 						Statement(Identifier("pass"))));
+		}
+
+		private static IEnumerable<Line> Lines(params Line[] lines)
+		{
+			return lines;
+		}
+
+		private static Line Line(int indentationLevel, params Token[] contents)
+		{
+			return new Line(indentationLevel, contents);
 		}
 
 		private static IdentifierToken Identifier(string value)
@@ -60,6 +56,20 @@ namespace Fools.Tests
 		private static UnrecognizedStatement Statement(params Token[] tokens)
 		{
 			return new UnrecognizedStatement(tokens);
+		}
+	}
+}
+
+namespace Fools.Tests.BlocksAndStatements
+{
+	public static class BlockAndStatementParsingHelpers
+	{
+		public static void ShouldBeRecognizedAs(this IEnumerable<Line> tokenStream, params INode[] expected)
+		{
+			var source = new ObserveLists<INode>();
+			ReadOnlyListSubject<INode> results = source.RecognizeBlocksAndStatements().Collect();
+			source.Send(tokenStream);
+			results.Should().Equal(expected);
 		}
 	}
 }

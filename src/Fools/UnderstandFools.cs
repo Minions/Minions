@@ -20,5 +20,10 @@ namespace Fools
 		{
 			return _parser.Subscribe(observer);
 		}
+
+		public void Go()
+		{
+			_pipelineStart.Read();
+		}
 	}
 }

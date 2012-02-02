@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using Fools.Ast;
 using Fools.Recognizing;
 using Fools.Tokenization;
@@ -12,6 +13,13 @@ namespace Fools
 			var result = new LineDetector();
 			source.Subscribe(result);
 			return result;
+		}
+
+		public static IObservable<INode> RecognizeBlocksAndStatements(this IObservable<INode> source)
+		{
+			return
+				new INode[] {new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")),}.ToObservable
+					();
 		}
 	}
 }
