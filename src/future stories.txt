@@ -10,3 +10,6 @@ This is a list of things that I will do in a future MMF.
  * missing colon on block header line
 * report errors that are found.
 * report multiple errors, along with partial parse. Aka, parse every statement you can, as much as you can, and report the errors for the rest.
+* Trace the physical location of everything, and keep that info around. Physical location is the index in the original file (eg, before handling escape sequences).
+  * Need to track line, character within line (column? How big are initial indents?), and character within file (so a tool can find it again).
+  * Probably need to track both start and stop locations.

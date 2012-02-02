@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockAndStatementParsing.cs" />
+    <Compile Include="DetectLines.cs" />
+    <Compile Include="Support\ObserveLists.cs" />
     <Compile Include="Support\The.cs" />
     <Compile Include="Support\With.cs" />
     <Compile Include="Tokenization.cs" />

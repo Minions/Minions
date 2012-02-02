@@ -4,12 +4,13 @@ using System.Reactive.Subjects;
 using FluentAssertions;
 using Fools.Ast;
 using Fools.Recognizing;
+using Fools.Tests.BlocksAndStatements;
 using Fools.Tests.Support;
 using Fools.Tokenization;
 using Fools.Utils;
 using NUnit.Framework;
 
-namespace Fools.Tests
+namespace Fools.Tests.BlocksAndStatements
 {
 	public static class BlockAndStatementParsingHelpers
 	{
@@ -21,7 +22,10 @@ namespace Fools.Tests
 			results.Should().Equal(expected);
 		}
 	}
+}
 
+namespace Fools.Tests
+{
 	[TestFixture]
 	public class BlockAndStatementParsing
 	{
