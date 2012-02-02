@@ -12,6 +12,11 @@ namespace Fools.Ast
 			contents = tokens;
 		}
 
+		public UnrecognizedStatement(IEnumerable<Token> tokens)
+		{
+			contents = tokens;
+		}
+
 		public bool Equals(UnrecognizedStatement other)
 		{
 			if (ReferenceEquals(null, other))

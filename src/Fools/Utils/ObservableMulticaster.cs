@@ -26,7 +26,7 @@ namespace Fools.Utils
 
 		public void NotifyDone()
 		{
-			foreach(var observer in _observers.Select(p => p.Value))
+			foreach(var observer in _observers.ToArray().Select(p => p.Value))
 			{
 				observer.OnCompleted();
 			}

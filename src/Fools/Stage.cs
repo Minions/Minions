@@ -17,9 +17,7 @@ namespace Fools
 
 		public static IObservable<INode> RecognizeBlocksAndStatements(this IObservable<INode> source)
 		{
-			return
-				new INode[] {new UnrecognizedStatement(new IdentifierToken("some"), new IdentifierToken("statement")),}.ToObservable
-					();
+			return source.Select(line => new UnrecognizedStatement(((Line) line).Tokens));
 		}
 	}
 }
