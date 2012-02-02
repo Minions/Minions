@@ -3,7 +3,11 @@ using Fools.Utils;
 
 namespace Fools.Recognizing
 {
-	public abstract class Transformation<TSource, TDest> : IObservable<TDest>, IObserver<TSource>
+	public interface ITransformation<TSource, TDest> : IObservable<TDest>, IObserver<TSource>
+	{
+	}
+
+	public abstract class Transformation<TSource, TDest> : ITransformation<TSource, TDest>
 	{
 		private readonly ObservableMulticaster<TDest> _observers = new ObservableMulticaster<TDest>();
 
