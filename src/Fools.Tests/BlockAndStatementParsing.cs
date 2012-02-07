@@ -42,7 +42,6 @@ namespace Fools.Tests
 			Lines(
 				Line(0, Identifier("some"), Identifier("statement"), Identifier(":")),
 				Line(1, Identifier("pass")),
-				Line(0, Identifier("andthen")),
 				Line(0, Identifier("another"), Identifier("statement"), Identifier(":")),
 				Line(1, Identifier("pass"))
 				)
@@ -50,7 +49,6 @@ namespace Fools.Tests
 					new Block(
 						With.Tokens(Identifier("some"), Identifier("statement")),
 						Statement(Identifier("pass"))),
-						Statement(Identifier("andthen")),
 					new Block(
 						With.Tokens(Identifier("another"), Identifier("statement")),
 						Statement(Identifier("pass"))));

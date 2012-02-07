@@ -23,7 +23,8 @@ namespace Fools.Recognizing
 
 		private void HandleLine(Line value)
 		{
-			if(value.Contents.Last() == Colon)
+			EndBlockIfNeeded(value.IndentationLevel);
+			if (value.Contents.Last() == Colon)
 				AddBlock(new Block(value.Contents.Take(value.Contents.Count - 1)));
 			else
 				AddStatementToCurrentBlock(new UnrecognizedStatement(value.Contents), value.IndentationLevel);
@@ -31,7 +32,6 @@ namespace Fools.Recognizing
 
 		private void AddStatementToCurrentBlock(UnrecognizedStatement statement, int indentationLevel)
 		{
-			EndBlockIfNeeded(indentationLevel);
 			if(_currentBlock == null)
 				SendNext(statement);
 			else
