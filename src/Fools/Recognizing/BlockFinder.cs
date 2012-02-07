@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Fools.Ast;
 using Fools.Tokenization;
@@ -7,8 +8,7 @@ namespace Fools.Recognizing
 	public class BlockFinder : Transformation<INode, INode>
 	{
 		private static readonly IdentifierToken Colon = new IdentifierToken(":");
-		private Block _currentBlock;
-		private int _currentIndent = 0;
+		private readonly Stack<Block> _currentBlocks = new Stack<Block>();
 
 		public override void OnNext(INode value)
 		{
@@ -24,7 +24,7 @@ namespace Fools.Recognizing
 		private void HandleLine(Line value)
 		{
 			EndBlockIfNeeded(value.IndentationLevel);
-			if (value.Contents.Last() == Colon)
+			if(value.Contents.Last() == Colon)
 				AddBlock(new Block(value.Contents.Take(value.Contents.Count - 1)));
 			else
 				AddStatementToCurrentBlock(new UnrecognizedStatement(value.Contents), value.IndentationLevel);
@@ -32,24 +32,23 @@ namespace Fools.Recognizing
 
 		private void AddStatementToCurrentBlock(UnrecognizedStatement statement, int indentationLevel)
 		{
-			if(_currentBlock == null)
+			if(_currentBlocks.Count == 0)
 				SendNext(statement);
 			else
-				_currentBlock.AddStatement(statement);
+				_currentBlocks.Peek().AddStatement(statement);
 		}
 
 		private void EndBlockIfNeeded(int newIndentationLevel)
 		{
-			if(newIndentationLevel >= _currentIndent || _currentBlock == null) return;
-			SendNext(_currentBlock);
-			_currentBlock = null;
-			_currentIndent = newIndentationLevel;
+			if(newIndentationLevel >= _currentBlocks.Count || _currentBlocks.Count == 0) return;
+			while (_currentBlocks.Count > 1) _currentBlocks.Pop();
+			SendNext(_currentBlocks.Pop());
 		}
 
 		private void AddBlock(Block block)
 		{
-			_currentBlock = block;
-			_currentIndent += 1;
+			if(_currentBlocks.Count > 0) _currentBlocks.Peek().AddStatement(block);
+			_currentBlocks.Push(block);
 		}
 	}
 }

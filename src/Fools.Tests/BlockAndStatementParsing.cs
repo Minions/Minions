@@ -27,12 +27,12 @@ namespace Fools.Tests
 		public void ShouldDetectANonNestedBlock()
 		{
 			Lines(
-				Line(0, Identifier("some"), Identifier("statement"), Identifier(":")),
+				Line(0, Identifier("some"), Identifier("block.header"), Identifier(":")),
 				Line(1, Identifier("pass"))
 				)
 				.ShouldBeRecognizedAs(
 					new Block(
-						With.Tokens(Identifier("some"), Identifier("statement")),
+						With.Tokens(Identifier("some"), Identifier("block.header")),
 						Statement(Identifier("pass"))));
 		}
 
@@ -40,18 +40,34 @@ namespace Fools.Tests
 		public void ShouldDetectSequentialNonNestedBlocks()
 		{
 			Lines(
-				Line(0, Identifier("some"), Identifier("statement"), Identifier(":")),
+				Line(0, Identifier("some"), Identifier("block.header"), Identifier(":")),
 				Line(1, Identifier("pass")),
-				Line(0, Identifier("another"), Identifier("statement"), Identifier(":")),
+				Line(0, Identifier("another"), Identifier("block.header"), Identifier(":")),
 				Line(1, Identifier("pass"))
 				)
 				.ShouldBeRecognizedAs(
 					new Block(
-						With.Tokens(Identifier("some"), Identifier("statement")),
+						With.Tokens(Identifier("some"), Identifier("block.header")),
 						Statement(Identifier("pass"))),
 					new Block(
-						With.Tokens(Identifier("another"), Identifier("statement")),
+						With.Tokens(Identifier("another"), Identifier("block.header")),
 						Statement(Identifier("pass"))));
+		}
+
+		[Test]
+		public void ShouldDetectNestedBlocks()
+		{
+			Lines(
+				Line(0, Identifier("some"), Identifier("block.header"), Identifier(":")),
+				Line(1, Identifier("another"), Identifier("block.header"), Identifier(":")),
+				Line(2, Identifier("pass"))
+				)
+				.ShouldBeRecognizedAs(
+					new Block(
+						With.Tokens(Identifier("some"), Identifier("block.header")),
+						new Block(
+							With.Tokens(Identifier("another"), Identifier("block.header")),
+							Statement(Identifier("pass")))));
 		}
 
 		private static IEnumerable<Line> Lines(params Line[] lines)

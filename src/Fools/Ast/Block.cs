@@ -6,7 +6,7 @@ using Fools.Utils;
 
 namespace Fools.Ast
 {
-	public class Block : INode, IEquatable<Block>
+	public class Block : IStatement, IEquatable<Block>
 	{
 		public Block(IEnumerable<Token> header, params IStatement[] statements)
 		{

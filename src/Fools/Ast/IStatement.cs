@@ -1,4 +1,4 @@
 ﻿namespace Fools.Ast
 {
-	public interface IStatement {}
+	public interface IStatement : INode {}
 }
