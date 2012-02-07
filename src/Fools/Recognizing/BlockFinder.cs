@@ -27,10 +27,10 @@ namespace Fools.Recognizing
 			if(value.Contents.Last() == Colon)
 				AddBlock(new Block(value.Contents.Take(value.Contents.Count - 1)));
 			else
-				AddStatementToCurrentBlock(new UnrecognizedStatement(value.Contents), value.IndentationLevel);
+				AddStatementToCurrentBlock(new UnrecognizedStatement(value.Contents));
 		}
 
-		private void AddStatementToCurrentBlock(UnrecognizedStatement statement, int indentationLevel)
+		private void AddStatementToCurrentBlock(UnrecognizedStatement statement)
 		{
 			if(_currentBlocks.Count == 0)
 				SendNext(statement);
