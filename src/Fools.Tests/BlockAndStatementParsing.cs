@@ -23,7 +23,7 @@ namespace Fools.Tests
 					Statement(Identifier("some"), Identifier("statement")));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void ShouldDetectANonNestedBlock()
 		{
 			Lines(

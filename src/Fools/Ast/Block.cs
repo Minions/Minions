@@ -17,7 +17,7 @@ namespace Fools.Ast
 				statements != null,
 				() => new ArgumentNullException("statements", "You cannot create a block with a null statements collection."));
 			this.header = header;
-			this.statements = statements;
+			_statements = statements.ToList();
 		}
 
 		public bool Equals(Block other)
@@ -29,7 +29,9 @@ namespace Fools.Ast
 			return header.SequenceEqual(other.header) && statements.SequenceEqual(other.statements);
 		}
 
-		public IEnumerable<IStatement> statements { get; private set; }
+		private readonly List<IStatement> _statements;
+		public IEnumerable<IStatement> statements { get { return _statements; } }
+
 		public IEnumerable<Token> header { get; private set; }
 
 		public override string ToString()
@@ -61,6 +63,11 @@ namespace Fools.Ast
 		public static bool operator !=(Block left, Block right)
 		{
 			return !Equals(left, right);
+		}
+
+		public void AddStatement(IStatement statement)
+		{
+			_statements.Add(statement);
 		}
 	}
 }
