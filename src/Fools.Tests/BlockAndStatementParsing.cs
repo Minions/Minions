@@ -36,6 +36,26 @@ namespace Fools.Tests
 						Statement(Identifier("pass"))));
 		}
 
+		[Test]
+		public void ShouldDetectSequentialNonNestedBlocks()
+		{
+			Lines(
+				Line(0, Identifier("some"), Identifier("statement"), Identifier(":")),
+				Line(1, Identifier("pass")),
+				Line(0, Identifier("andthen")),
+				Line(0, Identifier("another"), Identifier("statement"), Identifier(":")),
+				Line(1, Identifier("pass"))
+				)
+				.ShouldBeRecognizedAs(
+					new Block(
+						With.Tokens(Identifier("some"), Identifier("statement")),
+						Statement(Identifier("pass"))),
+						Statement(Identifier("andthen")),
+					new Block(
+						With.Tokens(Identifier("another"), Identifier("statement")),
+						Statement(Identifier("pass"))));
+		}
+
 		private static IEnumerable<Line> Lines(params Line[] lines)
 		{
 			return lines;

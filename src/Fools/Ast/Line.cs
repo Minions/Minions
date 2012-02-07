@@ -8,24 +8,24 @@ namespace Fools.Ast
 	public class Line : INode, IEquatable<Line>
 	{
 		public int IndentationLevel { get; private set; }
-		public IList<Token> Tokens { get; private set; }
+		public IList<Token> Contents { get; private set; }
 
-		public Line(int indentationLevel, params Token[] tokens)
+		public Line(int indentationLevel, params Token[] contents)
 		{
 			IndentationLevel = indentationLevel;
-			Tokens = tokens;
+			Contents = contents;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("[Line ({0})] {1}", IndentationLevel, string.Join(" ", Tokens));
+			return string.Format("[Line ({0})] {1}", IndentationLevel, string.Join(" ", Contents));
 		}
 
 		public bool Equals(Line other)
 		{
 			if(ReferenceEquals(null, other)) return false;
 			if(ReferenceEquals(this, other)) return true;
-			return other.IndentationLevel == IndentationLevel && other.Tokens.SequenceEqual(Tokens);
+			return other.IndentationLevel == IndentationLevel && other.Contents.SequenceEqual(Contents);
 		}
 
 		public override bool Equals(object obj)
@@ -37,7 +37,7 @@ namespace Fools.Ast
 		{
 			unchecked
 			{
-				return (IndentationLevel*397) ^ Tokens.GetHashCode();
+				return (IndentationLevel*397) ^ Contents.GetHashCode();
 			}
 		}
 
