@@ -28,12 +28,14 @@ namespace Fools.Tests
 		{
 			Lines(
 				Line(0, Identifier("some"), Identifier("block.header"), Identifier(":")),
-				Line(1, Identifier("pass"))
+				Line(1, Identifier("do.something")),
+				Line(1, Identifier("do.something.else"))
 				)
 				.ShouldBeRecognizedAs(
 					new Block(
 						With.Tokens(Identifier("some"), Identifier("block.header")),
-						Statement(Identifier("pass"))));
+						Statement(Identifier("do.something")),
+						Statement(Identifier("do.something.else"))));
 		}
 
 		[Test]
