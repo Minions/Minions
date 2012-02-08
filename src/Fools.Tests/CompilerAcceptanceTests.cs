@@ -1,4 +1,5 @@
 using Fools.Ast;
+using Fools.Generation;
 using NUnit.Framework;
 using FluentAssertions;
 

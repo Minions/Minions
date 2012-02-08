@@ -63,12 +63,12 @@
     <Compile Include="Ast\UnrecognizedStatement.cs" />
     <Compile Include="Recognizing\BlockFinder.cs" />
     <Compile Include="Recognizing\Transformation.cs" />
-    <Compile Include="UnderstandFools.cs" />
+    <Compile Include="Compilation\UnderstandFools.cs" />
     <Compile Include="Recognizing\LineDetector.cs" />
-    <Compile Include="Stage.cs" />
+    <Compile Include="Compilation\Stage.cs" />
     <Compile Include="Utils\Require.cs" />
-    <Compile Include="CodeUnit.cs" />
-    <Compile Include="MethodBuilder.cs" />
+    <Compile Include="Generation\CodeUnit.cs" />
+    <Compile Include="Generation\MethodBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokenization\EndOfStatementToken.cs" />

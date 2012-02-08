@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FluentAssertions;
@@ -14,7 +13,7 @@ namespace Fools.Tests
 	{
 		public static void TokenizesTo(this FoolsTokenStream testSubject, params IEnumerable<Token>[] lines)
 		{
-			var tokensObserved = testSubject.Collect();
+			ReadOnlyListSubject<Token> tokensObserved = testSubject.Collect();
 			testSubject.Read();
 			tokensObserved.Should().Equal(lines.Flatten());
 		}

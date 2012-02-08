@@ -2,7 +2,7 @@
 using Fools.Ast;
 using Fools.Tokenization;
 
-namespace Fools
+namespace Fools.Compilation
 {
 	public class UnderstandFools : IObservable<INode>
 	{

@@ -3,7 +3,7 @@ using Fools.Ast;
 using Fools.Recognizing;
 using Fools.Tokenization;
 
-namespace Fools
+namespace Fools.Compilation
 {
 	public static class Stage
 	{

@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FluentAssertions;
 using Fools.Ast;
+using Fools.Compilation;
 using Fools.Tests.BlocksAndStatements;
 using Fools.Tests.Support;
 using Fools.Tokenization;

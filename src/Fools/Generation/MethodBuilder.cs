@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Fools.Ast;
 
-namespace Fools
+namespace Fools.Generation
 {
 	public class MethodBuilder
 	{
