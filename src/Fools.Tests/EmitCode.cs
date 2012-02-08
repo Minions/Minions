@@ -3,6 +3,7 @@ using System.Reflection.Emit;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using Fools.Ast;
+using Fools.Compilation.Tokenization;
 using NUnit.Framework;
 using MethodBuilder = Fools.Compilation.Generation.MethodBuilder;
 
@@ -14,7 +15,8 @@ namespace Fools.Tests
 		[Test]
 		public void assignment()
 		{
-			ApproveResultOfExecution(new AssignmentStatement {variable = "a", value = new NumberLiteral(3)});
+			ApproveResultOfExecution(
+				new AssignmentStatement {variable = new VariableReferenceExpression(new IdentifierToken("a")), value = new NumberLiteral(3)});
 		}
 
 		private static void ApproveResultOfExecution(INode node)

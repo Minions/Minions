@@ -25,7 +25,7 @@ namespace Fools.Tests
 			if(operation is AssignmentStatement)
 			{
 				var a = (AssignmentStatement) operation;
-				Variables[a.variable] = execute(a.value);
+				Variables[a.variable.variable_name] = execute(a.value);
 				return null;
 			}
 			else if(operation is NumberLiteral)

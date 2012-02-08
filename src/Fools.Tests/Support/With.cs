@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Fools.Ast;
 using Fools.Compilation.Tokenization;
 
 namespace Fools.Tests.Support
@@ -22,6 +23,11 @@ namespace Fools.Tests.Support
 		public static IEnumerable<Token> Tokens(params Token[] tokens)
 		{
 			return tokens;
+		}
+
+		public static UnrecognizedStatement Statement(params Token[] tokens)
+		{
+			return new UnrecognizedStatement(tokens);
 		}
 	}
 }

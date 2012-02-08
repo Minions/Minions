@@ -27,7 +27,7 @@ namespace Fools.Compilation.Generation
 			var value = (NumberLiteral)assignment_statement.value;
 
 			_body_generator.Emit(OpCodes.Ldarg_0);
-			_body_generator.Emit(OpCodes.Ldstr, assignment_statement.variable);
+			_body_generator.Emit(OpCodes.Ldstr, assignment_statement.variable.variable_name);
 			_body_generator.Emit(OpCodes.Ldc_I4, value.value);
 			_body_generator.Emit(OpCodes.Box, typeof(Int32));
 			_body_generator.Emit(OpCodes.Callvirt, set_item_property);

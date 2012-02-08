@@ -21,7 +21,7 @@ namespace Fools.Tests
 				Line(0, Identifier("some"), Identifier("statement"))
 				)
 				.ShouldBeRecognizedAs(
-					Statement(Identifier("some"), Identifier("statement")));
+					With.Statement(Identifier("some"), Identifier("statement")));
 		}
 
 		[Test]
@@ -35,8 +35,8 @@ namespace Fools.Tests
 				.ShouldBeRecognizedAs(
 					new Block(
 						With.Tokens(Identifier("some"), Identifier("block.header")),
-						Statement(Identifier("do.something")),
-						Statement(Identifier("do.something.else"))));
+						With.Statement(Identifier("do.something")),
+						With.Statement(Identifier("do.something.else"))));
 		}
 
 		[Test]
@@ -51,10 +51,10 @@ namespace Fools.Tests
 				.ShouldBeRecognizedAs(
 					new Block(
 						With.Tokens(Identifier("some"), Identifier("block.header")),
-						Statement(Identifier("pass"))),
+						With.Statement(Identifier("pass"))),
 					new Block(
 						With.Tokens(Identifier("another"), Identifier("block.header")),
-						Statement(Identifier("pass"))));
+						With.Statement(Identifier("pass"))));
 		}
 
 		[Test]
@@ -70,7 +70,7 @@ namespace Fools.Tests
 						With.Tokens(Identifier("some"), Identifier("block.header")),
 						new Block(
 							With.Tokens(Identifier("another"), Identifier("block.header")),
-							Statement(Identifier("pass")))));
+							With.Statement(Identifier("pass")))));
 		}
 
 		private static IEnumerable<Line> Lines(params Line[] lines)
@@ -86,11 +86,6 @@ namespace Fools.Tests
 		private static IdentifierToken Identifier(string value)
 		{
 			return new IdentifierToken(value);
-		}
-
-		private static UnrecognizedStatement Statement(params Token[] tokens)
-		{
-			return new UnrecognizedStatement(tokens);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Fools.Ast
 {
-	public class AssignmentStatement : INode, IEquatable<AssignmentStatement>, IStatement
+	public class AssignmentStatement : IEquatable<AssignmentStatement>, IStatement
 	{
 		public bool Equals(AssignmentStatement other)
 		{
@@ -13,12 +13,12 @@ namespace Fools.Ast
 			return Equals(other.variable, variable) && Equals(other.value, value);
 		}
 
-		public string variable { get; set; }
+		public VariableReferenceExpression variable { get; set; }
 		public INode value { get; set; }
 
 		public override string ToString()
 		{
-			return string.Format("{0} := {1}", variable, value);
+			return string.Format("{0} := {1}", variable.variable_name, value);
 		}
 
 		public override bool Equals(object obj)

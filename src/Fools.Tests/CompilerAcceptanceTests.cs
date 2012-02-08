@@ -1,4 +1,3 @@
-using Fools.Ast;
 using Fools.Compilation.Generation;
 using NUnit.Framework;
 using FluentAssertions;

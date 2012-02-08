@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Basic recognition\BlockAndStatementParsing.cs" />
     <Compile Include="Basic recognition\DetectLines.cs" />
+    <Compile Include="Basic recognition\RecognizeAssignments.cs" />
     <Compile Include="Support\ObserveLists.cs" />
     <Compile Include="Support\The.cs" />
     <Compile Include="Support\With.cs" />

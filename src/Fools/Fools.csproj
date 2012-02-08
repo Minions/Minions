@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Ast\AssignmentStatement.cs" />
     <Compile Include="Ast\Block.cs" />
+    <Compile Include="Ast\IExpression.cs" />
     <Compile Include="Ast\INode.cs" />
     <Compile Include="Ast\IStatement.cs" />
     <Compile Include="Ast\Line.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Ast\PrintStatement.cs" />
     <Compile Include="Ast\UnparsedText.cs" />
     <Compile Include="Ast\UnrecognizedStatement.cs" />
+    <Compile Include="Ast\VariableReferenceExpression.cs" />
     <Compile Include="Compilation\Recognizing\BlockFinder.cs" />
     <Compile Include="Compilation\Recognizing\LineDetector.cs" />
     <Compile Include="Compilation\Recognizing\Transformation.cs" />
