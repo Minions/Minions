@@ -72,6 +72,48 @@ def List(item_type):
 		ListNode last
 	return type_cache.store(item_type, ListWrapper)
 
+# Default typeclasses
+# ------------------
+
+# Fools has a few built-in default typeclasses. These allow classes to be used
+# in some common contexts. The default typeclasses and their implementations are:
+
+# Equals -- for objects, compares by equality on all fields. For containers, compares by item
+# HashCode -- like Equals, but with a different function applied to primitives.
+# PrettyString -- transform into a string suitable for display to an end user. Defaults to calling ProgrammerString.
+# ProgrammerString -- make a string suitable for programmers. This is a Json-like representation, with type info show in a special way.
+# constructor for all fields -- provided unless another constructor is supplied.
+
+# example programmer strings:
+
+for_programmers(3)  -> "3"
+for_programmers(ast.FunctionNode(
+	name: "asf",
+	parameters: List(ast.ParameterNode)(
+		ast.ParameterNode("string", "foo"),
+		ast.ParameterNode("int", "bar")),
+	body = ast.Block(ast.PassStatement())
+))
+		->
+"""{ <ast.FunctionNode>
+	name: "asf",
+	parameters: [ <List(ast.ParameterNode)>
+		{ <ast.ParameterNode>
+			type: "string",
+			name: "foo"
+		},
+		{ <ast.ParameterNode>
+			type: "int",
+			name: "bar"
+		}
+	],
+	body: { <ast.Block>
+		statements: [ List<ast.IStatement>
+			{ <ast.PassStatement> }
+		]
+	}
+}"""
+
 # Universes and Fools
 # ------------------
 
@@ -86,11 +128,11 @@ def List(item_type):
 
 @with_universe(read and write)
 def List(item_type):
-# this isn't optimal. Can we do a conditionally-locking read? Grab a read lock, and
-# release it if we find a match. If not, await an upgrade to write. After each write,
-# recheck those who are blocked (some might have unblocked), then release the next write.
-# only go back to allowing readers once we've drained all those waiting to write.
-# This is a common pattern. We should probably pull it out somewhere.
+  # this isn't optimal. Can we do a conditionally-locking read? Grab a read lock, and
+  # release it if we find a match. If not, await an upgrade to write. After each write,
+  # recheck those who are blocked (some might have unblocked), then release the next write.
+  # only go back to allowing readers once we've drained all those waiting to write.
+  # This is a common pattern. We should probably pull it out somewhere.
 	type_cache = List.universe.create_once(Cache(Type))
 	return.if_valid type_cache.look_up(item_type)
 	class ListNode:
