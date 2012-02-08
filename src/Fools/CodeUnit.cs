@@ -3,7 +3,8 @@ using Fools.Ast;
 
 namespace Fools
 {
-	public class CodeUnit {
+	public class CodeUnit
+	{
 		private readonly INode _node;
 
 		public CodeUnit(INode node)
@@ -11,9 +12,6 @@ namespace Fools
 			_node = node;
 		}
 
-		public IEnumerable<INode> Statements
-		{
-			get { yield return _node; }
-		}
+		public IEnumerable<INode> Statements { get { yield return _node; } }
 	}
 }
