@@ -57,12 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlockAndStatementParsing.cs" />
-    <Compile Include="DetectLines.cs" />
+    <Compile Include="Basic recognition\BlockAndStatementParsing.cs" />
+    <Compile Include="Basic recognition\DetectLines.cs" />
     <Compile Include="Support\ObserveLists.cs" />
     <Compile Include="Support\The.cs" />
     <Compile Include="Support\With.cs" />
-    <Compile Include="Tokenization.cs" />
+    <Compile Include="Basic recognition\Tokenization.cs" />
     <Compile Include="CompilerAcceptanceTests.cs" />
     <Compile Include="EmitCode.cs" />
     <Compile Include="Interpreter.cs" />
