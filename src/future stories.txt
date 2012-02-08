@@ -18,5 +18,4 @@ This is a list of things that I will do in a future MMF.
 * gratuitously indented line (not in a block, but indented anyway)
 * excessively indented lines within blocks
 * block header that is indented incorrectly.
-* end multiple blocks at once (double dedent, or end file after double block).
 

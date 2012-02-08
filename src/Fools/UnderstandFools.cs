@@ -13,7 +13,8 @@ namespace Fools
 		{
 			_pipelineStart = new FoolsTokenStream(fool);
 			_parser = _pipelineStart
-				.DetectLines();
+				.DetectLines()
+				.RecognizeBlocksAndStatements();
 		}
 
 		public IDisposable Subscribe(IObserver<INode> observer)
