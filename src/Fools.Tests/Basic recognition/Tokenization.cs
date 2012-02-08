@@ -2,8 +2,8 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FluentAssertions;
+using Fools.Compilation.Tokenization;
 using Fools.Tests.Support;
-using Fools.Tokenization;
 using Fools.Utils;
 using NUnit.Framework;
 

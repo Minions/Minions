@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Fools.Tokenization;
+using Fools.Compilation.Tokenization;
 using Fools.Utils;
 
 namespace Fools.Tests.Support

@@ -1,6 +1,6 @@
 using System;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public abstract class Token : IEquatable<Token>
 	{

@@ -1,9 +1,7 @@
 using System;
 using System.Globalization;
-using System.Text;
-using Rxx.Parsers;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class HandleEscapeSequence : ITokenizationState
 	{

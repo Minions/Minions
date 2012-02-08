@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fools.Tokenization;
 using System.Linq;
+using Fools.Compilation.Tokenization;
 
 namespace Fools.Ast
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class LookingThroughCode : ITokenizationState
 	{

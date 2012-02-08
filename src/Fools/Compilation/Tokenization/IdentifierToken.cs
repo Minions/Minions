@@ -1,7 +1,7 @@
 using System;
 using Fools.Utils;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class IdentifierToken : Token, IEquatable<IdentifierToken>
 	{

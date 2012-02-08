@@ -4,7 +4,7 @@ using ApprovalTests;
 using ApprovalTests.Reporters;
 using Fools.Ast;
 using NUnit.Framework;
-using MethodBuilder = Fools.Generation.MethodBuilder;
+using MethodBuilder = Fools.Compilation.Generation.MethodBuilder;
 
 namespace Fools.Tests
 {

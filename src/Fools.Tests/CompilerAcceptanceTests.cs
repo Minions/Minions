@@ -1,5 +1,5 @@
 using Fools.Ast;
-using Fools.Generation;
+using Fools.Compilation.Generation;
 using NUnit.Framework;
 using FluentAssertions;
 

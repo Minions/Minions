@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Fools.Ast;
 
-namespace Fools.Generation
+namespace Fools.Compilation.Generation
 {
 	public class CodeUnit
 	{

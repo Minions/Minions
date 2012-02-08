@@ -1,7 +1,7 @@
 using System;
 using Fools.Ast;
-using Fools.Recognizing;
-using Fools.Tokenization;
+using Fools.Compilation.Recognizing;
+using Fools.Compilation.Tokenization;
 
 namespace Fools.Compilation
 {

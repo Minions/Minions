@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fools.Ast;
-using Fools.Generation;
+using Fools.Compilation.Generation;
 
 namespace Fools.Tests
 {

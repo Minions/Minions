@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Fools.Utils;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class FoolsTokenStream : IObservable<Token>
 	{

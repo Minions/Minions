@@ -1,6 +1,6 @@
 using System;
 
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class EndOfStatementToken : Token, IEquatable<EndOfStatementToken>
 	{

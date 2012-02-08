@@ -4,9 +4,9 @@ using System.Reactive.Subjects;
 using FluentAssertions;
 using Fools.Ast;
 using Fools.Compilation;
+using Fools.Compilation.Tokenization;
 using Fools.Tests.BlocksAndStatements;
 using Fools.Tests.Support;
-using Fools.Tokenization;
 using NUnit.Framework;
 
 namespace Fools.Tests

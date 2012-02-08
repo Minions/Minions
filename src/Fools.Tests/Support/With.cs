@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Fools.Tokenization;
+using Fools.Compilation.Tokenization;
 
 namespace Fools.Tests.Support
 {

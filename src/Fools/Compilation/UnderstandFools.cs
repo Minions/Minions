@@ -1,6 +1,6 @@
 ﻿using System;
 using Fools.Ast;
-using Fools.Tokenization;
+using Fools.Compilation.Tokenization;
 
 namespace Fools.Compilation
 {

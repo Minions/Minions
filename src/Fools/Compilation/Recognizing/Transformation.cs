@@ -1,7 +1,7 @@
 using System;
 using Fools.Utils;
 
-namespace Fools.Recognizing
+namespace Fools.Compilation.Recognizing
 {
 	public interface ITransformation<TSource, TDest> : IObservable<TDest>, IObserver<TSource>
 	{

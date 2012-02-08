@@ -1,4 +1,4 @@
-namespace Fools.Tokenization
+namespace Fools.Compilation.Tokenization
 {
 	public class SkippingWhitespace : ITokenizationState
 	{
