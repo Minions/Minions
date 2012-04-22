@@ -401,19 +401,19 @@ use class some_library.Frog as another_library.Animal where:
 
 # First, the project defaults. Use a language definition block
 
-OO language is:
+Object Oriented language is:
 	version 2.7   # Sets the version of the language that will be used to compile.
 	extend with Minions.OO, Minions.FullFunctional, Minions.CallCC
 	extend with MySpecial.Exceptions   # Some custom exception handling behavior that is written using CallCC.
 	remove support for Minions.Exceptions   # I don't want regular exceptions, now that I've got my better version.
 	extend with MySpecial.Common   # Order matters; these extensions may be written in an OO style, but cannot use exceptions in their definitions.
 
-use language OO   # The last language used at the top level of the project file becomes the default language for the project.
+use language Object Oriented   # The last language used at the top level of the project file becomes the default language for the project.
 
 # Second, the same block is allowed at the top of any file. It provides modifications from
 # the project default.
 
-use language Functional only  # names can have spaces in them.
+use language Functional only
 
 # or an immediate language block (also usable in project file).
 
