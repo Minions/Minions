@@ -12,7 +12,7 @@ def serve_http(port):
 	minions = []
 	await [listening_port]:
 		when I.am.cancelled:
-			minions.each(m=>m.cancel())
+			minions.each(Minion.cancel)
 			return
 		when (!listen_heard, socket):
 			new_uni = Universe(Universe.Access.SET_ONLY)
@@ -37,7 +37,7 @@ def serve_http(port):
 	await [listening_port]:
 		when I.am.cancelled:
 			listening_port.stop_listening()
-			minions.each(m=>m.cancel())
+			minions.each(Minion.cancel)
 			return
 		when (!!listen_heard, socket):
 			coms_specialist = spawn_minion()
@@ -62,7 +62,7 @@ def serve_http(port):
 	minions = []
 	await [listening_port]:
 		when I.am.cancelled:
-			minions.each(m=>m.cancel())
+			minions.each(Minion.cancel)
 			return
 		when (!listen_heard, socket):
 			new_uni = Universe(Universe.Access.SET_ONLY)
@@ -70,20 +70,20 @@ def serve_http(port):
 			# Option 1: Make a subminion for listening, then chain it to more minions for processing the results.
 			with default_universe(new_uni):
 				socket = socket.accept()
-				commnicator = spawn_minion(() => _parse_http(socket))
+				commnicator = spawn_minion(_parse_http{socket})
 				minions.append(communicator)
 			yield_all communicator | _provide_context_data | _dispatch_methods
 
 			# Option 2: Make a single subminion for the request, which chains a bunch of function calls together.
 			with default_universe(new_uni):
 				socket = socket.accept()
-				http_stack = spawn_minion(() => _parse_http(socket) | _provide_context_data | _dispatch_methods)
+				http_stack = spawn_minion(_parse_http{socket} | _provide_context_data | _dispatch_methods
 				minions.append(http_stack)
 			yield_all http_stack
 
 			# Option 3: No with statement. Just tell each function which universe to default to when you call it.
 			socket = socket.accept.in(new_uni)()
-			http_stack = spawn_minion.in(new_uni)(() => _parse_http(socket) | _provide_context_data | _dispatch_methods)
+			http_stack = spawn_minion.in(new_uni)(_parse_http{socket} | _provide_context_data | _dispatch_methods)
 			My.minions.append(http_stack)
 			yield_all http_stack
 

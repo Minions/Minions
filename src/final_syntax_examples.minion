@@ -16,6 +16,60 @@
 # don't know of anything that Minions can do and Fools cannot. That will
 # probably change eventually.
 
+# Literals
+# ------------------
+
+[1, 3, 4]   # List(T) literal.
+(a, b)   # Tuple(T) literal.
+{positonal1, positional2, name1=src_var1, name2=src_var2}   # Variable binding
+`a.go()`   # Code literal. When compiled in a context, this code will expect a.go to resolve to a function, which it will then call.
+"fred"   # String literal
+"""as
+I watch."""   # Multiline string literal.
+```def thunder():
+	pass
+```   # Multiline code literal
+literal.json({
+	"alpha": null
+})  # Arbitrary literal. This will match a literal comprehension. The literal comprehension defines the open and close delimiters, in case () are meaningful in the literal.
+_   # The "I don't care" variable. Used when a variable is required but you want to discard the value
+
+# Function calls
+# ------------------
+
+# All functions take a set of variables and return a set of variables. The set of variables
+# is ordered. Each variable is either optional or required. When calling a function, arguments
+# can be supplied positionally, by name, or by a combination of the two. When assigning return
+# values, any variable can be ignored (effectively, all are optional). If using positional
+# arguments, use the _ pseudo-value to skip an optional argument.
+
+msg = input()   # Simple function call
+{current, prev} = fib(prev, current)   # Call a function and bind its multiple positional return values
+{_, _, clip_region} = graphics.settings()   # Call a function and ignore some of its return values
+{_, _, clip_region, draw_buffer=offscreen_bitmap} = graphics.settings()   # Bind to a named return value
+square{operand} = multiply{operand, operand}  # Curries mul. Square is now a function of one positional arg named operand that passes that into positional args 1 & 2 of mul.
+square = operand => multiply(operand, operand)   # The same as the above, but using lambda syntax.
+fib = (prev, current) => prev+current, current   # More what lambdas are meant for. Defines fib as a function from two variables to two variables.
+save_order.click += factory.build_car{
+	model_for(_model_name),
+	(color, options) = compute_options(
+		model_for(_model_name), _prefered_colors, _doors, _additional_options)
+}   # A far more complicated currying. Everything in the currying is lazy-evaluated per call. So if the value of _model changes, then model_for(0 will be called with a different value and return a different object, and so on.
+
+# To eliminate the duplicate call to model_for in the above, you'd use the block bind syntax:
+
+build_car = curry factory.build_car:
+	with:
+		model = model_for(_model_name)
+	args:
+		model   # passing a positional arg
+		(color, options) = compute_options(
+			model_for(_model_name), _prefered_colors, _doors, _additional_options)
+save_order.click += build_car
+
+# Function calls MAY optimize away generation of results that aren't used at a call
+# site. This could be a local optimization or a result of laziness.
+
 # Functions
 # ------------------
 
@@ -29,7 +83,7 @@
 # Thus, the invocation of do.something() with the following declarations
 
 class Something:
-	def something():
+	def something(): # Note: this is valid Minions code but not valid Fools. Fools lacks member functions.
 		pass
 
 do = Something()
@@ -43,11 +97,16 @@ def do.something():
 # of segments. Then the result is matched against any remaining segments
 # recursively.
 
+# Therefore this example would call the do.something method. On the first iteration
+# two declarations are possible matches: the do variable and the do.something method.
+# do.something matches 2 segments, while do matches only 1. We have only a single match
+# for the most segments, so the algorithm terminates.
+
 # Classes
 # ------------------
 
 # You can use class definitions to define new types. However, these types are not
-# what you're used to in OO languages. They can contain fields, but nothing else.
+# what you're used to in OO languages. They can contain fields but nothing else.
 # There is no concept of a member function, no inheritance, and so on. A Fools
 # class is basically a struct. It really only exists so that you can define
 # new types for your functions to operate on.
@@ -81,7 +140,7 @@ def List(item_type):
 # Equals -- for objects, compares by equality on all fields. For containers, compares by item
 # HashCode -- like Equals, but with a different function applied to primitives.
 # PrettyString -- transform into a string suitable for display to an end user. Defaults to calling ProgrammerString.
-# ProgrammerString -- make a string suitable for programmers. This is a Json-like representation, with type info show in a special way.
+# ProgrammerString -- make a string suitable for programmers. This is a Json-like representation, with type info shown in a special way.
 # constructor for all fields -- provided unless another constructor is supplied.
 
 # example programmer strings:
@@ -126,13 +185,14 @@ for_programmers(ast.FunctionNode(
 # in minions. Thus, the following code compiles the same and runs the same in Minions and
 # in fools, but it is actually implemented slightly differently by the compiler.
 
-@with_universe(read and write)
+@compile_time
+@with.minion.per_declaration()
 def List(item_type):
-  # this isn't optimal. Can we do a conditionally-locking read? Grab a read lock, and
-  # release it if we find a match. If not, await an upgrade to write. After each write,
-  # recheck those who are blocked (some might have unblocked), then release the next write.
-  # only go back to allowing readers once we've drained all those waiting to write.
-  # This is a common pattern. We should probably pull it out somewhere.
+	# this isn't optimal. Can we do a conditionally-locking read? Grab a read lock, and
+	# release it if we find a match. If not, await an upgrade to write. After each write,
+	# recheck those who are blocked (some might have unblocked), then release the next write.
+	# only go back to allowing readers once we've drained all those waiting to write.
+	# This is a common pattern. We should probably pull it out somewhere.
 	type_cache = List.universe.create_once(Cache(Type))
 	return.if_valid type_cache.look_up(item_type)
 	class ListNode:
@@ -144,12 +204,82 @@ def List(item_type):
 		ListNode last
 	return type_cache.store(item_type, ListWrapper)
 
+# A more efficient way to do the above would be the following. This is
+# valid Minions. If valid Fools, the parser for it would be written in
+# Fools.
+
+@compile_time
+@with.universe.per_declaration(read)  # Not a separate minion. Share a universe across all calls to List. Only need read access (init is always allowed; the universe becomes read-only immediately after init)
+def List(item_type):
+	init:   # Runs once, the first time the method is called.
+		My.type_cache = Cache(Type)   # Define a universe-level variable, not just a local.
+	body:   # The main implementation of the function.
+		reader/writer:   # Does a valid read/write cache implementation, such as the double-checked locking pattern. Compiler can choose any pattern that it thinks will be efficient.
+			read:   # Executes with semantics equivalent to having a read lock. Some algorithms won't need any locking at all for this.
+				return type_cache.look_up(item_type)   # read block is required to return an Optional. If valid, it'll return. Otherwise, the writer will execute.
+			write:   # If read returns invalid, then executes with semantics equivalent to a write lock.
+				class ListNode:
+					item_type value
+					ListNode next
+					ListNode previous
+				class ListWrapper:
+					ListNode first
+					ListNode last
+				return type_cache.store(item_type, ListWrapper)
+
+# The multi-block form of a function def would also allow a "guard" block.
+
+# An interesting thought. With these more declarative block algorithms, we could
+# auto-generate some unit tests for threading correctness. Compiler will verify
+# much of it just by ensuring only reads in the read block, etc. But could do more.
+
 # Packages
 # ------------------
 
 # Packages can contain functions and classes. They are just there for organization.
 # The packages define a hierarchical namespace, and mostly serve to separate
 # the core Fools built-in methods from the user's custom methods.
+
+# Block comprehensions
+# ------------------
+
+# Fools has hard-coded support for block comprehensions. In Minions, both statement
+# and block comprehensions are defined via block comprehensions, so Fools needs
+# to understand a block comprehension block.
+
+comprehend.block _catch_block:
+	allowed in []
+	match "catch" {Tuple(Type) -> exception_types} ["as" {Identifier -> exception_variable}]
+	interpret body as [function_body]
+	def comprehend(context, exception_types, exception_variable, body):
+		return {
+			condition: (exc, exc_type) => exc_type.satisfies.any(exception_types),
+			variable: exception_variable,
+			handler: body
+		}
+
+comprehend.block _else_block:
+	allowed in []
+	match "else"
+	interpret body as [function_body]
+	store uncompiled
+
+comprehend.block _finally_block:
+	allowed in []
+	match "finally"
+	interpret body as [function_body]
+	store uncompiled
+
+comprehend.block python_exception_block:
+	allowed in [function_body]
+	match "try"
+	subsequent blocks in order:
+		optional multiple _catch_block as catch
+		optional _finally_block as finally
+		optional _else_block as else
+	interpret body as [function_body]
+	def compile(context, subsequent_blocks, body):
+		context.emit(`my.special_vars.python_exception_block.handlers.add({})`)
 
 ###############################
 # Second, the full syntax in Minions:
@@ -174,12 +304,6 @@ something = foo(bar)(thud()(something))
 
 # Classes do not support inheritance. Use decoration instead.
 
-# There are 3 ways to define a new type. First, you can simply create a
-# new type (like in Fools):
-
-class Something:
-	pass
-
 # However, classes can now contain member functions:
 
 class Something:
@@ -187,12 +311,47 @@ class Something:
 	def do_something_awesome():
 		a_field = 3 # modifies a_field on this instance. Each method has an implicit "this" reference.
 
-# The second is to clone an existing type, and modify from there:
+# There are 4 ways to define a new type. First, you can simply create a
+# new type (like in Fools):
+
+class Something:
+	pass
+
+# The second is to clone an existing type and modify from there:
 
 copy class Something as SomethingSpecial:
 	pass
 
-# The third is to define a type alias.
+# Note that this is not inheritance. It says nothing about substitutability. A
+# SomethingSpecial cannot be used where a Something is expected, nor can a
+# Something be used in place of a SomethingSpecial.
+
+# Substitutability is defined in terms of type classes.
+
+# Each type implicitly defines its own type class. Others can be created, and
+# types can be adapted to any type class. See below for info on type classes.
+
+# The third way to create a class is to encapsulate multiple classes:
+
+make class PuppyTree from classes [Tree, Dog]:
+	# The compiler automatically merges all public symbols from the source classes
+	# to synthesize the new type. If both types define a member, you are required
+	# to distinguish or re-define that member. To do otherwise is a compiler error.
+	# The merge is done on a name basis, not a full signature basis. So foo() and foo(bar)
+	# are in conflict.
+	bark is Dog.bark  # Distinguishing via an explicit type reference
+	hide harvest  # Hide methods so that they don't show on the resulting class.
+	merge overloads for drink   # Trees drink only water but dogs take the substance as an arg, so we can choose to merge and take all overloads.
+	share fields Dog._happiness, Tree._happiness   # The resulting type has only one happiness field, and an update from either Dog or Tree methods will affect it.
+	def get_older(how_much):   # Redefining the member
+		Dog.get_older(how_much)   # This calls a member function via explicit type reference. This is not necessarily a static method call.
+		Tree.get_older(how_much)
+		Dog.some_static_method()  # But I can call static methods if I want - just as usual.
+	def lie_in_sun(how_much): # I can also define new methods or re-define methods that exist on only one source
+		Dog.lie_in_sun()
+		Tree._energy += how_much  # Can access fields from either type too. As normal, privates are actually pseudo-private.
+
+# The fourth is to define a type alias.
 
 alias class Something as StillSomethingButWithANewName
 
@@ -201,6 +360,7 @@ alias class Something as StillSomethingButWithANewName
 
 # Note that any of these can be used with a computed type. For example:
 
+@compile_time
 def make_signalable(Type decorated_type) -> Type:
 	copy class decorated_type to SignalableWrapper:
 		def tell_me_something_interesting():
@@ -226,3 +386,83 @@ use class some_library.Frog as another_library.Animal where:
 			swim() # the 'this' instance is a Frog, so this is Frog.swim()
 		else
 			jump() # same as swim
+
+# Language extension
+# --------------------
+
+# Each project, file or scope block can choose which Minions variant language it is written
+# with. These can often be defined externally or internally (e.g., defining the language
+# externally for a file allows it to be fully written in an internal DSL).
+
+# Language extensions are written as block or statement comprehensions. They are then brought
+# into scope via a variety of mechanisms. Most mechanisms also allow removing them from
+# scope. This allows, for example, a subset of a project to be written in a purely-functional
+# style, with the compiler ensuring that not universes creep in.
+
+# First, the project defaults. Use a language definition block
+
+OO language is:
+	version 2.7   # Sets the version of the language that will be used to compile.
+	extend with Minions.OO, Minions.FullFunctional, Minions.CallCC
+	extend with MySpecial.Exceptions   # Some custom exception handling behavior that is written using CallCC.
+	remove support for Minions.Exceptions   # I don't want regular exceptions, now that I've got my better version.
+	extend with MySpecial.Common   # Order matters; these extensions may be written in an OO style, but cannot use exceptions in their definitions.
+
+use language OO   # The last language used at the top level of the project file becomes the default language for the project.
+
+# Second, the same block is allowed at the top of any file. It provides modifications from
+# the project default.
+
+use language Functional only  # names can have spaces in them.
+
+# or an immediate language block (also usable in project file).
+
+use language:
+	version 2.8
+	extend with Json.Keywords
+
+# Note: all blocks are modifications from whatever is in context before they are applied.
+# The default context is raw Fools, most recent version. In a Minions compilation, the
+# default context is whatever that compiler builds in. This will usually be some Minions
+# core, without a lot of OO or FP.
+
+# Next, a declaration can modify the language used to interpret any block and
+# its nested scope.
+
+@with.language(Electronics.Circuits)
+circuit Clock:
+	pass
+
+# Finally, compilation of any file can note the language used. This can be used in a
+# project file (e.g., to add static files written in a DSL), in a runtime compiler
+# invocations (for runtime DSLs), or anywhere else you might ivoke compilation.
+
+project contents:
+	file group circuits:
+		src/**/*.circuit
+	file group minions:
+		src/**/*.minion
+	file group resources:
+		images/**/*.*
+		javascript/**/*.js
+		css/**/*.css
+
+compilation:
+	compile minions
+	compile.with.language(Circuit.Diagrams) circuits
+	embed.as.resource resources
+
+# Statement comprehensions
+# --------------------
+
+# You can add new statements or expressions to a Minions language. We call both
+# statement comprehensions, just to reduce concept count.
+
+comprehend.statement compile_invocation:
+	allowed in [compile_block]
+	match "compile" [".with.language(" {Identifier -> language} ")"] {Identifier -> file_group}
+	def compile(context, language, file_group):
+		compile = context.compile
+		if language.is_valid:
+			compile = compile.with.language(language)
+		file_group.each(compile)
