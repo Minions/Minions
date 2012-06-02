@@ -37,8 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Rxx">
-      <HintPath>..\packages\Rxx.1.2.4329.35077\lib\net40\Rxx.dll</HintPath>
+    <Reference Include="Rxx, Version=1.3.4451.33754, Culture=neutral, PublicKeyToken=09aedbbcd2ef4748, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rxx.1.3.4451.33754\lib\net40\Rxx.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
