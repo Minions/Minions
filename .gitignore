@@ -31,6 +31,9 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 
+#Dependencies
+src/packages/*/
+
 #Tooling
 _ReSharper*/
 *.resharper
