@@ -26,12 +26,15 @@
 "fred"   # String literal
 """as
 I watch."""   # Multiline string literal.
+"""\
+hi\t\
+""" == "hi\t" # You can use escape sequences and escape newlines within a multiline string literal.
 ```def thunder():
 	pass
 ```   # Multiline code literal
-literal.json({
+literal.json {
 	"alpha": null
-})  # Arbitrary literal. This will match a literal comprehension. The literal comprehension defines the open and close delimiters, in case () are meaningful in the literal.
+}  # Arbitrary literal. This will match a literal comprehension. The literal comprehension defines the open and close delimiters. In this case it allows {}, "", or [], all with different meanings.
 _   # The "I don't care" variable. Used when a variable is required but you want to discard the value
 
 # Function calls
@@ -47,14 +50,14 @@ msg = input()   # Simple function call
 {current, prev} = fib(prev, current)   # Call a function and bind its multiple positional return values
 {_, _, clip_region} = graphics.settings()   # Call a function and ignore some of its return values
 {_, _, clip_region, draw_buffer=offscreen_bitmap} = graphics.settings()   # Bind to a named return value
-square{operand} = multiply{operand, operand}  # Curries mul. Square is now a function of one positional arg named operand that passes that into positional args 1 & 2 of mul.
+square{operand} = multiply{operand, operand}  # Curries multiply. Square is now a function of one positional arg named operand that passes that into positional args 1 & 2 of mul.
 square = operand => multiply(operand, operand)   # The same as the above, but using lambda syntax.
-fib = (prev, current) => prev+current, current   # More what lambdas are meant for. Defines fib as a function from two variables to two variables.
+fib = (prev, current) => current, prev+current   # More what lambdas are meant for. Defines fib as a function from two variables to two variables.
 save_order.click += factory.build_car{
 	model_for(_model_name),
 	(color, options) = compute_options(
 		model_for(_model_name), _prefered_colors, _doors, _additional_options)
-}   # A far more complicated currying. Everything in the currying is lazy-evaluated per call. So if the value of _model changes, then model_for(0 will be called with a different value and return a different object, and so on.
+}   # A far more complicated currying. Everything in the currying is lazy-evaluated per call. So if the value of _model_name changes, then model_for() will be called with a different value and return a different object.
 
 # To eliminate the duplicate call to model_for in the above, you'd use the block bind syntax:
 
@@ -64,7 +67,7 @@ build_car = curry factory.build_car:
 	args:
 		model   # passing a positional arg
 		(color, options) = compute_options(
-			model_for(_model_name), _prefered_colors, _doors, _additional_options)
+			model, _prefered_colors, _doors, _additional_options)
 save_order.click += build_car
 
 # Function calls MAY optimize away generation of results that aren't used at a call
@@ -154,7 +157,8 @@ for_programmers(ast.FunctionNode(
 	body = ast.Block(ast.PassStatement())
 ))
 		->
-"""{ <ast.FunctionNode>
+"""\
+{ <ast.FunctionNode>
 	name: "asf",
 	parameters: [ <List(ast.ParameterNode)>
 		{ <ast.ParameterNode>
@@ -167,7 +171,7 @@ for_programmers(ast.FunctionNode(
 		}
 	],
 	body: { <ast.Block>
-		statements: [ List<ast.IStatement>
+		statements: [ <List(ast.IStatement)>
 			{ <ast.PassStatement> }
 		]
 	}
@@ -299,6 +303,10 @@ def something(args):
 
 something = foo(bar)(thud()(something))
 
+# Actually, may need to have an attribute support both pre- and post- procesing
+# of its internals. After all, @with.language changes the entire context
+# used to compile the internal bits.
+
 # Improves support for classes and objects:
 # ------------------------
 
@@ -385,7 +393,7 @@ use class some_library.Frog as another_library.Animal where:
 		if in_water:
 			swim() # the 'this' instance is a Frog, so this is Frog.swim()
 		else
-			jump() # same as swim
+			jump() # also Frog.jump()
 
 # Language extension
 # --------------------
@@ -397,7 +405,7 @@ use class some_library.Frog as another_library.Animal where:
 # Language extensions are written as block or statement comprehensions. They are then brought
 # into scope via a variety of mechanisms. Most mechanisms also allow removing them from
 # scope. This allows, for example, a subset of a project to be written in a purely-functional
-# style, with the compiler ensuring that not universes creep in.
+# style, with the compiler ensuring that no universes creep in.
 
 # First, the project defaults. Use a language definition block
 
@@ -413,7 +421,7 @@ use language Object Oriented   # The last language used at the top level of the 
 # Second, the same block is allowed at the top of any file. It provides modifications from
 # the project default.
 
-use language Functional only
+use language Pure Functional
 
 # or an immediate language block (also usable in project file).
 
@@ -435,8 +443,9 @@ circuit Clock:
 
 # Finally, compilation of any file can note the language used. This can be used in a
 # project file (e.g., to add static files written in a DSL), in a runtime compiler
-# invocations (for runtime DSLs), or anywhere else you might ivoke compilation.
+# invocations (for runtime DSLs), or anywhere else you might invoke compilation.
 
+# -- begin project file
 project contents:
 	file group circuits:
 		src/**/*.circuit
@@ -451,6 +460,7 @@ compilation:
 	compile minions
 	compile.with.language(Circuit.Diagrams) circuits
 	embed.as.resource resources
+# -- end project file
 
 # Statement comprehensions
 # --------------------
