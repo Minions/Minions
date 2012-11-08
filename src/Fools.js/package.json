@@ -1,0 +1,34 @@
+{
+  "name": "Fools",
+  "description": "The fools language implemented for common JS.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/arlobelshee/Minions",
+  "author": {
+    "name": "Arlo Belshee",
+    "url": "https://github.com/arlobelshee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arlobelshee/Minions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arlobelshee/Minions/issues"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/arlobelshee/Minions/blob/master/LICENSE-BSD"
+    }
+  ],
+  "main": "lib/Fools",
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.17"
+  },
+  "keywords": []
+}
