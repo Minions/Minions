@@ -1,7 +1,17 @@
 bin/
 obj/
+build/
+dist/
+
 *.suo
 *.user
+src/Fools.js/.idea/dictionaries/*.xml
+src/Fools.js/.idea/workspace.xml
+src/Fools.js/.idea/tasks.xml
 
 *.ncrunch*
 _ReSharper.*/
+
+packages/*/
+node_modules/
+

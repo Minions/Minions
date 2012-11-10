@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-
-  // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
     meta: {
@@ -12,7 +10,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', '<file_strip_banner:lib/<%= pkg.name %>.js>'],
+        src: ['<banner:meta.banner>', 'build/app/*.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -22,15 +20,36 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
-    test: {
-      files: ['test/**/*.js']
-    },
     lint: {
-      files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'build/**/*.js']
     },
+	  coffeelint: {
+		  app: {
+			  files: [ 'lib/**/*.coffee' ],
+			  options: {
+				  no_tabs: { level: "ignore" }
+			  }
+		  },
+		  tests: {
+			  files: [ 'tests/**/*.coffee' ],
+			  options: {
+				  no_tabs: { level: "ignore" }
+			  }
+		  }
+	  },
+	  coffee: {
+		  app : {
+			  src: [ 'lib/**/*.coffee' ],
+			  dest: 'build/app'
+		  },
+		  tests : {
+			  src: [ 'tests/**/*.coffee' ],
+			  dest: 'build/test'
+		  }
+	  },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint test'
+      files: '<config:coffeelint.files>',
+      tasks: 'coffeelint simplemocha'
     },
     jshint: {
       options: {
@@ -50,10 +69,25 @@ module.exports = function(grunt) {
         module: false
       }
     },
-    uglify: {}
-  });
+    uglify: {},
+		simplemocha: {
+			all: {
+				src: 'test/**/*.coffee',
+				options: {
+					timeout: 500,
+					ignoreLeaks: false,
+					ui: 'bdd',
+					reporter: 'progress',
+					compilers: "coffee:coffee-script"
+				}
+			}
+		}
+	});
 
-  // Default task.
-  grunt.registerTask('default', 'lint test concat min');
+	grunt.loadNpmTasks('grunt-simple-mocha');
+	grunt.loadNpmTasks('grunt-coffee');
+	grunt.loadNpmTasks('grunt-coffeelint');
 
+	// Default task.
+  grunt.registerTask('default', 'coffeelint simplemocha coffee concat min');
 };
