@@ -1,7 +1,4 @@
-
 Fools = require '../lib/Fools'
-chai = require 'chai'
-expect = chai.expect
 
 describe 'Fools', ->
 	it 'should exist', ->

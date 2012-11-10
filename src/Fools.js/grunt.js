@@ -72,7 +72,7 @@ module.exports = function(grunt) {
     uglify: {},
 		simplemocha: {
 			all: {
-				src: 'test/**/*.coffee',
+				src: [ 'test/support/node.js', 'test/**/*.coffee'],
 				options: {
 					timeout: 500,
 					ignoreLeaks: false,
