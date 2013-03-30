@@ -12,6 +12,6 @@ src/Fools.js/.idea/tasks.xml
 *.ncrunch*
 _ReSharper.*/
 
-packages/*/
+src/packages/*/
 node_modules/
 
