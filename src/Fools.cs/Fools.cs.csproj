@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\Declaration.cs" />
+    <Compile Include="AST\DeclarationTransformer.cs" />
+    <Compile Include="AST\Node.cs" />
+    <Compile Include="AST\UnrecognizedBlock.cs" />
     <Compile Include="FoolsParser.cs" />
     <Compile Include="AST\ProgramFragment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

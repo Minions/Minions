@@ -5,17 +5,14 @@ namespace Fools.cs.Tests
 {
 	internal static class TestUtilExtensions
 	{
-		public static void VerifyAst(this ProgramFragment programFragment)
+		public static void should_parse_correctly(this ProgramFragment program_fragment)
 		{
-			Approvals.Verify(ProgrammerDisplay.Format(programFragment));
+			Approvals.Verify(new ProgrammerDisplay().append(program_fragment).ToString());
 		}
-	}
 
-	internal class ProgrammerDisplay
-	{
-		public static object Format(ProgramFragment programFragment)
+		public static ProgramFragment find_blocks(this string source_code)
 		{
-			return "\r\n";
+			return FoolsParser.find_blocks(source_code);
 		}
 	}
 }

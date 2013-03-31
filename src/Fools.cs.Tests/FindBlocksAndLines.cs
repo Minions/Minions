@@ -1,4 +1,5 @@
 ﻿using ApprovalTests.Reporters;
+using Fools.cs.AST;
 using NUnit.Framework;
 
 namespace Fools.cs.Tests
@@ -7,9 +8,18 @@ namespace Fools.cs.Tests
 	public class FindBlocksAndLines
 	{
 		[Test]
-		public void ShouldFindNothingInAnEmptyFile()
+		public void should_find_nothing_in_an_empty_file()
 		{
-			FoolsParser.FindBlocks(string.Empty).VerifyAst();
+			string.Empty.find_blocks().should_parse_correctly();
+		}
+
+		[Test]
+		public void file_with_a_single_empty_block_should_parse()
+		{
+			@"
+some block:
+	pass
+".find_blocks().should_parse_correctly();
 		}
 	}
 }
