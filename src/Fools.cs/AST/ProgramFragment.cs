@@ -4,6 +4,6 @@ namespace Fools.cs.AST
 {
 	public class ProgramFragment
 	{
-		public List<Declaration> declarations = new List<Declaration>();
+		public List<object> declarations = new List<object>();
 	}
 }

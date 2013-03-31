@@ -11,11 +11,6 @@ namespace Fools.cs.AST
 			this.header = header;
 		}
 
-		public override void transform_with(DeclarationTransformer transformer)
-		{
-			transformer.transform(this);
-		}
-
 		public string header { get; private set; }
 		public IEnumerable<Node> body { get; private set; }
 	}

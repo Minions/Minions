@@ -8,15 +8,7 @@ namespace Fools.cs
 		public static ProgramFragment find_blocks(string source_code)
 		{
 			var result = new ProgramFragment();
-			var lines = source_code.Split(new[] {"\n", "\r\n", "\r"}, StringSplitOptions.RemoveEmptyEntries);
-			foreach(var line in lines)
-			{
-				var l = line.Trim();
-				if (l.EndsWith(":"))
-				{
-					
-				}
-			}
+			result.declarations.Add(new FoolsPegParser().Parse(source_code, "fake file name.fool"));
 			return result;
 		}
 	}

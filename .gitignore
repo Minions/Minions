@@ -15,3 +15,5 @@ _ReSharper.*/
 src/packages/*/
 node_modules/
 
+*.g.cs
+*.peg.cs

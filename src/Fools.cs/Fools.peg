@@ -1,0 +1,44 @@
+﻿@namespace Fools.cs
+@classname FoolsPegParser
+@using System.Linq
+@using Fools.cs.AST
+
+program <object>
+	= #STATE{ state["Indentation"] = 0; } s:statements eof { s }
+
+statements <IList<object>>
+	= line*
+
+line <object>
+	= !eof INDENTATION s:statement { s }
+
+statement <object>
+	= s:simpleStatement eol { s }
+	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT { new ConditionalStatement() { condition = n, statements = s } }
+	/ "def" __ n:name ":" __ eol INDENT s:statements UNINDENT { new FunctionDefinition() { name = n, body = s } }
+	/ s:(!eol .)* eol #ERROR{ String.Format("Unable to parse the statement \"{0}\".", s.Flatten()) }
+
+simpleStatement <object>
+	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
+
+name
+	= n:([a-zA-Z] [a-zA-Z0-9_]*) __ { n }
+
+__ = [ ]*
+
+eol = (eol_not_eof / eof)
+
+eol_not_eof = ("\r\n" / "\n\r" / "\r" / "\n")
+
+comment = "//" [^\r\n]*
+
+eof = !.
+
+INDENTATION
+	= spaces:"\t"* &{ spaces.Count == state["Indentation"] }
+
+INDENT
+	= #STATE{ state["Indentation"] += 1; }
+
+UNINDENT
+	= #STATE{ state["Indentation"] -= 1; }

@@ -1,0 +1,17 @@
+﻿/** Declarations **/
+
+[
+  {
+    "name": "funky_function",
+    "body": [
+      {
+        "l_value": "a",
+        "expression": "b"
+      }
+    ]
+  },
+  {
+    "l_value": "c",
+    "expression": "a"
+  }
+]
