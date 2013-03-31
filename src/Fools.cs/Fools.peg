@@ -39,7 +39,8 @@ comment = "//" [^\r\n]*
 eof = !.
 
 INDENTATION
-	= spaces:"\t"* &{ spaces.Count == state["Indentation"] }
+	= indents:"\t"* (&{ indents.Count == state["Indentation"] }
+	/ (&{ indents.Count > state["Indentation"] } code:[^\r\n]* { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code.Flatten()) }))
 
 INDENT
 	= #STATE{ state["Indentation"] += 1; }

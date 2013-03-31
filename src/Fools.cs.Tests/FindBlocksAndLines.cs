@@ -23,5 +23,14 @@ def funky_function:
 
 c=a".find_blocks().should_parse_correctly();
 		}
+
+		[Test]
+		public void should_reject_illegal_indentation_with_good_error_message()
+		{
+			@"
+b = c
+	a = b
+".find_blocks().should_fail();
+		}
 	}
 }

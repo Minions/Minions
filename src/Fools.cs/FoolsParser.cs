@@ -10,8 +10,19 @@ namespace Fools.cs
 		public static ProgramFragment find_blocks(string source_code)
 		{
 			var result = new ProgramFragment();
-			var raw_parse = (IEnumerable<object>) new FoolsPegParser().Parse(source_code, "fake file name.fool");
-			result.declarations.AddRange(raw_parse.without_nulls());
+			try
+			{
+				var raw_parse = (IEnumerable<object>)new FoolsPegParser().Parse(source_code, "fake file name.fool");
+				result.declarations.AddRange(raw_parse.without_nulls());
+			}
+			catch (FormatException e)
+			{
+				result.errors.Add(e.Message);
+			}
+			catch (FatalParseError e)
+			{
+				result.errors.Add(e.error);
+			}
 			return result;
 		}
 	}

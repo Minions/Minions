@@ -108,13 +108,15 @@
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\ExecutableStatement.cs" />
     <Compile Include="AST\Node.cs" />
-    <Compile Include="AST\UnrecognizedBlock.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
+    <Compile Include="ErrorReport.cs" />
+    <Compile Include="FatalParseError.cs" />
     <Compile Include="Fools.peg.cs" />
     <Compile Include="FoolsParser.cs" />
     <Compile Include="AST\ProgramFragment.cs" />
     <Compile Include="AST\FunctionDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="UtilityExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
