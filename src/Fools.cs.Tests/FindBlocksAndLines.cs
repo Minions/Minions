@@ -37,6 +37,12 @@ c=a".find_blocks().should_parse_correctly();
 		}
 
 		[Test]
+		public void blocks_with_only_empty_lines_should_fail()
+		{
+			"if foo:\r\n\t\r\na=b".find_blocks().should_fail();
+		}
+
+		[Test]
 		public void should_reject_illegal_indentation_with_good_error_message()
 		{
 			"b = c\r\n\ta = b".find_blocks().should_fail();

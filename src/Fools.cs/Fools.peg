@@ -15,7 +15,7 @@ statements <IList<object>>
 	= line*
 
 line <object>
-	= (<object> !eof line:(<object> s:empty_line { s } / INDENTATION s:statement { s } ) { line } )
+	= !eof empty_line* INDENTATION s:statement { s }
 
 empty_line<object>
 	= [ \t]* eol_not_eof { null }
@@ -31,15 +31,22 @@ block_body <IList<object>>
 	= INDENT s:(<IList<object>>
 		pass_block
 		/ line+
-		/ code:rest_of_current_line &{ report.implicitly_empty_block(state, code) } { null }
 		) UNINDENT { s }
+
+possible_block_body <IList<object>>
+	= INDENT s:(<IList<object>>
+		lines:possible_line+ empty_line* { lines }
+		) UNINDENT { s }
+
+possible_line <object>
+	= !eof empty_line* INDENTATION s:[^\r\n]+ { s }
 
 pass_block <IList<object>>
 	= INDENTATION "pass" eol { new List<object>() }
 
 statement <object>
-	= /* &(block_header block_delim) !block_body header:rest_of_current_line next:rest_of_current_line { report.implicitly_empty_block(state, header + next) } */
-	s:simpleStatement eol { s }
+	= &(block_header block_delim !possible_block_body) code:(rest_of_current_line eol rest_of_current_line) &{ report.implicitly_empty_block(state, code) } { null }
+	/ s:simpleStatement eol { s }
 	/ "if" __ n:name block_delim s:block_body
 		{ new ConditionalStatement() { condition = n, body_when_true = s } }
 	/ "def" __ n:name block_delim s:block_body
