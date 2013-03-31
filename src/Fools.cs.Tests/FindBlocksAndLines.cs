@@ -16,8 +16,11 @@ namespace Fools.cs.Tests
 		[Test]
 		public void file_with_a_single_empty_block_should_parse()
 		{
-			@"def funky_function:
+			@"
+def funky_function:
 	a = b
+	
+
 c=a".find_blocks().should_parse_correctly();
 		}
 	}

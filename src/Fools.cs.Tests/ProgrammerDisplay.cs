@@ -1,6 +1,5 @@
 using System.Text;
 using Fools.cs.AST;
-using Newtonsoft.Json;
 
 namespace Fools.cs.Tests
 {
@@ -16,10 +15,7 @@ namespace Fools.cs.Tests
 		public ProgrammerDisplay append(ProgramFragment program_fragment)
 		{
 			_format.AppendLine("/** Declarations **/").AppendLine();
-			foreach(var declaration in program_fragment.declarations)
-			{
-				_format.AppendLine(JsonConvert.SerializeObject(declaration, Formatting.Indented));
-			}
+			_format.AppendLine(program_fragment.declarations.pretty_print());
 			return this;
 		}
 	}

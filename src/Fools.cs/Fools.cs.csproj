@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\AssignmentStatement.cs" />
+    <Compile Include="AST\AstExtensions.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\ExecutableStatement.cs" />
     <Compile Include="AST\Node.cs" />

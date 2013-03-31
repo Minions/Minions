@@ -1,5 +1,6 @@
 using ApprovalTests;
 using Fools.cs.AST;
+using Newtonsoft.Json;
 
 namespace Fools.cs.Tests
 {
@@ -13,6 +14,11 @@ namespace Fools.cs.Tests
 		public static ProgramFragment find_blocks(this string source_code)
 		{
 			return FoolsParser.find_blocks(source_code);
+		}
+
+		public static string pretty_print(this object value)
+		{
+			return JsonConvert.SerializeObject(value, Formatting.Indented);
 		}
 	}
 }

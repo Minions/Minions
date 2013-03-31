@@ -10,13 +10,17 @@ statements <IList<object>>
 	= line*
 
 line <object>
-	= !eof INDENTATION s:statement { s }
+	= (<object> !eof l:(<object> s:empty_line { s } / INDENTATION s:statement { s } ) { l } )
+
+empty_line<object>
+	= [ \t]* eol_not_eof { null }
+	/ [ \t]+ eof { null }
 
 statement <object>
 	= s:simpleStatement eol { s }
-	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT { new ConditionalStatement() { condition = n, statements = s } }
+	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT { new ConditionalStatement() { condition = n, body_when_true = s } }
 	/ "def" __ n:name ":" __ eol INDENT s:statements UNINDENT { new FunctionDefinition() { name = n, body = s } }
-	/ s:(!eol .)* eol #ERROR{ String.Format("Unable to parse the statement \"{0}\".", s.Flatten()) }
+	/ s:((!eol .)* eol) #ERROR{ String.Format("Unable to parse the statement \"{0}\".", s) }
 
 simpleStatement <object>
 	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
