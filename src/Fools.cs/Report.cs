@@ -1,4 +1,5 @@
-﻿using Pegasus.Common;
+﻿using System.Collections.Generic;
+using Pegasus.Common;
 
 namespace Fools.cs
 {
@@ -12,6 +13,11 @@ namespace Fools.cs
 		public static string indent_with_spaces_error(Cursor state, string snippet)
 		{
 			throw new FatalParseError(new ErrorReport("Spaces used in indentation", state, "tabs only", "spaces", snippet, "All lines must be indented using only tabs. Each tab character represents one level of block nesting. Lines cannot be aligned with middle parts of previous lines: it is an error to have any spaces after the indentation tabs. This ensures that the visual indent on the left of the line always aligns with its semantic meaning, regardless of editor settings."));
+		}
+
+		public static IList<object> implicitly_empty_block(Cursor state, string snippet)
+		{
+			throw new FatalParseError(new ErrorReport("Block without a body", state, null, null, snippet, "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."));
 		}
 
 		public static string unrecognized_statement(Cursor state, string snippet)

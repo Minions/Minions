@@ -1,9 +1,10 @@
-﻿/** Declarations **/
+﻿Should pass
 
+/** Declarations **/
 [
   {
-    "name": "funky_function",
-    "body": [
+    "condition": "foo",
+    "body_when_true": [
       {
         "l_value": "a",
         "expression": "b"
@@ -15,3 +16,6 @@
     "expression": "a"
   }
 ]
+
+/** Errors **/
+[]

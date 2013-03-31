@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using ApprovalTests;
 using Fools.cs.AST;
@@ -10,12 +9,12 @@ namespace Fools.cs.Tests
 	{
 		public static void should_parse_correctly(this ProgramFragment program_fragment)
 		{
-			Approvals.Verify(format_section(program_fragment, "/** Declarations **/", program_fragment.declarations));
+			Approvals.Verify(format_section(program_fragment, "Should pass"));
 		}
 
 		public static void should_fail(this ProgramFragment program_fragment)
 		{
-			Approvals.Verify(format_section(program_fragment, "/** Errors **/", program_fragment.errors));
+			Approvals.Verify(format_section(program_fragment, "Should fail"));
 		}
 
 		public static ProgramFragment find_blocks(this string source_code)
@@ -28,11 +27,14 @@ namespace Fools.cs.Tests
 			return JsonConvert.SerializeObject(value, Formatting.Indented);
 		}
 
-		public static string format_section(ProgramFragment program_fragment, string header, object data)
+		public static string format_section(ProgramFragment parse, string expectation)
 		{
 			var format = new StringBuilder();
-			format.AppendLine(header).AppendLine();
-			format.AppendLine(data.pretty_print().Trim());
+			format.AppendLine(expectation).AppendLine();
+			format.AppendLine("/** Declarations **/");
+			format.AppendLine(parse.declarations.pretty_print().Trim()).AppendLine();
+			format.AppendLine("/** Errors **/");
+			format.AppendLine(parse.errors.pretty_print().Trim());
 			return format.ToString();
 		}
 	}

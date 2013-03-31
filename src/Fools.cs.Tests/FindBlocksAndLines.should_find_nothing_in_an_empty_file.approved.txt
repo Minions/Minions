@@ -1,3 +1,7 @@
-﻿/** Declarations **/
+﻿Should pass
 
+/** Declarations **/
+[]
+
+/** Errors **/
 []

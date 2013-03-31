@@ -1,5 +1,9 @@
-﻿/** Errors **/
+﻿Should fail
 
+/** Declarations **/
+[]
+
+/** Errors **/
 [
   {
     "file_name": "fake file name.fool",

@@ -7,28 +7,45 @@ program <object>
 	= #STATE{ state["Indentation"] = 0; } s:statements eof { s }
 
 statements <IList<object>>
-	= pass_block / line+
-
-pass_block <IList<object>>
-	= INDENTATION "pass" eol { new List<object>() }
+	= line*
 
 line <object>
-	= (<object> !eof l:(<object> s:empty_line { s } / INDENTATION s:statement { s } ) { l } )
+	= (<object> !eof line:(<object> s:empty_line { s } / INDENTATION s:statement { s } ) { line } )
 
 empty_line<object>
 	= [ \t]* eol_not_eof { null }
 	/ [ \t]+ eof { null }
 
+block_header
+	= [^:\r\n]*
+
+block_delim
+	= ":" __ eol
+
+block_body <IList<object>>
+	= INDENT s:(<IList<object>>
+		pass_block
+		/ line+
+		/ code:rest_of_current_line { Report.implicitly_empty_block(state, code) }
+		) UNINDENT { s }
+
+pass_block <IList<object>>
+	= INDENTATION "pass" eol { new List<object>() }
+
 statement <object>
-	= s:simpleStatement eol { s }
-	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT
+	= /* &(block_header block_delim) !block_body header:rest_of_current_line next:rest_of_current_line { Report.implicitly_empty_block(state, header + next) } */
+	s:simpleStatement eol { s }
+	/ "if" __ n:name block_delim s:block_body
 		{ new ConditionalStatement() { condition = n, body_when_true = s } }
-	/ "def" __ n:name ":" __ eol INDENT s:statements UNINDENT
+	/ "def" __ n:name block_delim s:block_body
 		{ new FunctionDefinition() { name = n, body = s } }
-	/ s:((!eol .)* &eol) { Report.unrecognized_statement(state, s) }
+	/ s:rest_of_current_line { Report.unrecognized_statement(state, s) }
 
 simpleStatement <object>
 	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
+
+rest_of_current_line
+	= l:[^\r\n]* { l.Flatten() }
 
 name
 	= n:([a-zA-Z] [a-zA-Z0-9_]*) __ { n }
@@ -47,7 +64,7 @@ INDENTATION
 	= indents:"\t"* (
 		code:(" " [^\r\n]*) { Report.indent_with_spaces_error(state, indents.Flatten() + code) }
 		/ &{ indents.Count == state["Indentation"] }
-		/ (&{ indents.Count > state["Indentation"] } code:[^\r\n]* { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code.Flatten()) }))
+		/ (&{ indents.Count > state["Indentation"] } code:rest_of_current_line { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code) }))
 
 INDENT
 	= #STATE{ state["Indentation"] += 1; }

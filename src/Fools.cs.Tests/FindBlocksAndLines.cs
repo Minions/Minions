@@ -17,7 +17,7 @@ namespace Fools.cs.Tests
 		public void file_with_a_single_simple_block_should_parse()
 		{
 			@"
-def funky_function:
+if foo:
 	a = b
 	
 
@@ -27,7 +27,13 @@ c=a".find_blocks().should_parse_correctly();
 		[Test]
 		public void empty_blocks_should_be_explicitly_stated()
 		{
-			"def funky_function:\r\n\tpass".find_blocks().should_parse_correctly();
+			"if foo:\r\n\tpass".find_blocks().should_parse_correctly();
+		}
+
+		[Test]
+		public void blocks_without_bodies_should_fail()
+		{
+			"if foo:\r\na=b".find_blocks().should_fail();
 		}
 
 		[Test]
