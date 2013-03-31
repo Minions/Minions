@@ -1,7 +1,7 @@
 ﻿using Fools.cs.AST;
 using Pegasus.Common;
 
-namespace Fools.cs
+namespace Fools.cs.ParseToAst
 {
 	public class Report
 	{

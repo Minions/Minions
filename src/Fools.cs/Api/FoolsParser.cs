@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Fools.cs.AST;
+using Fools.cs.ParseToAst;
 
-namespace Fools.cs
+namespace Fools.cs.Api
 {
 	public class FoolsParser
 	{

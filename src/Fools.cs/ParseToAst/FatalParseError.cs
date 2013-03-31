@@ -1,6 +1,6 @@
 using System;
 
-namespace Fools.cs
+namespace Fools.cs.ParseToAst
 {
 	public class FatalParseError : Exception
 	{

@@ -1,4 +1,4 @@
-﻿@namespace Fools.cs
+﻿@namespace Fools.cs.ParseToAst
 @classname FoolsPegParser
 @using System.Linq
 @using Fools.cs.AST

@@ -1,6 +1,7 @@
 using System.Text;
 using ApprovalTests;
 using Fools.cs.AST;
+using Fools.cs.Api;
 using Newtonsoft.Json;
 
 namespace Fools.cs.Tests
