@@ -4,7 +4,7 @@ namespace Fools.cs.AST
 {
 	public class ProgramFragment
 	{
-		public List<Node> declarations = new List<Node>();
+		public List<Declaration> declarations = new List<Declaration>();
 		public List<ErrorReport> errors = new List<ErrorReport>();
 	}
 }
