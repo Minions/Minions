@@ -13,5 +13,14 @@
     "actual": 1,
     "snippet": "\ta = b",
     "suggestion": "Doublecheck the amount of indentation on this line and on the previous line. The most common cause of this error is accidentally de-indenting a line, which will cause the next indented line to fail."
+  },
+  {
+    "file_name": "fake file name.fool",
+    "line": 1,
+    "error_type": "Failed to parse 'program'.",
+    "expected": null,
+    "actual": null,
+    "snippet": null,
+    "suggestion": "Hopefully I also gave you some more specific error messages. Try fixing those first."
   }
 ]

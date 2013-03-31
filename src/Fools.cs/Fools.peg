@@ -2,9 +2,14 @@
 @classname FoolsPegParser
 @using System.Linq
 @using Fools.cs.AST
+@members
+{
+	public Report report { get; set; }
+	public Cursor initial_state { get; private set; }
+}
 
 program <object>
-	= #STATE{ state["Indentation"] = 0; } s:statements eof { s }
+	= #STATE{ state["Indentation"] = 0; initial_state = state; } s:statements eof { s }
 
 statements <IList<object>>
 	= line*
@@ -26,20 +31,20 @@ block_body <IList<object>>
 	= INDENT s:(<IList<object>>
 		pass_block
 		/ line+
-		/ code:rest_of_current_line { Report.implicitly_empty_block(state, code) }
+		/ code:rest_of_current_line &{ report.implicitly_empty_block(state, code) } { null }
 		) UNINDENT { s }
 
 pass_block <IList<object>>
 	= INDENTATION "pass" eol { new List<object>() }
 
 statement <object>
-	= /* &(block_header block_delim) !block_body header:rest_of_current_line next:rest_of_current_line { Report.implicitly_empty_block(state, header + next) } */
+	= /* &(block_header block_delim) !block_body header:rest_of_current_line next:rest_of_current_line { report.implicitly_empty_block(state, header + next) } */
 	s:simpleStatement eol { s }
 	/ "if" __ n:name block_delim s:block_body
 		{ new ConditionalStatement() { condition = n, body_when_true = s } }
 	/ "def" __ n:name block_delim s:block_body
 		{ new FunctionDefinition() { name = n, body = s } }
-	/ s:rest_of_current_line { Report.unrecognized_statement(state, s) }
+	/ s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
 
 simpleStatement <object>
 	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
@@ -62,9 +67,9 @@ eof = !.
 
 INDENTATION
 	= indents:"\t"* (
-		code:(" " [^\r\n]*) { Report.indent_with_spaces_error(state, indents.Flatten() + code) }
+		code:(" " [^\r\n]*) &{ report.indent_with_spaces_error(state, indents.Flatten() + code) } { String.Empty }
 		/ &{ indents.Count == state["Indentation"] }
-		/ (&{ indents.Count > state["Indentation"] } code:rest_of_current_line { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code) }))
+		/ (&{ indents.Count > state["Indentation"] } code:rest_of_current_line &{ report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code) } { String.Empty }))
 
 INDENT
 	= #STATE{ state["Indentation"] += 1; }
