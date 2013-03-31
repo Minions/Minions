@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace Fools.cs.AST
 {
-	public class FunctionDefinition
+	public class FunctionDefinition : Declaration
 	{
 		public string name { get; set; }
-		private IList<object> _body;
-		public IList<object> body { get { return _body; } set { _body = value.without_nulls(); } }
+		private IList<Node> _body;
+		public IList<Node> body { get { return _body; } set { _body = value.without_nulls(); } }
 	}
 }

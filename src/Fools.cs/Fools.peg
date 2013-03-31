@@ -8,16 +8,16 @@
 	public Cursor initial_state { get; private set; }
 }
 
-program <object>
+program <IList<Node>>
 	= #STATE{ state["Indentation"] = 0; initial_state = state; } s:statements eof { s }
 
-statements <IList<object>>
+statements <IList<Node>>
 	= line*
 
-line <object>
+line <Node>
 	= !eof empty_line* INDENTATION s:statement { s }
 
-empty_line<object>
+empty_line<Node>
 	= [ \t]* eol_not_eof { null }
 	/ [ \t]+ eof { null }
 
@@ -27,24 +27,22 @@ block_header
 block_delim
 	= ":" __ eol
 
-block_body <IList<object>>
-	= INDENT s:(<IList<object>>
+block_body <IList<Node>>
+	= INDENT s:(<IList<Node>>
 		pass_block
 		/ line+
 		) UNINDENT { s }
 
-possible_block_body <IList<object>>
-	= INDENT s:(<IList<object>>
-		lines:possible_line+ empty_line* { lines }
-		) UNINDENT { s }
+possible_block_body <IList<string>>
+	= INDENT lines:possible_line+ empty_line* UNINDENT { lines }
 
-possible_line <object>
-	= !eof empty_line* INDENTATION s:[^\r\n]+ { s }
+possible_line
+	= !eof empty_line* INDENTATION s:[^\r\n]+ { s.Flatten() }
 
-pass_block <IList<object>>
-	= INDENTATION "pass" eol { new List<object>() }
+pass_block <IList<Node>>
+	= INDENTATION "pass" eol { new List<Node>() }
 
-statement <object>
+statement <Node>
 	= &(block_header block_delim !possible_block_body) code:(rest_of_current_line eol rest_of_current_line) &{ report.implicitly_empty_block(state, code) } { null }
 	/ s:simpleStatement eol { s }
 	/ "if" __ n:name block_delim s:block_body
@@ -53,7 +51,7 @@ statement <object>
 		{ new FunctionDefinition() { name = n, body = s } }
 	/ s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
 
-simpleStatement <object>
+simpleStatement <Node>
 	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
 
 rest_of_current_line

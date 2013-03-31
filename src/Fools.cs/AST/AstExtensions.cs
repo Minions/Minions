@@ -5,7 +5,7 @@ namespace Fools.cs.AST
 {
 	static internal class AstExtensions
 	{
-		public static IList<object> without_nulls(this IEnumerable<object> data)
+		public static IList<T> without_nulls<T>(this IEnumerable<T> data) where T : class
 		{
 			return data.Where(e => e != null).ToList();
 		}
