@@ -6,13 +6,13 @@ namespace Fools.cs
 {
 	public class FoolsParser
 	{
-		public static ProgramFragment find_blocks(string source_code)
+		public static ProgramFragment find_blocks(string source_code, string file_name)
 		{
 			var result = new ProgramFragment();
 			var parser = new FoolsPegParser {report = new Report(result)};
 			try
 			{
-				var raw_parse = parser.Parse(source_code, "fake file name.fool");
+				var raw_parse = parser.Parse(source_code, file_name);
 				result.declarations.AddRange(raw_parse.without_nulls());
 			}
 			catch(FormatException e)

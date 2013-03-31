@@ -17,11 +17,11 @@
   {
     "file_name": "fake file name.fool",
     "line": 1,
-    "error_type": "Unrecognized statement",
+    "error_type": "Unrecognized declaration",
     "expected": null,
     "actual": null,
     "snippet": "def foo():",
-    "suggestion": "I could not figure out this statement. Sorry that I can't give you a more useful error message. Perhaps you need to make Fools smarter?"
+    "suggestion": "I could not figure out this declaration. Is it a non-declaration statement? Recall that the top level of a Fools file is only allowed to contain declarations."
   },
   {
     "file_name": "fake file name.fool",

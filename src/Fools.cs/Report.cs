@@ -60,6 +60,18 @@ namespace Fools.cs
 					"I could not find any declarations in this file. Please remove it from the build."));
 		}
 
+		public bool unrecognized_declaration(Cursor state, string snippet)
+		{
+			return error(
+				new ErrorReport(
+					"Unrecognized declaration",
+					state,
+					null,
+					null,
+					snippet,
+					"I could not figure out this declaration. Is it a non-declaration statement? Recall that the top level of a Fools file is only allowed to contain declarations."));
+		}
+
 		public bool unrecognized_statement(Cursor state, string snippet)
 		{
 			return error(
@@ -69,7 +81,7 @@ namespace Fools.cs
 					null,
 					null,
 					snippet,
-					"I could not figure out this statement. Sorry that I can't give you a more useful error message. Perhaps you need to make Fools smarter?"));
+					"I could not figure out this statement. Sorry that I can't give you a more useful error message. Perhaps you need to make smarter Fools?"));
 		}
 
 		private bool error(ErrorReport error_report)

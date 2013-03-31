@@ -19,7 +19,7 @@ namespace Fools.cs.Tests
 
 		public static ProgramFragment find_blocks(this string source_code)
 		{
-			return FoolsParser.find_blocks(source_code);
+			return FoolsParser.find_blocks(source_code, "fake file name.fool");
 		}
 
 		public static string pretty_print(this object value)

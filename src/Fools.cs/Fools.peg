@@ -26,14 +26,14 @@ line <Node>
 declaration <Declaration>
 	= bad_block
 	/ known_declarations
-	/ unrecognized
+	/ unrecognized_declaration
 
 statement <Node>
 	= bad_block
 	/ known_declarations
 	/ known_executable_blocks
 	/ s:simpleStatement eol { s }
-	/ unrecognized
+	/ unrecognized_statement
 
 known_declarations <Declaration>
 	= "def" __ n:name "()" __ s:block_body
@@ -47,7 +47,10 @@ simpleStatement <Node>
 	= !( block_header ":" )
 		a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
 
-unrecognized <Declaration>
+unrecognized_declaration <Declaration>
+	= !([ \t]* eol) s:rest_of_current_line &{ report.unrecognized_declaration(state, s) } { null }
+
+unrecognized_statement <Node>
 	= !([ \t]* eol) s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
 
 bad_block <Declaration>
