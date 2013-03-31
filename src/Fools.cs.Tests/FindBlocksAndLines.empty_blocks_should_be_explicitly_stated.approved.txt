@@ -1,0 +1,8 @@
+﻿/** Declarations **/
+
+[
+  {
+    "name": "funky_function",
+    "body": []
+  }
+]

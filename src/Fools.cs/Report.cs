@@ -13,5 +13,10 @@ namespace Fools.cs
 		{
 			throw new FatalParseError(new ErrorReport("Spaces used in indentation", state, "tabs only", "spaces", snippet, "All lines must be indented using only tabs. Each tab character represents one level of block nesting. Lines cannot be aligned with middle parts of previous lines: it is an error to have any spaces after the indentation tabs. This ensures that the visual indent on the left of the line always aligns with its semantic meaning, regardless of editor settings."));
 		}
+
+		public static string unrecognized_statement(Cursor state, string snippet)
+		{
+			throw new FatalParseError(new ErrorReport("Unrecognized statement", state, null, null, snippet, "I could not figure out this statement. Sorry that I can't give you a more useful error message. Perhaps you need to make Fools smarter?"));
+		}
 	}
 }

@@ -14,7 +14,7 @@ namespace Fools.cs.Tests
 		}
 
 		[Test]
-		public void file_with_a_single_empty_block_should_parse()
+		public void file_with_a_single_simple_block_should_parse()
 		{
 			@"
 def funky_function:
@@ -22,6 +22,12 @@ def funky_function:
 	
 
 c=a".find_blocks().should_parse_correctly();
+		}
+
+		[Test]
+		public void empty_blocks_should_be_explicitly_stated()
+		{
+			"def funky_function:\r\n\tpass".find_blocks().should_parse_correctly();
 		}
 
 		[Test]
@@ -40,6 +46,12 @@ c=a".find_blocks().should_parse_correctly();
 		public void spaces_in_the_indentation_should_be_illegal()
 		{
 			"if foo:\r\n\tif bar:\r\n\t \tb = c".find_blocks().should_fail();
+		}
+
+		[Test]
+		public void undefined_block_type_should_be_illegal()
+		{
+			"frazzle:\r\n\tpass".find_blocks().should_fail();
 		}
 	}
 }

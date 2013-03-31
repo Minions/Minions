@@ -7,7 +7,10 @@ program <object>
 	= #STATE{ state["Indentation"] = 0; } s:statements eof { s }
 
 statements <IList<object>>
-	= line*
+	= pass_block / line+
+
+pass_block <IList<object>>
+	= INDENTATION "pass" eol { new List<object>() }
 
 line <object>
 	= (<object> !eof l:(<object> s:empty_line { s } / INDENTATION s:statement { s } ) { l } )
@@ -18,9 +21,11 @@ empty_line<object>
 
 statement <object>
 	= s:simpleStatement eol { s }
-	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT { new ConditionalStatement() { condition = n, body_when_true = s } }
-	/ "def" __ n:name ":" __ eol INDENT s:statements UNINDENT { new FunctionDefinition() { name = n, body = s } }
-	/ s:((!eol .)* eol) #ERROR{ String.Format("Unable to parse the statement \"{0}\".", s) }
+	/ "if" __ n:name ":" __ eol INDENT s:statements UNINDENT
+		{ new ConditionalStatement() { condition = n, body_when_true = s } }
+	/ "def" __ n:name ":" __ eol INDENT s:statements UNINDENT
+		{ new FunctionDefinition() { name = n, body = s } }
+	/ s:((!eol .)* &eol) { Report.unrecognized_statement(state, s) }
 
 simpleStatement <object>
 	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
