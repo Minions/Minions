@@ -1,6 +1,6 @@
 using System;
 
-namespace Fools.cs.Tests
+namespace Fools.cs.Tests.Support
 {
 	internal class StackJanitor : IDisposable
 	{

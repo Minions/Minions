@@ -59,10 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FindBlocksAndLines.cs" />
+    <Compile Include="Parsing\FindBlocksAndLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StackJanitor.cs" />
-    <Compile Include="TestUtilExtensions.cs" />
+    <Compile Include="Support\StackJanitor.cs" />
+    <Compile Include="Support\TestUtilExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -4,7 +4,7 @@ using Fools.cs.AST;
 using Fools.cs.Api;
 using Newtonsoft.Json;
 
-namespace Fools.cs.Tests
+namespace Fools.cs.Tests.Support
 {
 	internal static class TestUtilExtensions
 	{

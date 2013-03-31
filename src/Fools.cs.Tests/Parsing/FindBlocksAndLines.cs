@@ -1,8 +1,8 @@
 ﻿using ApprovalTests.Reporters;
-using Fools.cs.AST;
+using Fools.cs.Tests.Support;
 using NUnit.Framework;
 
-namespace Fools.cs.Tests
+namespace Fools.cs.Tests.Parsing
 {
 	[TestFixture, UseReporter(typeof(DiffReporter))]
 	public class FindBlocksAndLines
