@@ -39,8 +39,10 @@ comment = "//" [^\r\n]*
 eof = !.
 
 INDENTATION
-	= indents:"\t"* (&{ indents.Count == state["Indentation"] }
-	/ (&{ indents.Count > state["Indentation"] } code:[^\r\n]* { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code.Flatten()) }))
+	= indents:"\t"* (
+		code:(" " [^\r\n]*) { Report.indent_with_spaces_error(state, indents.Flatten() + code) }
+		/ &{ indents.Count == state["Indentation"] }
+		/ (&{ indents.Count > state["Indentation"] } code:[^\r\n]* { Report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code.Flatten()) }))
 
 INDENT
 	= #STATE{ state["Indentation"] += 1; }

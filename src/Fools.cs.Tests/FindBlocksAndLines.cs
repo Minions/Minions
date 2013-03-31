@@ -27,10 +27,19 @@ c=a".find_blocks().should_parse_correctly();
 		[Test]
 		public void should_reject_illegal_indentation_with_good_error_message()
 		{
-			@"
-b = c
-	a = b
-".find_blocks().should_fail();
+			"b = c\r\n\ta = b".find_blocks().should_fail();
+		}
+
+		[Test]
+		public void spaces_at_start_of_a_line_should_be_illegal()
+		{
+			" b = c".find_blocks().should_fail();
+		}
+
+		[Test]
+		public void spaces_in_the_indentation_should_be_illegal()
+		{
+			"if foo:\r\n\tif bar:\r\n\t \tb = c".find_blocks().should_fail();
 		}
 	}
 }

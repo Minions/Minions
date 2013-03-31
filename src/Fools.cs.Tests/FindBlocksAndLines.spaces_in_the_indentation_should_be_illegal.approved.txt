@@ -1,0 +1,13 @@
+﻿/** Errors **/
+
+[
+  {
+    "file_name": "fake file name.fool",
+    "line": 3,
+    "error_type": "Spaces used in indentation",
+    "expected": "tabs only",
+    "actual": "spaces",
+    "snippet": "\t \tb = c",
+    "suggestion": "All lines must be indented using only tabs. Each tab character represents one level of block nesting. Lines cannot be aligned with middle parts of previous lines: it is an error to have any spaces after the indentation tabs. This ensures that the visual indent on the left of the line always aligns with its semantic meaning, regardless of editor settings."
+  }
+]

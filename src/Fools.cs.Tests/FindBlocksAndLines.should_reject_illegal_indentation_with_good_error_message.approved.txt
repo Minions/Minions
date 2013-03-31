@@ -3,10 +3,11 @@
 [
   {
     "file_name": "fake file name.fool",
-    "line": 3,
+    "line": 2,
     "error_type": "Inconsistent indentation",
     "expected": 0,
     "actual": 1,
-    "snippet": "\ta = b"
+    "snippet": "\ta = b",
+    "suggestion": "Doublecheck the amount of indentation on this line and on the previous line. The most common cause of this error is accidentally de-indenting a line, which will cause the next indented line to fail."
   }
 ]
