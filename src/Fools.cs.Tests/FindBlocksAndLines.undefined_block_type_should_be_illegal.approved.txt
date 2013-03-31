@@ -17,6 +17,15 @@
   {
     "file_name": "fake file name.fool",
     "line": 1,
+    "error_type": "No declarations found",
+    "expected": null,
+    "actual": null,
+    "snippet": null,
+    "suggestion": "I could not find any declarations in this file. Please remove it from the build."
+  },
+  {
+    "file_name": "fake file name.fool",
+    "line": 1,
     "error_type": "Failed to parse 'program'.",
     "expected": null,
     "actual": null,

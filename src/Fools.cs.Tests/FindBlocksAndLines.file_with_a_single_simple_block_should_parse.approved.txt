@@ -3,17 +3,13 @@
 /** Declarations **/
 [
   {
-    "condition": "foo",
-    "body_when_true": [
+    "name": "foo",
+    "body": [
       {
         "l_value": "a",
         "expression": "b"
       }
     ]
-  },
-  {
-    "l_value": "c",
-    "expression": "a"
   }
 ]
 

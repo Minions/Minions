@@ -8,14 +8,50 @@
 	public Cursor initial_state { get; private set; }
 }
 
-program <IList<Node>>
-	= #STATE{ state["Indentation"] = 0; initial_state = state; } s:statements eof { s }
+program <IList<Declaration>>
+	= #STATE{ state["Indentation"] = 0; initial_state = state; } s:declarations empty_line* eof { s }
+
+declarations <IList<Declaration>>
+	= d:decl_block* !(&{ d.Count == 0 } &{ report.no_declarations_in_file(state) } ) { d }
+
+decl_block <Declaration>
+	= !eof empty_line* s:declaration { s }
 
 statements <IList<Node>>
 	= line*
 
 line <Node>
 	= !eof empty_line* INDENTATION s:statement { s }
+
+declaration <Declaration>
+	= bad_block
+	/ known_declarations
+	/ unrecognized
+
+statement <Node>
+	= bad_block
+	/ known_declarations
+	/ known_executable_blocks
+	/ s:simpleStatement eol { s }
+	/ unrecognized
+
+known_declarations <Declaration>
+	= "def" __ n:name "()" __ s:block_body
+		{ new FunctionDefinition() { name = n, body = s } }
+
+known_executable_blocks <Node>
+	= "if" __ n:name s:block_body
+		{ new ConditionalStatement() { condition = n, body_when_true = s } }
+
+simpleStatement <Node>
+	= !( block_header ":" )
+		a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
+
+unrecognized <Declaration>
+	= !([ \t]* eol) s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
+
+bad_block <Declaration>
+	= &(block_header block_delim !possible_block_body) code:(rest_of_current_line eol rest_of_current_line) &{ report.implicitly_empty_block(state, code) } { null }
 
 empty_line<Node>
 	= [ \t]* eol_not_eof { null }
@@ -28,7 +64,7 @@ block_delim
 	= ":" __ eol
 
 block_body <IList<Node>>
-	= INDENT s:(<IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
 		pass_block
 		/ line+
 		) UNINDENT { s }
@@ -37,22 +73,10 @@ possible_block_body <IList<string>>
 	= INDENT lines:possible_line+ empty_line* UNINDENT { lines }
 
 possible_line
-	= !eof empty_line* INDENTATION s:[^\r\n]+ { s.Flatten() }
+	= !eof empty_line* INDENTATION_WITHOUT_ERROR_REPORTING s:[^\r\n]+ { s.Flatten() }
 
 pass_block <IList<Node>>
-	= INDENTATION "pass" eol { new List<Node>() }
-
-statement <Node>
-	= &(block_header block_delim !possible_block_body) code:(rest_of_current_line eol rest_of_current_line) &{ report.implicitly_empty_block(state, code) } { null }
-	/ s:simpleStatement eol { s }
-	/ "if" __ n:name block_delim s:block_body
-		{ new ConditionalStatement() { condition = n, body_when_true = s } }
-	/ "def" __ n:name block_delim s:block_body
-		{ new FunctionDefinition() { name = n, body = s } }
-	/ s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
-
-simpleStatement <Node>
-	= a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
+	= INDENTATION_WITHOUT_ERROR_REPORTING "pass" eol { new List<Node>() }
 
 rest_of_current_line
 	= l:[^\r\n]* { l.Flatten() }
@@ -75,6 +99,9 @@ INDENTATION
 		code:(" " [^\r\n]*) &{ report.indent_with_spaces_error(state, indents.Flatten() + code) } { String.Empty }
 		/ &{ indents.Count == state["Indentation"] }
 		/ (&{ indents.Count > state["Indentation"] } code:rest_of_current_line &{ report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code) } { String.Empty }))
+
+INDENTATION_WITHOUT_ERROR_REPORTING
+	= indents:"\t"* &{ indents.Count == state["Indentation"] }
 
 INDENT
 	= #STATE{ state["Indentation"] += 1; }

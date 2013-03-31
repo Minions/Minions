@@ -48,6 +48,18 @@ namespace Fools.cs
 					"This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."));
 		}
 
+		public bool no_declarations_in_file(Cursor state)
+		{
+			return error(
+				new ErrorReport(
+					"No declarations found",
+					state,
+					null,
+					null,
+					null,
+					"I could not find any declarations in this file. Please remove it from the build."));
+		}
+
 		public bool unrecognized_statement(Cursor state, string snippet)
 		{
 			return error(

@@ -12,7 +12,7 @@ namespace Fools.cs
 			var parser = new FoolsPegParser {report = new Report(result)};
 			try
 			{
-				var raw_parse = (IEnumerable<Node>) parser.Parse(source_code, "fake file name.fool");
+				var raw_parse = parser.Parse(source_code, "fake file name.fool");
 				result.declarations.AddRange(raw_parse.without_nulls());
 			}
 			catch(FormatException e)

@@ -8,6 +8,15 @@
   {
     "file_name": "fake file name.fool",
     "line": 3,
+    "error_type": "Block without a body",
+    "expected": null,
+    "actual": null,
+    "snippet": "if bar:\r\n\t \tb = c",
+    "suggestion": "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."
+  },
+  {
+    "file_name": "fake file name.fool",
+    "line": 3,
     "error_type": "Spaces used in indentation",
     "expected": "tabs only",
     "actual": "spaces",

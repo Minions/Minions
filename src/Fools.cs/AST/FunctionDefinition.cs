@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fools.cs.AST
 {
@@ -6,6 +7,6 @@ namespace Fools.cs.AST
 	{
 		public string name { get; set; }
 		private IList<Node> _body;
-		public IList<Node> body { get { return _body; } set { _body = value.without_nulls(); } }
+		public IList<Node> body { get { return _body; } set { _body = value.without_nulls().ToList(); } }
 	}
 }

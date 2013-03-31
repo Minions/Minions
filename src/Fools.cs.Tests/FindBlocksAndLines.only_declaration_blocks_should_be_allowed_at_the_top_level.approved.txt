@@ -7,20 +7,11 @@
 [
   {
     "file_name": "fake file name.fool",
-    "line": 2,
-    "error_type": "Block without a body",
-    "expected": null,
-    "actual": null,
-    "snippet": "def foo():\r\n\t",
-    "suggestion": "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."
-  },
-  {
-    "file_name": "fake file name.fool",
     "line": 1,
     "error_type": "Unrecognized statement",
     "expected": null,
     "actual": null,
-    "snippet": "def foo():",
+    "snippet": "if bar:",
     "suggestion": "I could not figure out this statement. Sorry that I can't give you a more useful error message. Perhaps you need to make Fools smarter?"
   },
   {

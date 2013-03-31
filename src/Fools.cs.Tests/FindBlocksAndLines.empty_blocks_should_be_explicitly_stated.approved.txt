@@ -3,8 +3,8 @@
 /** Declarations **/
 [
   {
-    "condition": "foo",
-    "body_when_true": []
+    "name": "foo",
+    "body": []
   }
 ]
 
