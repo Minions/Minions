@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fools.cs", "Fools.cs\Fools.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageWorkbench", "LanguageWorkbench\LanguageWorkbench.csproj", "{29AF8BEC-4CD7-48DA-9821-3BBE6AD8E082}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74F4A32F-F4DD-49F2-BAC9-D9232A1E5E56}"
+	ProjectSection(SolutionItems) = preProject
+		execution model.txt = execution model.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

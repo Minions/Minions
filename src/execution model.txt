@@ -1,0 +1,132 @@
+Execution Model
+--------------------
+
+So you want to be an Evil Overlord? You want to accomplish some goal? We offer to you the Minions program.
+
+Evil Overlords (you) interact with your Minions via Mission Control. This high-tech control center allows you to define Missions (using Mission Briefings) and to observe any Missions that are currently being carried out, as well as the history of completed Missions (whether they succeeded or failed).
+
+Mission Control gets Missions performed by giving them to Minions. Minions are cheap to hire. Mission Control can create as many Minions as needed, even giving the same Mission to multiple different Minions (depending on the Mission Briefing).
+
+A Minion does work. Each Minion performs one Mission at a time - even if it is blocked waiting for something. Minions are inherently lazy and thus very good at waiting. It costs nothing to have a Minion wait, so Evil Overlords do not need to worry about waiting Minions consuing all their resources.
+
+Minions are dumb. As a result, they sometimes get uppity. There is only one fit punishment for a Minion: assassination. Mission Control supplies assassination service for all Minions. It is very efficient; assassinations happen all the time and are very cheap. After assassinations are carried out, Mission Control can automatically hire new Minions to re-attempt the Missions those Minions were doing or it can declare the Missions a failure, depending on the desires of whoever ordered the assassination. Assassination can be ordered at any time by any Secret Agent or directly by the Evil Overlord.
+
+Minions commonly need to manipulate objects on their Missions. Minions are not smart enough to be computer scientists. They manipulate objects like bricks, not objects like CFoo instances. These objects have a couple of real-world properties:
+
+	* All objects have 1, and only 1, location. They exist somewhere.
+	* Objects can be seen from, and pointed to by, objects and Minions at their location. They cannot be directly referenced from elsewhere (though they can be named).
+	* Null makes no sense. It is not an object. Who ever heard of a null brick? How would a Minion throw that through a window?
+
+Objects are located in Buildings. Therefore Minions need access to Buildings. Missions can require one of 3 access points to a building: closed window, door, or package delivery. Minions are granted those access points when they take on a Mission Activity. Minions are too dumb to walk around buildings: even given one access point, they are unable to locate any of the others. The Access Map is defined in the Mission Briefing.
+
+Closed window access lets a Minion observe any objects in the Building, but it can't change anything. Door access lets a Minion operate in the Building. It can freely manipulate any object however it wants. Any Minion performing a Mission Activity with door access is assumed to be operating in that building, no matter what. Package delivery access allows a Minion to add objects to any collection in the Building, but it can't do anything else (not even view the object collections). Packages are actually delivered by the Movers (see below). Minions simply tell the Movers what they would like dropped off where.
+
+Objects can never be observed/referenced from another Building and can only exist in one Building at once. Moving objects between Buildings therefore happens by value (deep copy semmantics). Many Missions will involve destroying Buildings; this destroys all objects in that Building. There are no quantum effects here: destroying one object cannot have any effect on objects in some other Building (no spooky action at a distance).
+
+As one would expect with Evil Overlords about, forgery is rampant in this city. Master Forgers (all Secret Agents; see below) are able to make an exact copy of any object at any time for almost no cost. If a Minion can see an object - even through a window - then it can get a cheap replica of that object. Minions commonly keep forgeries of their favorite objects in their hide-outs between Mission Assignments.
+
+Minions are all stealthy. They can never observe each others' effects. At any time when a Minion is observing the interior of a building, no Minions will be performing Mission Activities which can alter the objects in that Building.
+
+Each Minion also has its own local knowledge. It has a hide-out. This Building, however, is a little different: no other Minion can ever find it or gain any access. Hide-outs, like other buildings, do have janitorial service. A Minion's hide-out will not be destroyed by Mission Activities. It is destroyed when the Minion is assassinated. Objects are still objects. They exist in only one Building (even a hide-out) at a time and they cannot refer to objects outside their current Building.
+
+When a Building is destroyed, all Minions who may have entered that building are immediately assassinated (so no one can trace them back to you, Evil Overlord). Assassins are placed around the rubble. They kill any Minion that tries to use a window to look into the destroyed building (yes, Minions are that dumb). Minions are not killed just for knowing about the window. Minions mailing objects to a destroyed Building are not killed. The Movers will simply destroy the mail and not tell anyone.
+
+The Mission Briefing contains everything that Mission Control needs to send Minions on Missions.
+	* Mission Objective. How to know when a Mission is completed and the Minion performing it can be assassinated (all Minions are always killed after performing their Missions).
+	* Mission Maps. Per-assignment and per-mission Building entry point lists.
+	* Mission Instructions. How to carry out the mission.
+	* Resource Constraints. Information on whether this Mission should be performed by a fixed number of Minions or by an endless sea of Minions, spending limits for Minions on a per-Assignment basis, plus any other constraints that apply.
+	* How to clean up after a Minion that died failing to carry out a Mission Assignment. This could be due to an unexpected circumstance (error) in the field, or could be because Mission Control sent an assassin after him. Cleanup is simply another Mission Assignment, though typically a very simple one. It can assume that Janitors will clean up all the Buildings. For this reason, many Assignments will require no clean up instructions at all. Cleanup Missions are typically used when the Assignment has some impact on the outside world.
+
+Mission Instructions are defined in terms of Messages and Assignments.
+
+A Message is a signal that can be sent and received. Typically a message will trigger other actions, in response to other standing Missions. However, there is no guarantee of action by other Minions. A Message is simply sent back to Mission Control or to all Minions currently handling a particular Mission. It might not result in any action.
+
+Messages may include packaged objects. These objects are held in the mail room. They are not references to objects in some other Building, nor are they automatically delivered to the recipient. The message acts as a window to the part of the mail room that contains these objects. The recipient can ask for a forgery as normal (assuming it wants to keep the object).
+
+An Assignment is a well-defined set of work. It is represented at execution time as a delimited continuation (which may well be a chain of smaller continuations) over a sequence of instructions. It is represented in the language as some higher-level construct (typically a function/method, but possibly a generator, co-routine, or something else).
+
+Each Minion is required to check in with Mission Control to get each Assignment in its Mission and again upon completion of that Assignment. Mission Control then ensures that the Minion does not exceed any spending limits (particularly execution time or wall-clock time) during performance of that Mission. A Minion that exceeds any limit is assumed to have gone rogue and is immediately assassinated. The spending limits of the Mission Briefing determine whether to re-attempt the Mission.
+
+Assignments need not be finite: Evil Overlords send Minions on hopeless Missions all the time. However, a Minion on infinite Assignment must still check in with Mission Control periodically, or it will exceed its budget and be assassinated.
+
+Optimization: Secret Agents
+---------------------------------
+
+All of this, of course, is a carefully constructed and maintained illusion. No Minion can ever pierce the veil of secrecy, but reality may be very different from what Minions see. The beings that maintain the illusion are Secret Agents.
+
+Secret Agents are somewhat like Minions, except that the rules don't apply to them. They can see each other - though they still prefer to operate alone. They can easily detect - and manipulate - Minions. They can violate the rules of Buildings.
+
+In fact, each building has a janitor; the janitor is always an Agent. The Janitor cleans up after Minions operating in that Building. If a Minion dies while performing a Mission Activity inside a building, the Janitor cleans up, restoring the Building's contents to its state just prior to that Minion's arrival.
+
+The janitor has wired its building for destruction. When the signal comes, the janitor is the Agent who ensures that the building is cleanly destroyed, destroying all objects inside without a trace and killing all Minions currently in the Building. Janitors are a bit overzealous - they actually assassinate any Minion that could possibly be in the building. Any minion with a card key for the door is instantly killed.
+
+The janitor also manages temporal effects on its Building (see below).
+
+Other Agents include the Mission Control scheduler (could be several Agents), the mail room (who delivers Minions' messages), and so on.
+
+Object moves are performed by Movers. They may be performing advanced operations that are entirely unobservable from the perspective of any Minion.
+
+Master Forgers make their low-cost copies using Secret Agent technology (e.g., copy on write with transfer on destruction).
+
+Secret Agents have time control technology. This allows things like efficient ways to have both future and past states of a Building hanging around at once. Mission Control Agents and Movers may use time alteration techniques to overlap Missions that would not normally be allowed to overlap. As usual, they always do this in a way that no Minion can see what is going on.
+
+Because rules don't apply to them, it is very easy for Agents to cause trouble. Therefore, most people cannot recruit Agents. In fact, Evil Overlords are not allowed to interact with Agents at all.
+
+Additional Language Constraints
+-----------------------------------------
+
+The language is designed to be strongly type-safe. As such, there are several unusual rules in play.
+
+Pure by default. By default, each function/generator/whatever is required to be pure. A particular function may declare itself to follow a different constraint; this becomes part of its type signature. The compiler verifies function purity recursively.
+
+Functions can also declare themselves to be "tell, don't ask." These functions never query any value that is not passed in directly as a parameter or a field on their object instance. They never even refer to any value that is reachable from one of those values. They have tons of side effects; they basically exist to call other functions and to send messages. They don't have return values. The compiler verifies this property recursively.
+
+Everything is designed for verifiability. The order of preference for verification is:
+
+	1. In-IDE information, even when the code is in a non-compiling state.
+	2. Compile-time verification.
+	3. Unit tests.
+	4. Other tests.
+
+To this end, all 4 of these are extensible by Evil Overlords. They can add verifications at any or all of these levels.
+
+The language assumes that it will be used with tools. The language includes built-in support for:
+
+	* Extending the language. This impacts:
+		* Compiler.
+		* IDE / smart editor.
+		* Debugger.
+		* Source control.
+		* Refactoring tools.
+	* Manipulating language elements. This impacts:
+		* Refactoring tools.
+		* IDE.
+	* Multiple displays of the same information. This impacts:
+		* IDE
+		* Source control.
+		* Debugger.
+		* Bug database / task list.
+		* Build system.
+
+Therefore, the language assumes that you are using all of these tools. It has in-language ways to communicate with these tools. And it has constraints that make it easier to write these tools even when that makes it harder to write Minions without using tools.
+
+Low-level optimizations
+----------------------------
+
+Certain operations are very common on Missions, so the simulation ensures that they are cheap.
+
+Chief among these are string manipulations. Therefore, the string class is a bit different from usual string implementations.
+	* It is actually a rope, not a string.
+	* It is fully unicode-aware. It never exposes its physical (bytes) representation to Evil Overlords. Library writers can use Secret Agent access to get to bytes in a particular encoding; this is typically only used when we need to send strings to some external system.
+	* It is lazy. There are (at least) 3 kinds of leaf nodes in the tree:
+		* Text run. A series of unicode characters.
+		* Func. A bound function which, when evaluated, will return a string.
+		* Any displayable. An object which meets the Display type class and can be converted to a string.
+	* String and string template are the same thing. String is an intentionally partially-leaky abstraction. It is easy to define a string which includes functions with unbound parameters. That results in a partially-bound string. Bind it to some values for those parameters and you get a new, more fully-bound (perhaps fully-bound) string. Only fully-bound strings can be converted to chars and sent to the outside world, but all strings can be used (and stored) internally. This makes it trivial to define string template literals as constants and then bind them to values multiple times to format various results.
+	* String manipulations (split, etc) take advantage of the rope nature. Those boundaries can be either observed (by asking for parts) or unobserved (by using the whole string). Again, the abstraction is partially-leaky to allow the same data to be used in multiple ways.
+
+Strings are defined this way to make 2 kinds of programs highly efficient:
+	1. Parsers.
+	2. Web services.
+
