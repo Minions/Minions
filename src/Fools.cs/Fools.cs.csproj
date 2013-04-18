@@ -107,6 +107,8 @@
     <Compile Include="AST\AstExtensions.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\ExecutableStatement.cs" />
+    <Compile Include="AST\FeatureRequirement.cs" />
+    <Compile Include="AST\FeatureSpecification.cs" />
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
     <Compile Include="ParseToAst\ErrorReport.cs" />

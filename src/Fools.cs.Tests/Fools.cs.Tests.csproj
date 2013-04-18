@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreLanguage\FoolsCanRunTests.cs" />
     <Compile Include="Parsing\FindBlocksAndLines.cs" />
+    <Compile Include="Parsing\FindTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\StackJanitor.cs" />
     <Compile Include="Support\TestUtilExtensions.cs" />

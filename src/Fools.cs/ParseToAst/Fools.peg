@@ -23,21 +23,39 @@ statements <IList<Node>>
 line <Node>
 	= !eof empty_line* INDENTATION s:statement { s }
 
+feature_spec_line <Node>
+	= !eof empty_line* INDENTATION s:feature_spec_declaration { s }
+
 declaration <Declaration>
 	= bad_block
-	/ known_declarations
+	/ function
+	/ feature_spec
+	/ unrecognized_declaration
+
+feature_spec_declaration <Declaration>
+	= bad_block
+	/ feature_spec
+	/ feature_requirement
 	/ unrecognized_declaration
 
 statement <Node>
 	= bad_block
-	/ known_declarations
+	/ function
 	/ known_executable_blocks
 	/ s:simpleStatement eol { s }
 	/ unrecognized_statement
 
-known_declarations <Declaration>
+function <Declaration>
 	= "def" __ n:name "()" __ s:block_body
 		{ new FunctionDefinition() { name = n, body = s } }
+
+feature_spec <Declaration>
+	= "specify feature" __ n:block_header  s:spec_body
+		{ new FeatureSpecification() { feature = n, body = s } }
+
+feature_requirement <Declaration>
+	= "requires" __ n:block_header  s:block_body
+		{ new FeatureRequirement() { requirement = n, body = s } }
 
 known_executable_blocks <Node>
 	= "if" __ n:name s:block_body
@@ -60,8 +78,8 @@ empty_line<Node>
 	= [ \t]* eol_not_eof { null }
 	/ [ \t]+ eof { null }
 
-block_header
-	= [^:\r\n]*
+block_header<string>
+	= l:[^:\r\n]* { l.Flatten() }
 
 block_delim
 	= ":" __ eol
@@ -70,6 +88,12 @@ block_body <IList<Node>>
 	= block_delim INDENT s:(<IList<Node>>
 		pass_block
 		/ line+
+		) UNINDENT { s }
+
+spec_body <IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
+		pass_block
+		/ feature_spec_line+
 		) UNINDENT { s }
 
 possible_block_body <IList<string>>

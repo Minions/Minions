@@ -1,0 +1,17 @@
+﻿Should pass
+
+/** Declarations **/
+[
+  {
+    "feature": "the test framework",
+    "body": [
+      {
+        "requirement": "a simple empty test should pass",
+        "body": []
+      }
+    ]
+  }
+]
+
+/** Errors **/
+[]
