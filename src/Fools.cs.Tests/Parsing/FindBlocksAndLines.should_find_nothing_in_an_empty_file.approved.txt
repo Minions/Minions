@@ -6,6 +6,7 @@
 /** Errors **/
 [
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 1,
     "error_type": "No declarations found",

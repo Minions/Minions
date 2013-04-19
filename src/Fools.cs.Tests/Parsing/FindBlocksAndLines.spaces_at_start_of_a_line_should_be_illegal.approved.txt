@@ -6,6 +6,7 @@
 /** Errors **/
 [
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 2,
     "error_type": "Spaces used in indentation",

@@ -1,3 +1,4 @@
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using ApprovalTests;
 using Fools.cs.AST;
@@ -8,6 +9,14 @@ namespace Fools.cs.Tests.Support
 {
 	internal static class TestUtilExtensions
 	{
+		private static readonly JsonSerializerSettings _json_serializer_settings = new JsonSerializerSettings
+		                                                                           {
+		                                                                           	TypeNameAssemblyFormat =
+		                                                                           		FormatterAssemblyStyle.Simple,
+		                                                                           	TypeNameHandling =
+		                                                                           		TypeNameHandling.Objects
+		                                                                           };
+
 		public static void should_parse_correctly(this ProgramFragment program_fragment)
 		{
 			Approvals.Verify(format_section(program_fragment, "Should pass"));
@@ -25,7 +34,7 @@ namespace Fools.cs.Tests.Support
 
 		public static string pretty_print(this object value)
 		{
-			return JsonConvert.SerializeObject(value, Formatting.Indented);
+			return JsonConvert.SerializeObject(value, Formatting.Indented, _json_serializer_settings);
 		}
 
 		public static string format_section(ProgramFragment parse, string expectation)

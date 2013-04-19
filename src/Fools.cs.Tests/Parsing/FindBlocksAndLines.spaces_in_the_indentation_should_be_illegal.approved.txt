@@ -6,6 +6,7 @@
 /** Errors **/
 [
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 3,
     "error_type": "Block without a body",
@@ -15,6 +16,7 @@
     "suggestion": "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."
   },
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 3,
     "error_type": "Spaces used in indentation",

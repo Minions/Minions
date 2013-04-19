@@ -6,6 +6,7 @@
 /** Errors **/
 [
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 2,
     "error_type": "Block without a body",
@@ -15,6 +16,7 @@
     "suggestion": "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."
   },
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 1,
     "error_type": "Unrecognized declaration",
@@ -24,6 +26,7 @@
     "suggestion": "I could not figure out this declaration. Is it a non-declaration statement? Recall that the top level of a Fools file is only allowed to contain declarations."
   },
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 1,
     "error_type": "No declarations found",
@@ -33,6 +36,7 @@
     "suggestion": "I could not find any declarations in this file. Please remove it from the build."
   },
   {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
     "file_name": "fake file name.fool",
     "line": 1,
     "error_type": "Failed to parse 'program'.",
