@@ -1,0 +1,22 @@
+﻿Should pass
+
+/** Declarations **/
+[
+  {
+    "feature": "the test framework",
+    "body": [
+      {
+        "name": "clean up",
+        "special_purpose": 2,
+        "body": []
+      },
+      {
+        "requirement": "a simple empty test should pass",
+        "body": []
+      }
+    ]
+  }
+]
+
+/** Errors **/
+[]

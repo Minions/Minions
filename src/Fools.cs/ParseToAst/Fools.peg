@@ -36,7 +36,17 @@ feature_spec_declaration <Declaration>
 	= bad_block
 	/ feature_spec
 	/ feature_requirement
+	/ valid_mission_declaration
 	/ unrecognized_declaration
+
+mission_declaration <Declaration>
+	= bad_block
+	/ valid_mission_declaration
+	/ unrecognized_declaration
+
+valid_mission_declaration <Declaration>
+	= mission_preparation
+	/ mission_cleanup
 
 statement <Node>
 	= bad_block
@@ -50,12 +60,20 @@ function <Declaration>
 		{ new FunctionDefinition() { name = n, body = s } }
 
 feature_spec <Declaration>
-	= "specify feature" __ n:block_header  s:spec_body
+	= "specify" __ "feature" __ "-" __ n:block_header s:spec_body
 		{ new FeatureSpecification() { feature = n, body = s } }
 
 feature_requirement <Declaration>
-	= "requires" __ n:block_header  s:block_body
+	= "requires" __ n:block_header s:block_body
 		{ new FeatureRequirement() { requirement = n, body = s } }
+
+mission_preparation <MissionActivity>
+	= "mission" __ "preparation" s:mission_activity_body
+		{ new MissionActivity() { name = "clean up", body = s, special_purpose = Mission.Purpose.Preparation } }
+
+mission_cleanup <MissionActivity>
+	= "mission" __ "clean" __ "up" s:mission_activity_body
+		{ new MissionActivity() { name = "clean up", body = s, special_purpose = Mission.Purpose.CleanUp } }
 
 known_executable_blocks <Node>
 	= "if" __ n:name s:block_body
@@ -94,6 +112,11 @@ spec_body <IList<Node>>
 	= block_delim INDENT s:(<IList<Node>>
 		pass_block
 		/ feature_spec_line+
+		) UNINDENT { s }
+
+mission_activity_body <IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
+		pass_block
 		) UNINDENT { s }
 
 possible_block_body <IList<string>>
