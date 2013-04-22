@@ -1,6 +1,7 @@
 using System;
 using Fools.cs.AST;
 using Fools.cs.ParseToAst;
+using Pegasus.Common;
 
 namespace Fools.cs.Api
 {
@@ -17,7 +18,7 @@ namespace Fools.cs.Api
 			}
 			catch(FormatException e)
 			{
-				result.errors.Add(new ErrorReport(e.Message, parser.initial_state, null, null, null, "Hopefully I also gave you some more specific error messages. Try fixing those first."));
+				result.errors.Add(new ErrorReport(e.Message, (Cursor) e.Data["cursor"], null, null, null, "Hopefully I also gave you some more specific error messages. Try fixing those first."));
 			}
 			catch(FatalParseError e)
 			{

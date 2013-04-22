@@ -27,8 +27,8 @@ namespace Fools.cs.ParseToAst
 
 		public ErrorReport(string error_type, Cursor state, object expected, object actual, string snippet, string suggestion)
 		{
-			line = state.Line;
-			file_name = state.FileName;
+			line = state == null ? 0 : state.Line;
+			file_name = state == null ? string.Empty : state.FileName;
 			this.error_type = error_type;
 			this.expected = expected;
 			this.actual = actual;

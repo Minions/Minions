@@ -17,9 +17,6 @@ declarations <IList<Declaration>>
 decl_block <Declaration>
 	= !eof empty_line* s:declaration { s }
 
-statements <IList<Node>>
-	= line*
-
 line <Node>
 	= !eof empty_line* INDENTATION s:statement { s }
 
