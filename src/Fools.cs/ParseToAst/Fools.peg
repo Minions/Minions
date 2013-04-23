@@ -5,11 +5,10 @@
 @members
 {
 	public Report report { get; set; }
-	public Cursor initial_state { get; private set; }
 }
 
 program <IList<Declaration>>
-	= #STATE{ state["Indentation"] = 0; initial_state = state; } s:declarations empty_line* eof { s }
+	= INIT_INDENTATION s:declarations empty_line* eof { s }
 
 declarations <IList<Declaration>>
 	= d:decl_block* !(&{ d.Count == 0 } &{ report.no_declarations_in_file(state) } ) { d }
@@ -155,3 +154,6 @@ INDENT
 
 UNINDENT
 	= #STATE{ state["Indentation"] -= 1; }
+
+INIT_INDENTATION
+	= #STATE{ state["Indentation"] = 0; }
