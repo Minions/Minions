@@ -1,0 +1,40 @@
+import http, encodings
+
+check split_into_messages using TestMessages:
+	def split_finds_right_messages(request_so_far, expected_messages, expected_remainder)
+		remaining_buffer; messages = http._split_into_http_messages(request_so_far)
+		assert(messages, Is.equal_to(expected_messages))
+		assert(remaining_buffer, Is.equal_to(expected_remainder))
+	case "partial request emits nothing", INCOMPLETE_REQUEST, [], INCOMPLETE_REQUEST
+	case "header-only GET is emitted", GET_WITHOUT_BODY, [GET_WITHOUT_BODY], Bytes()
+	case "extra partial requests do not emit", GET_WITHOUT_BODY + INCOMPLETE_REQUEST, [GET_WITHOUT_BODY], INCOMPLETE_REQUEST
+	case "PUT with body emits only that message", PUT_WITH_BODY + INCOMPLETE_REQUEST, [PUT_WITH_BODY], INCOMPLETE_REQUEST
+	case "can emit multiple requests from one connection", \
+		PUT_WITH_BODY + GET_WITHOUT_BODY + PUT_WITH_BODY + INCOMPLETE_REQUEST, \
+		[PUT_WITH_BODY, GET_WITHOUT_BODY, PUT_WITH_BODY], INCOMPLETE_REQUEST
+
+class TestMessages:
+	def __init__():
+		ascii = encodings.Ascii()
+		utf16 = encodings.Utf16()
+		body = utf16.encode("Lorem Ipsum\r\land then some\r\lLots of bodies\r\lburied here.\r\l")
+		self.PUT_WITH_BODY = ascii.encode(
+			self._request('PUT')
+			+ self._header("x-ignored", "this is the value")
+			+ self._header("Content-Type", "text/plain; charset=utf-16")
+			+ self._header("Content-Length", String(body.length))
+			+ "\r\l"
+			+ body
+		)
+		self.GET_WITHOUT_BODY = ascii.encode(
+			self._request('GET')
+			+ self._header("x-ignored", "this is the value")
+		)
+		self.INCOMPLETE_REQUEST = self.GET_WITHOUT_BODY[:22]
+
+	def _header(name, value):
+		return "{name}: {value}\r\l".format(this_call.arguments)
+
+	def _request(method):
+		return "HTTP/1.1 {method} /some/arbitrary/uri".format(this_call.arguments)
+

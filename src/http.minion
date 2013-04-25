@@ -1,0 +1,128 @@
+import socket
+
+def server(port):
+	return spawn_minion(
+		serve_http{port=port},
+		important=True)
+
+@minion.important
+@eager
+def serve_http(port):
+	listening_port = socket.Tcp.listening_at(port)
+	minions = []
+	await [listening_port]:
+		when I.am.cancelled:
+			minions.each(Minion.cancel)
+			return
+		when (!listen_heard, socket):
+			new_uni = Universe(Universe.Access.SET_ONLY)
+			with default_universe(new_uni):
+				coms = _read_data_from_socket(socket.accept())
+				minions.append(coms)
+				request_minions = coms.when(!ready_to_read, socket) | _split_into_http_messages | as_new_minion | _parse_http | _provide_context
+				request_minions.each(subsequent_call_pipeline)
+			I.forget(new_uni)
+
+
+
+@minion
+@eager
+def serve_http(port):
+	"""
+	In this option, each Minion is assumed to live in its own special universe. We're using
+	them more like basic Actors.
+	"""
+	minions = []
+	listening_port = socket.Tcp.listening_at(port)
+	await [listening_port]:
+		when I.am.cancelled:
+			listening_port.stop_listening()
+			minions.each(Minion.cancel)
+			return
+		when (!!listen_heard, socket):
+			coms_specialist = spawn_minion()
+			command(coms_specialist).to(socket.accept | _await_data_from_socket)
+			coms_specialist.whenever(!received_data, buffer) | _split_into_http_messages | handle_with_helper_minion
+				| _parse_http | _provide_context | My.subsequent_pipeline
+
+def _read_data_from_socket(socket):
+	buffer = Bytes()
+	await [socket]:
+		when I.am.cancelled:
+			socket.perform_graceful_shutdown()
+			return
+		when !!ready_to_read, data_source:
+			buffer.append(data_source.recv())
+			buffer = announce !received_data, buffer
+
+
+@eager
+def serve_http(port):
+	listening_port = socket.Tcp.listening_at(port)
+	minions = []
+	await [listening_port]:
+		when I.am.cancelled:
+			minions.each(Minion.cancel)
+			return
+		when (!listen_heard, socket):
+			new_uni = Universe(Universe.Access.SET_ONLY)
+			
+			# Option 1: Make a subminion for listening, then chain it to more minions for processing the results.
+			with default_universe(new_uni):
+				socket = socket.accept()
+				commnicator = spawn_minion(_parse_http{socket})
+				minions.append(communicator)
+			yield_all communicator | _provide_context_data | _dispatch_methods
+
+			# Option 2: Make a single subminion for the request, which chains a bunch of function calls together.
+			with default_universe(new_uni):
+				socket = socket.accept()
+				http_stack = spawn_minion(_parse_http{socket} | _provide_context_data | _dispatch_methods
+				minions.append(http_stack)
+			yield_all http_stack
+
+			# Option 3: No with statement. Just tell each function which universe to default to when you call it.
+			socket = socket.accept.in(new_uni)()
+			http_stack = spawn_minion.in(new_uni)(_parse_http{socket} | _provide_context_data | _dispatch_methods)
+			My.minions.append(http_stack)
+			yield_all http_stack
+
+			I.forget(new_uni)
+
+@minion.important
+def _read_data_from_socket(socket):
+	buffer = Bytes()
+	await [socket]:
+		when I.am.cancelled:
+			socket.shutdown()
+			socket.close()
+			return
+		when !ready_to_read:
+			buffer.append(socket.recv())
+			# the client might consume some of the buffer. Two options:
+
+			# assume change by side-effect.
+			future !socket_has_more_data, buffer
+
+			# assume change by returning a modified buffer.
+			buffer = future !socket_has_more_data, buffer
+
+def _parse_http(socket):
+	buffer = Bytes()
+	await [socket]:
+		when I.am.cancelled:
+			socket.shutdown()
+			socket.close()
+			return
+		when !ready_to_read:
+			buffer.append(socket.recv())
+			yield_all _extract_requests_from(buffer)
+
+def _extract_requests_from(buffer):
+	pass
+
+def _provide_context_data():
+	pass
+
+def _dispatch_methods():
+	pass
