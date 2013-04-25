@@ -1,0 +1,159 @@
+﻿@namespace Fools.cs.ParseToAst
+@classname FoolsPegParser
+@using System.Linq
+@using Fools.cs.AST
+@members
+{
+	public Report report { get; set; }
+}
+
+program <IList<Declaration>>
+	= INIT_INDENTATION s:declarations empty_line* eof { s }
+
+declarations <IList<Declaration>>
+	= d:decl_block* !(&{ d.Count == 0 } &{ report.no_declarations_in_file(state) } ) { d }
+
+decl_block <Declaration>
+	= !eof empty_line* s:declaration { s }
+
+line <Node>
+	= !eof empty_line* INDENTATION s:statement { s }
+
+feature_spec_line <Node>
+	= !eof empty_line* INDENTATION s:feature_spec_declaration { s }
+
+declaration <Declaration>
+	= bad_block
+	/ function
+	/ feature_spec
+	/ unrecognized_declaration
+
+feature_spec_declaration <Declaration>
+	= bad_block
+	/ feature_spec
+	/ feature_requirement
+	/ valid_mission_declaration
+	/ unrecognized_declaration
+
+mission_declaration <Declaration>
+	= bad_block
+	/ valid_mission_declaration
+	/ unrecognized_declaration
+
+valid_mission_declaration <Declaration>
+	= mission_preparation
+	/ mission_cleanup
+
+statement <Node>
+	= bad_block
+	/ function
+	/ known_executable_blocks
+	/ s:simpleStatement eol { s }
+	/ unrecognized_statement
+
+function <Declaration>
+	= "def" __ n:name "()" __ s:block_body
+		{ new FunctionDefinition() { name = n, body = s } }
+
+feature_spec <Declaration>
+	= "specify" __ "feature" __ "-" __ n:block_header s:spec_body
+		{ new FeatureSpecification() { feature = n, body = s } }
+
+feature_requirement <Declaration>
+	= "requires" __ n:block_header s:block_body
+		{ new FeatureRequirement() { requirement = n, body = s } }
+
+mission_preparation <MissionActivity>
+	= "mission" __ "preparation" s:mission_activity_body
+		{ new MissionActivity() { name = "clean up", body = s, special_purpose = Mission.Purpose.Preparation } }
+
+mission_cleanup <MissionActivity>
+	= "mission" __ "clean" __ "up" s:mission_activity_body
+		{ new MissionActivity() { name = "clean up", body = s, special_purpose = Mission.Purpose.CleanUp } }
+
+known_executable_blocks <Node>
+	= "if" __ n:name s:block_body
+		{ new ConditionalStatement() { condition = n, body_when_true = s } }
+
+simpleStatement <Node>
+	= !( block_header ":" )
+		a:name "=" __ b:name { new AssignmentStatement() { l_value = a, expression = b } }
+
+unrecognized_declaration <Declaration>
+	= !([ \t]* eol) s:rest_of_current_line &{ report.unrecognized_declaration(state, s) } { null }
+
+unrecognized_statement <Node>
+	= !([ \t]* eol) s:rest_of_current_line &{ report.unrecognized_statement(state, s) } { null }
+
+bad_block <Declaration>
+	= &(block_header block_delim !possible_block_body) code:(rest_of_current_line eol rest_of_current_line) &{ report.implicitly_empty_block(state, code) } { null }
+
+empty_line<Node>
+	= [ \t]* eol_not_eof { null }
+	/ [ \t]+ eof { null }
+
+block_header<string>
+	= l:[^:\r\n]* { l.Flatten() }
+
+block_delim
+	= ":" __ eol
+
+block_body <IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
+		pass_block
+		/ line+
+		) UNINDENT { s }
+
+spec_body <IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
+		pass_block
+		/ feature_spec_line+
+		) UNINDENT { s }
+
+mission_activity_body <IList<Node>>
+	= block_delim INDENT s:(<IList<Node>>
+		pass_block
+		) UNINDENT { s }
+
+possible_block_body <IList<string>>
+	= INDENT lines:possible_line+ empty_line* UNINDENT { lines }
+
+possible_line
+	= !eof empty_line* INDENTATION_WITHOUT_ERROR_REPORTING s:[^\r\n]+ { s.Flatten() }
+
+pass_block <IList<Node>>
+	= INDENTATION_WITHOUT_ERROR_REPORTING "pass" eol { new List<Node>() }
+
+rest_of_current_line
+	= l:[^\r\n]* { l.Flatten() }
+
+name
+	= n:([a-zA-Z] [a-zA-Z0-9_]*) __ { n }
+
+__ = [ ]*
+
+eol = (eol_not_eof / eof)
+
+eol_not_eof = ("\r\n" / "\n\r" / "\r" / "\n")
+
+comment = "//" [^\r\n]*
+
+eof = !.
+
+INDENTATION
+	= indents:"\t"* (
+		code:(" " [^\r\n]*) &{ report.indent_with_spaces_error(state, indents.Flatten() + code) } { String.Empty }
+		/ &{ indents.Count == state["Indentation"] }
+		/ (&{ indents.Count > state["Indentation"] } code:rest_of_current_line &{ report.indentation_error(state, state["Indentation"], indents.Count, indents.Flatten() + code) } { String.Empty }))
+
+INDENTATION_WITHOUT_ERROR_REPORTING
+	= indents:"\t"* &{ indents.Count == state["Indentation"] }
+
+INDENT
+	= #STATE{ state["Indentation"] += 1; }
+
+UNINDENT
+	= #STATE{ state["Indentation"] -= 1; }
+
+INIT_INDENTATION
+	= #STATE{ state["Indentation"] = 0; }

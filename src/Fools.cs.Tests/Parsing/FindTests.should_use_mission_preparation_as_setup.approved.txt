@@ -1,0 +1,25 @@
+﻿Should pass
+
+/** Declarations **/
+[
+  {
+    "$type": "Fools.cs.AST.FeatureSpecification, Fools.cs",
+    "feature": "the test framework",
+    "body": [
+      {
+        "$type": "Fools.cs.AST.MissionActivity, Fools.cs",
+        "name": "clean up",
+        "special_purpose": 1,
+        "body": []
+      },
+      {
+        "$type": "Fools.cs.AST.FeatureRequirement, Fools.cs",
+        "requirement": "a simple empty test should pass",
+        "body": []
+      }
+    ]
+  }
+]
+
+/** Errors **/
+[]

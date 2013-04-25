@@ -47,3 +47,12 @@ _ReSharper*/
 
 # Office Temp Files
 ~$*
+
+#JS
+src/Fools.js/.idea/dictionaries/*.xml
+src/Fools.js/.idea/workspace.xml
+src/Fools.js/.idea/tasks.xml
+node_modules/
+build/
+dist/
+
