@@ -1,0 +1,13 @@
+﻿Should pass
+
+/** Declarations **/
+[
+  {
+    "$type": "Fools.cs.AST.FunctionDefinition, Fools.cs",
+    "name": "foo",
+    "body": []
+  }
+]
+
+/** Errors **/
+[]

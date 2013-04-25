@@ -1,0 +1,48 @@
+﻿Should fail
+
+/** Declarations **/
+[]
+
+/** Errors **/
+[
+  {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
+    "file_name": "fake file name.fool",
+    "line": 2,
+    "error_type": "Block without a body",
+    "expected": null,
+    "actual": null,
+    "snippet": "def foo():\r\n\t",
+    "suggestion": "This block appears to have no body. If you are meaning to state an empty block, please use an explicit pass statement as the block's body."
+  },
+  {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
+    "file_name": "fake file name.fool",
+    "line": 1,
+    "error_type": "Unrecognized declaration",
+    "expected": null,
+    "actual": null,
+    "snippet": "def foo():",
+    "suggestion": "I could not figure out this declaration. Is it a non-declaration statement? Recall that the top level of a Fools file is only allowed to contain declarations."
+  },
+  {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
+    "file_name": "fake file name.fool",
+    "line": 1,
+    "error_type": "No declarations found",
+    "expected": null,
+    "actual": null,
+    "snippet": null,
+    "suggestion": "I could not find any declarations in this file. Please remove it from the build."
+  },
+  {
+    "$type": "Fools.cs.ParseToAst.ErrorReport, Fools.cs",
+    "file_name": "fake file name.fool",
+    "line": 1,
+    "error_type": "Failed to parse 'program'.",
+    "expected": null,
+    "actual": null,
+    "snippet": null,
+    "suggestion": "Hopefully I also gave you some more specific error messages. Try fixing those first."
+  }
+]

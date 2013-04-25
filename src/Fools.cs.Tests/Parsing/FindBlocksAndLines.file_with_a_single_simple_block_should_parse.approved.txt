@@ -1,0 +1,19 @@
+﻿Should pass
+
+/** Declarations **/
+[
+  {
+    "$type": "Fools.cs.AST.FunctionDefinition, Fools.cs",
+    "name": "foo",
+    "body": [
+      {
+        "$type": "Fools.cs.AST.AssignmentStatement, Fools.cs",
+        "l_value": "a",
+        "expression": "b"
+      }
+    ]
+  }
+]
+
+/** Errors **/
+[]
