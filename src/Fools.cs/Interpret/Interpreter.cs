@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Interpreter.cs
+// 
+// Copyright 2012 The Minions Project (http:/github.com/Minions).
+// All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
+
+using System;
 
 namespace Fools.cs.Interpret
 {
@@ -11,8 +16,6 @@ namespace Fools.cs.Interpret
             tests.Dispose();
         }
 
-        public void take_commands(string fools_command_file_contents)
-        {
-        }
+        public void take_commands(string fools_command_file_contents) {}
     }
 }

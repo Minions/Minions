@@ -1,4 +1,9 @@
-﻿using System;
+﻿// TestResult.cs
+// 
+// Copyright 2012 The Minions Project (http:/github.com/Minions).
+// All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
+
+using System;
 using System.Threading.Tasks;
 
 namespace Fools.cs.Interpret
@@ -36,24 +41,19 @@ namespace Fools.cs.Interpret
 
         public static TestResult passed(string test_path, string test_name)
         {
-            return new TestResult(test_path, test_name)
-                {
-                    _outcome = new Lazy<Outcome>(() => new Outcome {result = Result.Pass, info = string.Empty}),
-                };
+            return new TestResult(test_path, test_name) {
+                _outcome = new Lazy<Outcome>(() => new Outcome {result = Result.Pass, info = string.Empty}),
+            };
         }
 
         public static TestResult to_be_determined(string test_path, string test_name, Task<Outcome> finish_the_test)
         {
-            return new TestResult(test_path, test_name)
-                {
-                    _outcome = new Lazy<Outcome>(() => finish_the_test.Result),
-                };
+            return new TestResult(test_path, test_name) {_outcome = new Lazy<Outcome>(() => finish_the_test.Result),};
         }
 
         public override string ToString()
         {
-            return string.Format(
-                "{2}({0} - {1}){3}",
+            return string.Format("{2}({0} - {1}){3}",
                 test_path,
                 test_name,
                 result,
@@ -62,10 +62,10 @@ namespace Fools.cs.Interpret
 
         public bool Equals(TestResult other)
         {
-            if(ReferenceEquals(null, other)) return false;
-            if(ReferenceEquals(this, other)) return true;
-            return String.Equals(other.test_name, test_name) && String.Equals(other.test_path, test_path) &&
-                   Equals(other.result, result) && Equals(other.info, info);
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return String.Equals(other.test_name, test_name) && String.Equals(other.test_path, test_path)
+                && Equals(other.result, result) && Equals(other.info, info);
         }
 
         public override bool Equals(object obj)
@@ -77,7 +77,7 @@ namespace Fools.cs.Interpret
         {
             unchecked
             {
-                int hash_code = test_name.GetHashCode();
+                var hash_code = test_name.GetHashCode();
                 hash_code = (hash_code*397) ^ test_path.GetHashCode();
                 hash_code = (hash_code*397) ^ result.GetHashCode();
                 hash_code = (hash_code*397) ^ info.GetHashCode();
