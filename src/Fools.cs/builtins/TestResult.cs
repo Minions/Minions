@@ -6,7 +6,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Fools.cs.Interpret
+namespace Fools.cs.builtins
 {
     public class TestResult : IEquatable<TestResult>
     {

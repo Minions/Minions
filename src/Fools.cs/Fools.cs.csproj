@@ -119,7 +119,7 @@
     <Compile Include="AST\ConditionalStatement.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
     <Compile Include="Interpret\TestControlCenter.cs" />
-    <Compile Include="Interpret\TestResult.cs" />
+    <Compile Include="builtins\TestResult.cs" />
     <Compile Include="ParseToAst\ErrorReport.cs" />
     <Compile Include="ParseToAst\FatalParseError.cs" />
     <Compile Include="ParseToAst\Fools.peg.cs" />
