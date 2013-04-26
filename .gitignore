@@ -37,7 +37,8 @@ src/packages/*/
 #Tooling
 _ReSharper*/
 *.resharper
-[Tt]est[Rr]esult*
+[Tt]est[Rr]esult*/
+[Tt]est[Rr]esult*.xml
 
 #Project files
 [Bb]uild/
