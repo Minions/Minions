@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compilation\TransformAstIntoExecutionModel.cs" />
     <Compile Include="CoreLanguage\FoolsCanRunTests.cs" />
     <Compile Include="Parsing\FindBlocksAndLines.cs" />
     <Compile Include="Parsing\FindTests.cs" />
