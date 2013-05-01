@@ -11,21 +11,30 @@ using System.Reflection;
 
 namespace Fools.cs.TransformAst
 {
-	public abstract class NanoPass
+	public abstract class NanoPass<TTarget>
 	{
-		private static readonly ReadOnlyCollection<NanoPass> ALL;
+		private static readonly ReadOnlyCollection<NanoPass<TTarget>> ALL;
+		private readonly ReadOnlyCollection<AstStateCondition> _requires;
 
 		static NanoPass()
 		{
 			ALL = Assembly.GetExecutingAssembly()
 				.GetTypes()
-				.Where(t => t.IsSubclassOf(typeof (NanoPass)) && !t.IsAbstract)
-				.Select(t => (NanoPass) t.GetConstructor(new Type[] {})
+				.Where(t => t.IsSubclassOf(typeof(NanoPass<TTarget>)) && !t.IsAbstract)
+				.Select(t => (NanoPass<TTarget>)t.GetConstructor(new Type[] { })
 					.Invoke(new object[] {}))
 				.ToList()
 				.AsReadOnly();
 		}
 
-		public static ReadOnlyCollection<NanoPass> all { get { return ALL; } }
+		protected NanoPass(IEnumerable<AstStateCondition> requires)
+		{
+			_requires = requires.ToList().AsReadOnly();
+		}
+
+		public static ReadOnlyCollection<NanoPass<TTarget>> all { get { return ALL; } }
+		public ReadOnlyCollection<AstStateCondition> requires { get { return _requires; } }
+
+		public abstract TTarget run(TTarget data, Action<AstStateCondition> add_condition);
 	}
 }

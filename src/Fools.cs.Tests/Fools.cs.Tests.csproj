@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\FoolsCodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compilation\ConditionsSuportEquality.cs" />
     <Compile Include="Compilation\TransformAstIntoExecutionModel.cs" />
     <Compile Include="CoreLanguage\FoolsCanRunTests.cs" />
     <Compile Include="Parsing\FindBlocksAndLines.cs" />

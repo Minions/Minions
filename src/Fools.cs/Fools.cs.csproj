@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\FoolsCodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\FoolsCompiler.cs" />
+    <Compile Include="AST\Program.cs" />
     <Compile Include="AST\AssignmentStatement.cs" />
     <Compile Include="AST\AstExtensions.cs" />
     <Compile Include="AST\Declaration.cs" />
@@ -130,8 +132,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParseToAst\Report.cs" />
     <Compile Include="ParseToAst\UtilityExtensions.cs" />
+    <Compile Include="TransformAst\AstStateCondition.cs" />
     <Compile Include="TransformAst\CreateTestMissions.cs" />
     <Compile Include="TransformAst\NanoPass.cs" />
+    <Compile Include="Utilities\ReadLockHeld.cs" />
+    <Compile Include="Utilities\ThreadingExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

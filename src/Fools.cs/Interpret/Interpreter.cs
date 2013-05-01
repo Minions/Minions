@@ -5,7 +5,6 @@
 
 using System;
 using System.Linq;
-using Fools.cs.AST;
 using Fools.cs.Api;
 
 namespace Fools.cs.Interpret

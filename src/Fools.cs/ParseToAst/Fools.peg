@@ -57,7 +57,7 @@ function <Declaration>
 
 feature_spec <Declaration>
 	= "specify" __ "feature" __ "-" __ n:block_header s:spec_body
-		{ new FeatureSpecification() { feature = n, body = s } }
+		{ new FeatureSpecification(n, s) }
 
 feature_requirement <Declaration>
 	= "requires" __ n:block_header s:block_body

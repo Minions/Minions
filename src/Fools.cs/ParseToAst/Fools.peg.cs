@@ -744,7 +744,7 @@ namespace
                                         {
                                             r0 = this.ReturnHelper<Declaration>(startCursor0, cursor, state =>
                                                 #line 60 "Fools.peg"
-    new FeatureSpecification() { feature = n, body = s }
+    new FeatureSpecification(n, s)
                                                 #line default
                                                 );
                                         }
