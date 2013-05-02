@@ -31,8 +31,8 @@ namespace Fools.cs.Tests.Compilation
 			var data = new FeatureSpecification("This minion", Enumerable.Empty<Node>());
 			var test_subject =
 				new FoolsCompiler(
-					local_passes(new AppendToName("is a dog", conditions(), conditions("is a dog")),
-						new AppendToName("that runs fast", conditions("is a dog"), conditions())),
+					local_passes(new AppendToName("is a dog", conditions(), conditions("species identified")),
+						new AppendToName("that runs fast", conditions("species identified"), conditions())),
 					global_passes());
 			test_subject.compile(ProgramFragment.with_declarations(data));
 			data.feature.Should()
@@ -41,6 +41,19 @@ namespace Fools.cs.Tests.Compilation
 				.As<FeatureSpecification>()
 				.feature.Should()
 				.Be("This minion is a dog that runs fast");
+		}
+
+		[Test]
+		public void uncompletable_language_should_throw_exception()
+		{
+			var data = new FeatureSpecification("This minion", Enumerable.Empty<Node>());
+			var test_subject =
+				new FoolsCompiler(
+					local_passes(new AppendToName("that runs fast", conditions("is a dog"), conditions())),
+					global_passes());
+			Action compilation = () =>test_subject.compile(ProgramFragment.with_declarations(data));
+			compilation.ShouldThrow<InvalidOperationException>()
+				.WithMessage("Compilation will never finish. There are remaining passes to execute, but none of them can be executed as none have all their conditions met. Please fix your set of passes.");
 		}
 
 		private ReadOnlyCollection<NanoPass<ProgramFragment>> local_passes(params NanoPass<ProgramFragment>[] passes)
