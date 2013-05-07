@@ -120,6 +120,7 @@
     <Compile Include="AST\MissionActivity.cs" />
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
+    <Compile Include="builtins\TestPartialInfoMessage.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
     <Compile Include="Interpret\TestControlCenter.cs" />
     <Compile Include="builtins\TestResult.cs" />
