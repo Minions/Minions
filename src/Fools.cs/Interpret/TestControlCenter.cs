@@ -26,27 +26,4 @@ namespace Fools.cs.Interpret
 
 		public void Dispose() {}
 	}
-
-	public class MessageLog<T> : MessageRecipient
-	{
-		private readonly List<T> _received = new List<T>();
-		private readonly Func<TestPartialInfoMessage, T> _convert;
-
-		public MessageLog(Func<TestPartialInfoMessage, T> convert)
-		{
-			_convert = convert;
-		}
-
-		public override void accept(TestPartialInfoMessage message)
-		{
-			_received.Add(_convert(message));
-		}
-
-		public IEnumerable<T> received { get { return _received; } }
-	}
-
-	public abstract class MessageRecipient
-	{
-		public abstract void accept(TestPartialInfoMessage message);
-	}
 }

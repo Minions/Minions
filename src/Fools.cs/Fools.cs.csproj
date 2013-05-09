@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\FoolsCompiler.cs" />
+    <Compile Include="Api\MissionControl.cs" />
     <Compile Include="AST\Program.cs" />
     <Compile Include="AST\AssignmentStatement.cs" />
     <Compile Include="AST\AstExtensions.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="AST\ConditionalStatement.cs" />
     <Compile Include="builtins\TestPartialInfoMessage.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
+    <Compile Include="Interpret\MessageLog.cs" />
+    <Compile Include="Interpret\MessageRecipient.cs" />
     <Compile Include="Interpret\TestControlCenter.cs" />
     <Compile Include="builtins\TestResult.cs" />
     <Compile Include="ParseToAst\ErrorReport.cs" />
