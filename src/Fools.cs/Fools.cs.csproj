@@ -108,7 +108,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Building.cs" />
     <Compile Include="Api\FoolsCompiler.cs" />
+    <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MissionControl.cs" />
     <Compile Include="AST\Program.cs" />
     <Compile Include="AST\AssignmentStatement.cs" />

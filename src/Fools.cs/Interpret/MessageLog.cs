@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Fools.cs.Api;
 using Fools.cs.builtins;
 
 namespace Fools.cs.Interpret
@@ -12,14 +13,14 @@ namespace Fools.cs.Interpret
 	public class MessageLog<T> : MessageRecipient
 	{
 		private readonly List<T> _received = new List<T>();
-		private readonly Func<TestPartialInfoMessage, T> _convert;
+		private readonly Func<MailMessage, T> _convert;
 
-		public MessageLog(Func<TestPartialInfoMessage, T> convert)
+		public MessageLog(Func<MailMessage, T> convert)
 		{
 			_convert = convert;
 		}
 
-		public override void accept(TestPartialInfoMessage message)
+		public override void accept(MailMessage message)
 		{
 			_received.Add(_convert(message));
 		}

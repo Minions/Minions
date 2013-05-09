@@ -1,8 +1,9 @@
-﻿using Fools.cs.Interpret;
+﻿using Fools.cs.Api;
+using Fools.cs.Interpret;
 
 namespace Fools.cs.builtins
 {
-	public class TestPartialInfoMessage
+	public class TestPartialInfoMessage : MailMessage
 	{
 		public string message { get; private set; }
 
