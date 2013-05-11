@@ -125,6 +125,12 @@
     <Compile Include="AST\MissionActivity.cs" />
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
+    <Compile Include="builtins\BuiltinExtensions.cs" />
+    <Compile Include="builtins\Missions.cs" />
+    <Compile Include="builtins\MissionSpecification.cs" />
+    <Compile Include="builtins\SinglePartMission.cs" />
+    <Compile Include="builtins\TestDiscovery.cs" />
+    <Compile Include="builtins\TestFoundMessage.cs" />
     <Compile Include="builtins\TestPartialInfoMessage.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
     <Compile Include="Interpret\MessageLog.cs" />

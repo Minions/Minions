@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\StackJanitor.cs" />
     <Compile Include="Support\TestUtilExtensions.cs" />
+    <Compile Include="Support\MessageTrap.cs" />
     <Compile Include="TestFramework\TestFrameworkPlatformComponents.cs" />
   </ItemGroup>
   <ItemGroup>

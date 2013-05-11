@@ -71,8 +71,10 @@ namespace Fools.cs.Api
 		{
 			var mesage_type = what_happened.GetType()
 				.Name;
-			if (!_listeners.ContainsKey(mesage_type)) return;
-			_listeners[mesage_type].ForEach(recipient => recipient.accept(what_happened));
+			List<MessageRecipient> recipients;
+			if (!_listeners.TryGetValue(mesage_type, out recipients)) return;
+			recipients = _listeners[mesage_type];
+			recipients.ForEach(recipient => recipient.accept(what_happened));
 		}
 	}
 }

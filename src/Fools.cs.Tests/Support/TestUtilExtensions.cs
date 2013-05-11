@@ -8,18 +8,14 @@ using System.Text;
 using ApprovalTests;
 using Fools.cs.AST;
 using Fools.cs.Api;
+using Fools.cs.builtins;
 using Newtonsoft.Json;
 
 namespace Fools.cs.Tests.Support
 {
     internal static class TestUtilExtensions
     {
-        private static readonly JsonSerializerSettings _json_serializer_settings = new JsonSerializerSettings {
-            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
-            TypeNameHandling = TypeNameHandling.Objects
-        };
-
-        public static void should_parse_correctly(this ProgramFragment program_fragment)
+	    public static void should_parse_correctly(this ProgramFragment program_fragment)
         {
             Approvals.Verify(format_section(program_fragment, "Should pass"));
         }
@@ -34,12 +30,7 @@ namespace Fools.cs.Tests.Support
             return FoolsParser.find_blocks(source_code, "fake file name.fool");
         }
 
-        public static string pretty_print(this object value)
-        {
-            return JsonConvert.SerializeObject(value, Formatting.Indented, _json_serializer_settings);
-        }
-
-        public static string format_section(ProgramFragment parse, string expectation)
+	    public static string format_section(ProgramFragment parse, string expectation)
         {
             var format = new StringBuilder();
             format.AppendLine(expectation)
