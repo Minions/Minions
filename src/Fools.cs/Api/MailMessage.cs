@@ -4,11 +4,17 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
 	public abstract class MailMessage : IEquatable<MailMessage>
 	{
+		public override string ToString()
+		{
+			return this.pretty_print();
+		}
+
 		public bool Equals(MailMessage other)
 		{
 			if (ReferenceEquals(null, other)) return false;

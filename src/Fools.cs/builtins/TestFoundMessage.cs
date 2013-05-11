@@ -17,11 +17,6 @@ namespace Fools.cs.builtins
 
 		public MissionSpecification mission { get; private set; }
 
-		public override string ToString()
-		{
-			return this.pretty_print();
-		}
-
 		protected override bool _compare(MailMessage obj)
 		{
 			var other = obj as TestFoundMessage;

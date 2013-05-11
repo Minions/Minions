@@ -1,0 +1,3 @@
+﻿{
+  "$type": "Fools.cs.Api.TestRun+ViewModel, Fools.cs"
+}

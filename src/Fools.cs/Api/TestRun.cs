@@ -14,8 +14,14 @@ namespace Fools.cs.Api
 		{
 			_mission_control = mission_control;
 			_mail_room = home_office.create_satellite_office();
+			view_model = new ViewModel();
 		}
 
 		public MailRoom mail_room { get { return _mail_room; } }
+		public ViewModel view_model { get; private set; }
+
+		public class ViewModel {}
+
+		public void wait_for_all_tests_to_finish() {}
 	}
 }
