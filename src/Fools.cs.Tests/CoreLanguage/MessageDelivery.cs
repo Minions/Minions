@@ -16,11 +16,11 @@ namespace Fools.cs.Tests.CoreLanguage
 		[Test]
 		public void announced_messages_should_be_delivered_to_all_who_have_expressed_interest_in_that_message_type()
 		{
-			var mission_control = new MailRoom();
+			var test_subject = new MailRoom();
 			var log = new MessageLog<string>(m => ((SillyMessage) m).value);
-			mission_control.subscribe(log, "SillyMessage");
-			mission_control.announce(new SillyMessage("1"));
-			mission_control.announce(new SillyMessage("2"));
+			test_subject.subscribe(log, "SillyMessage");
+			test_subject.announce(new SillyMessage("1"));
+			test_subject.announce(new SillyMessage("2"));
 			log.received.Should()
 				.ContainInOrder(new object[] {"1", "2"});
 		}
@@ -28,13 +28,26 @@ namespace Fools.cs.Tests.CoreLanguage
 		[Test]
 		public void subscribers_should_only_get_messages_they_asked_for()
 		{
-			var mission_control = new MailRoom();
+			var test_subject = new MailRoom();
 			var log = new MessageLog<string>(m => ((SillyMessage) m).value);
-			mission_control.subscribe(log, "SillyMessage");
-			mission_control.announce(new SillyMessage("silly"));
-			mission_control.announce(new SeriousMessage("serious"));
+			test_subject.subscribe(log, "SillyMessage");
+			test_subject.announce(new SillyMessage("silly"));
+			test_subject.announce(new SeriousMessage("serious"));
 			log.received.Should()
 				.ContainInOrder(new object[] {"silly"});
+		}
+
+
+		[Test]
+		public void universal_subscribers_should_receive_all_messages()
+		{
+			var test_subject = new MailRoom();
+			var log = new MessageLog<string>(m => ((SillyMessage)m).value);
+			test_subject.subscribe_to_all(log);
+			test_subject.announce(new SillyMessage("silly"));
+			test_subject.announce(new SeriousMessage("serious"));
+			log.received.Should()
+				.ContainInOrder(new object[] { "silly", "serious" });
 		}
 
 		[Test]
@@ -53,8 +66,8 @@ namespace Fools.cs.Tests.CoreLanguage
 		public void buildings_should_have_mail_rooms_that_are_satellites_of_the_mission_control_mail_room()
 		{
 			var mission_control = new MissionControl();
-			var building = mission_control.create_building();
-			building.mail_room.home_office.Should()
+			var test_subject = mission_control.create_building();
+			test_subject.mail_room.home_office.Should()
 				.BeSameAs(mission_control.mail_room);
 		}
 	}

@@ -11,6 +11,7 @@ namespace Fools.cs.Api
 	public class MailRoom
 	{
 		private readonly MailRoom _home_office;
+		private readonly List<MessageRecipient> _universal_listeners = new List<MessageRecipient>();
 
 		private readonly Dictionary<string, List<MessageRecipient>> _listeners =
 			new Dictionary<string, List<MessageRecipient>>();
@@ -27,13 +28,9 @@ namespace Fools.cs.Api
 
 		public MailRoom home_office { get { return _home_office; } }
 
-		public void announce(MailMessage what_happened)
+		public MailRoom create_satellite_office()
 		{
-			if (_home_office != null) _home_office.announce(what_happened);
-			var mesage_type = what_happened.GetType()
-				.Name;
-			if (!_listeners.ContainsKey(mesage_type)) return;
-			_listeners[mesage_type].ForEach(recipient => recipient.accept(what_happened));
+			return new MailRoom(this);
 		}
 
 		public void subscribe(MessageRecipient listener, string message_type)
@@ -48,9 +45,34 @@ namespace Fools.cs.Api
 			subscribers.Add(listener);
 		}
 
-		public MailRoom create_satellite_office()
+		public void subscribe_to_all(MessageRecipient listener)
 		{
-			return new MailRoom(this);
+			_universal_listeners.Add(listener);
+		}
+
+		public void announce(MailMessage what_happened)
+		{
+			_announce_to_specific_listeners(what_happened);
+			_announce_to_universal_listeners(what_happened);
+			_forward_to_home_office(what_happened);
+		}
+
+		private void _announce_to_universal_listeners(MailMessage what_happened)
+		{
+			_universal_listeners.ForEach(recipient => recipient.accept(what_happened));
+		}
+
+		private void _forward_to_home_office(MailMessage what_happened)
+		{
+			if (_home_office != null) _home_office.announce(what_happened);
+		}
+
+		private void _announce_to_specific_listeners(MailMessage what_happened)
+		{
+			var mesage_type = what_happened.GetType()
+				.Name;
+			if (!_listeners.ContainsKey(mesage_type)) return;
+			_listeners[mesage_type].ForEach(recipient => recipient.accept(what_happened));
 		}
 	}
 }
