@@ -13,11 +13,8 @@ namespace Fools.cs.Interpret
 	public class TestControlCenter : IDisposable
 	{
 		private readonly List<TestResult> _results = new List<TestResult>();
-		private readonly MessageLog<string> _mail_slot = new MessageLog<string>(m => ((TestPartialInfoMessage) m).message);
 
 		public ReadOnlyCollection<TestResult> results { get { return _results.AsReadOnly(); } }
-		public MessageRecipient mail_slot { get { return _mail_slot; } }
-		public string details { get { return String.Join("\r\n", _mail_slot.received); } }
 
 		public void execute()
 		{

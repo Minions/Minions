@@ -3,24 +3,22 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using Fools.cs.Interpret;
-using Fools.cs.builtins;
-using NUnit.Framework;
 using FluentAssertions;
+using Fools.cs.Api;
+using NUnit.Framework;
 
 namespace Fools.cs.Tests.TestFramework
 {
 	[TestFixture]
 	public class TestFrameworkPlatformComponents
 	{
-
 		[Test]
-		public void test_control_center_should_hang_on_to_messages_it_receives_and_report_them_during_test_output()
+		public void test_run_should_have_a_mail_room_that_is_a_satellite_of_mission_controls()
 		{
-			var control_center = new TestControlCenter();
-			new TestPartialInfoMessage("some progress has been made").send_to(control_center.mail_slot);
-			control_center.details.Should()
-				.Contain("some progress has been made");
+			var mission_control = new MissionControl();
+			var test_subject = mission_control.create_test_run();
+			test_subject.mail_room.home_office.Should()
+				.BeSameAs(mission_control.mail_room);
 		}
 	}
 }

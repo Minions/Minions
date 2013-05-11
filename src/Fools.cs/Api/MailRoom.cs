@@ -25,6 +25,8 @@ namespace Fools.cs.Api
 			_home_office = null;
 		}
 
+		public MailRoom home_office { get { return _home_office; } }
+
 		public void announce(MailMessage what_happened)
 		{
 			if (_home_office != null) _home_office.announce(what_happened);

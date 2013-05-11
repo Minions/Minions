@@ -48,6 +48,15 @@ namespace Fools.cs.Tests.CoreLanguage
 			log.received.Should()
 				.ContainInOrder(new object[] {"hi"});
 		}
+
+		[Test]
+		public void buildings_should_have_mail_rooms_that_are_satellites_of_the_mission_control_mail_room()
+		{
+			var mission_control = new MissionControl();
+			var building = mission_control.create_building();
+			building.mail_room.home_office.Should()
+				.BeSameAs(mission_control.mail_room);
+		}
 	}
 
 	public class SillyMessage : MailMessage

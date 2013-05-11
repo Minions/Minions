@@ -113,6 +113,7 @@
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
     <Compile Include="Api\MissionControl.cs" />
+    <Compile Include="Api\TestRun.cs" />
     <Compile Include="AST\Program.cs" />
     <Compile Include="AST\AssignmentStatement.cs" />
     <Compile Include="AST\AstExtensions.cs" />
