@@ -4,11 +4,13 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using Fools.cs.Api;
 
 namespace Fools.cs.builtins
 {
 	public abstract class MissionSpecification : IEquatable<MissionSpecification>
 	{
+		public Requirements requirements;
 		public string name { get; private set; }
 
 		protected MissionSpecification(string name)
@@ -47,5 +49,9 @@ namespace Fools.cs.builtins
 		{
 			return !Equals(left, right);
 		}
+
+		public abstract void execute(MissionOperator operation);
+
+		public class Requirements {}
 	}
 }

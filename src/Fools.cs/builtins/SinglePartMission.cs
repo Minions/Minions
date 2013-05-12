@@ -4,6 +4,7 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using Fools.cs.Api;
 
 namespace Fools.cs.builtins
 {
@@ -12,9 +13,11 @@ namespace Fools.cs.builtins
 		public SinglePartMission(string name, Action operation):base(name)
 		{
 			this.operation = operation;
+			is_complete = false;
 		}
 
 		public Action operation { get; private set; }
+		public bool is_complete { get; set; }
 
 		public bool Equals(SinglePartMission other)
 		{
@@ -35,6 +38,11 @@ namespace Fools.cs.builtins
 			{
 				return (base.GetHashCode()*397) ^ operation.GetHashCode();
 			}
+		}
+
+		public override void execute(MissionOperator operation)
+		{
+			operation.execute(this);
 		}
 	}
 }

@@ -68,6 +68,7 @@
     <Compile Include="CoreLanguage\FoolsCanRunTests.cs" />
     <Compile Include="CoreLanguage\MessageDelivery.cs" />
     <Compile Include="CoreLanguage\PrettyPrinting.cs" />
+    <Compile Include="CoreLanguage\RunMissions.cs" />
     <Compile Include="Parsing\FindBlocksAndLines.cs" />
     <Compile Include="Parsing\FindTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
