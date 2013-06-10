@@ -10,7 +10,7 @@ using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
-	public class MissionControl
+	public class MissionControl : IDisposable
 	{
 		private readonly MailRoom _mail_room = new MailRoom();
 		private readonly TaskFactory _task_factory;
@@ -23,6 +23,12 @@ namespace Fools.cs.Api
 				TaskCreationOptions.PreferFairness,
 				TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);
+		}
+
+		public void Dispose()
+		{
+			_cancellation.Cancel();
+			_cancellation.Dispose();
 		}
 
 		public MailRoom mail_room { get { return _mail_room; } }
