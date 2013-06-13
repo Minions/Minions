@@ -5,19 +5,23 @@
 
 using System.Collections.Generic;
 using System.Text;
+using Fools.cs.Utilities;
 
-namespace System.Linq
+// ReSharper disable CheckNamespace
+namespace System.Linq // ReSharper restore CheckNamespace
 {
-    public static class UtilityExtensions
-    {
-        public static string Flatten(this IEnumerable<string> data)
-        {
-            var result = new StringBuilder();
-            foreach (var elt in data)
-            {
-                result.Append(elt);
-            }
-            return result.ToString();
-        }
-    }
+	public static class UtilityExtensions
+	{
+		// ReSharper disable InconsistentNaming
+		[NotNull]
+		public static string Flatten([NotNull] this IEnumerable<string> data) // ReSharper restore InconsistentNaming
+		{
+			var result = new StringBuilder();
+			foreach (var elt in data)
+			{
+				result.Append(elt);
+			}
+			return result.ToString();
+		}
+	}
 }

@@ -18,6 +18,7 @@ namespace Fools.cs.Api
 			_mail_room = central_mail_room.create_satellite_office();
 		}
 
+		[NotNull]
 		public MailRoom mail_room { get { return _mail_room; } }
 	}
 }

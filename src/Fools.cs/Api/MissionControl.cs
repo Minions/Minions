@@ -32,8 +32,10 @@ namespace Fools.cs.Api
 			_cancellation.Dispose();
 		}
 
+		[NotNull]
 		public MailRoom mail_room { get { return _mail_room; } }
 
+		[NotNull]
 		public Building create_building()
 		{
 			return new Building(this, _mail_room);

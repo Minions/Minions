@@ -56,8 +56,7 @@ namespace Fools.cs.Tests.TestFramework
 		[NotNull] public static readonly SinglePartMission FIRST_TEST = new SinglePartMission("first", Missions.pass);
 		[NotNull] public static readonly SinglePartMission SECOND_TEST = new SinglePartMission("second", Missions.pass);
 
-		protected override void _locate_tests([NotNull] Action<MissionSpecification> report_test,
-			[NotNull] Action done_finding_tests)
+		protected override void _locate_tests(Action<MissionSpecification> report_test, Action done_finding_tests)
 		{
 			report_test(FIRST_TEST);
 			report_test(SECOND_TEST);

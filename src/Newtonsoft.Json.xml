@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<assembly name="Newtonsoft.Json">
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.DateTime)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.ToString(System.DateTime,Newtonsoft.Json.DateFormatHandling,Newtonsoft.Json.DateTimeZoneHandling)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.DateTimeOffset)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.DateTimeOffset,Newtonsoft.Json.DateFormatHandling)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Boolean)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Char)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Enum)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Int32)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Int16)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.UInt16)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.UInt32)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Int64)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.UInt64)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Single)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Double)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Byte)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.SByte)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Decimal)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Guid)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.TimeSpan)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Uri)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.String,System.Char)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.ToString(System.Object)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,Newtonsoft.Json.Formatting)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,Newtonsoft.Json.JsonConverter[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object,System.Type,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObjectAsync(System.Object)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeObjectAsync(System.Object,Newtonsoft.Json.Formatting)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeObjectAsync(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObject(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObject(System.String,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObject(System.String,System.Type)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObject``1(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeAnonymousType``1(System.String,``0)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeAnonymousType``1(System.String,``0,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObject``1(System.String,Newtonsoft.Json.JsonConverter[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeObject``1(System.String,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeObject(System.String,System.Type,Newtonsoft.Json.JsonConverter[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeObject(System.String,System.Type,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObjectAsync``1(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeObjectAsync``1(System.String,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeObjectAsync(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.DeserializeObjectAsync(System.String,System.Type,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.PopulateObject(System.String,System.Object)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.PopulateObject(System.String,System.Object,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.PopulateObjectAsync(System.String,System.Object,Newtonsoft.Json.JsonSerializerSettings)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeXmlNode(System.Xml.XmlNode)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeXmlNode(System.Xml.XmlNode,Newtonsoft.Json.Formatting)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeXmlNode(System.Xml.XmlNode,Newtonsoft.Json.Formatting,System.Boolean)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXmlNode(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXmlNode(System.String,System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXmlNode(System.String,System.String,System.Boolean)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeXNode(System.Xml.Linq.XObject)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.SerializeXNode(System.Xml.Linq.XObject,Newtonsoft.Json.Formatting)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member
+		name="M:Newtonsoft.Json.JsonConvert.SerializeXNode(System.Xml.Linq.XObject,Newtonsoft.Json.Formatting,System.Boolean)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXNode(System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXNode(System.String,System.String)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:Newtonsoft.Json.JsonConvert.DeserializeXNode(System.String,System.String,System.Boolean)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+</assembly>

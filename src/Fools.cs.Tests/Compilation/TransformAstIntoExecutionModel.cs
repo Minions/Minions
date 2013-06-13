@@ -11,6 +11,7 @@ using FluentAssertions;
 using Fools.cs.AST;
 using Fools.cs.Api;
 using Fools.cs.TransformAst;
+using Fools.cs.Utilities;
 using NUnit.Framework;
 
 namespace Fools.cs.Tests.Compilation
@@ -48,27 +49,30 @@ namespace Fools.cs.Tests.Compilation
 		{
 			var data = new FeatureSpecification("This minion", Enumerable.Empty<Node>());
 			var test_subject =
-				new FoolsCompiler(
-					local_passes(new AppendToName("that runs fast", conditions("is a dog"), conditions())),
+				new FoolsCompiler(local_passes(new AppendToName("that runs fast", conditions("is a dog"), conditions())),
 					global_passes());
-			Action compilation = () =>test_subject.compile(ProgramFragment.with_declarations(data));
+			Action compilation = () => test_subject.compile(ProgramFragment.with_declarations(data));
 			compilation.ShouldThrow<InvalidOperationException>()
-				.WithMessage("Compilation will never finish. There are remaining passes to execute, but none of them can be executed as none have all their conditions met. Please fix your set of passes.");
+				.WithMessage(
+					"Compilation will never finish. There are remaining passes to execute, but none of them can be executed as none have all their conditions met. Please fix your set of passes.");
 		}
 
-		private ReadOnlyCollection<NanoPass<ProgramFragment>> local_passes(params NanoPass<ProgramFragment>[] passes)
+		[NotNull]
+		private ReadOnlyCollection<NanoPass<ProgramFragment>> local_passes([NotNull] params NanoPass<ProgramFragment>[] passes)
 		{
 			return passes.ToList()
 				.AsReadOnly();
 		}
 
-		private ReadOnlyCollection<NanoPass<Program>> global_passes(params NanoPass<Program>[] passes)
+		[NotNull]
+		private ReadOnlyCollection<NanoPass<Program>> global_passes([NotNull] params NanoPass<Program>[] passes)
 		{
 			return passes.ToList()
 				.AsReadOnly();
 		}
 
-		private ReadOnlyCollection<AstStateCondition> conditions(params string[] condition_names)
+		[NotNull]
+		private ReadOnlyCollection<AstStateCondition> conditions([NotNull] params string[] condition_names)
 		{
 			return condition_names.Select(AstStateCondition.named)
 				.ToList()
@@ -78,12 +82,12 @@ namespace Fools.cs.Tests.Compilation
 
 	public class AppendToName : NanoPass<ProgramFragment>
 	{
-		private readonly string _name_to_append;
-		private readonly ReadOnlyCollection<AstStateCondition> _causes;
+		[NotNull] private readonly string _name_to_append;
+		[NotNull] private readonly ReadOnlyCollection<AstStateCondition> _causes;
 
-		public AppendToName(string name_to_append,
-			IEnumerable<AstStateCondition> requires,
-			ReadOnlyCollection<AstStateCondition> causes) : base(requires)
+		public AppendToName([NotNull] string name_to_append,
+			[NotNull] IEnumerable<AstStateCondition> requires,
+			[NotNull] ReadOnlyCollection<AstStateCondition> causes) : base(requires)
 		{
 			_name_to_append = name_to_append;
 			_causes = causes;
@@ -91,7 +95,8 @@ namespace Fools.cs.Tests.Compilation
 
 		public override ProgramFragment run(ProgramFragment data, Action<AstStateCondition> add_condition)
 		{
-			var new_declarations = data.declarations.Select(_transform_declaration).ToList();
+			var new_declarations = data.declarations.Select(_transform_declaration)
+				.ToList();
 			foreach (var resulting_condition in _causes)
 			{
 				add_condition(resulting_condition);
@@ -102,10 +107,7 @@ namespace Fools.cs.Tests.Compilation
 		private Declaration _transform_declaration(Declaration input)
 		{
 			var specification = input as FeatureSpecification;
-			if (specification != null)
-			{
-				return new FeatureSpecification(string.Format("{0} {1}", specification.feature, _name_to_append), specification.body);
-			}
+			if (specification != null) return new FeatureSpecification(string.Format("{0} {1}", specification.feature, _name_to_append), specification.body);
 			return input;
 		}
 	}
