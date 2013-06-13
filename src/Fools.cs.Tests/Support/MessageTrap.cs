@@ -5,13 +5,14 @@
 
 using Fools.cs.Api;
 using Fools.cs.Interpret;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.Tests.Support
 {
 	public class MessageTrap
 	{
-		public readonly MailRoom mail_room;
-		public readonly MessageLog<MailMessage> log;
+		[NotNull] public readonly MailRoom mail_room;
+		[NotNull] public readonly MessageLog<MailMessage> log;
 
 		public MessageTrap()
 		{

@@ -5,15 +5,16 @@
 
 using System;
 using Fools.cs.Api;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.builtins
 {
 	public abstract class MissionSpecification : IEquatable<MissionSpecification>
 	{
-		public Requirements requirements;
-		public string name { get; private set; }
+		[NotNull]
+		private string name { get; set; }
 
-		protected MissionSpecification(string name)
+		protected MissionSpecification([NotNull] string name)
 		{
 			this.name = name;
 		}
@@ -30,7 +31,7 @@ namespace Fools.cs.builtins
 			return Equals(obj as MissionSpecification);
 		}
 
-		protected virtual bool _compare(MissionSpecification other)
+		protected virtual bool _compare([NotNull] MissionSpecification other)
 		{
 			return name.Equals(other.name);
 		}
@@ -51,7 +52,5 @@ namespace Fools.cs.builtins
 		}
 
 		public abstract void execute(MissionOperator operation);
-
-		public class Requirements {}
 	}
 }

@@ -9,6 +9,7 @@ using ApprovalTests.Reporters;
 using FluentAssertions;
 using Fools.cs.Api;
 using Fools.cs.Tests.Support;
+using Fools.cs.Utilities;
 using Fools.cs.builtins;
 using NUnit.Framework;
 
@@ -38,7 +39,7 @@ namespace Fools.cs.Tests.TestFramework
 					new NoMoreTestsMessage());
 		}
 
-		[Test, UseReporter(typeof(DiffReporter))]
+		[Test, UseReporter(typeof (DiffReporter))]
 		public void test_run_should_start_test_missions_when_they_are_found()
 		{
 			var mission_control = new MissionControl();
@@ -52,10 +53,11 @@ namespace Fools.cs.Tests.TestFramework
 
 	public class DiscoverTwoNoOpTests : TestDiscovery
 	{
-		public static readonly SinglePartMission FIRST_TEST = new SinglePartMission("first", Missions.pass);
-		public static readonly SinglePartMission SECOND_TEST = new SinglePartMission("second", Missions.pass);
+		[NotNull] public static readonly SinglePartMission FIRST_TEST = new SinglePartMission("first", Missions.pass);
+		[NotNull] public static readonly SinglePartMission SECOND_TEST = new SinglePartMission("second", Missions.pass);
 
-		protected override void _locate_tests(Action<MissionSpecification> report_test, Action done_finding_tests)
+		protected override void _locate_tests([NotNull] Action<MissionSpecification> report_test,
+			[NotNull] Action done_finding_tests)
 		{
 			report_test(FIRST_TEST);
 			report_test(SECOND_TEST);

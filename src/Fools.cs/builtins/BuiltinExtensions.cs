@@ -5,8 +5,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters;
+using Fools.cs.Utilities;
 using Newtonsoft.Json;
 
 namespace Fools.cs.builtins
@@ -20,14 +22,15 @@ namespace Fools.cs.builtins
 			Converters = new List<JsonConverter> {new ActionConverter()}
 		};
 
+		[NotNull]
 		public static string pretty_print(this object value)
 		{
 			return JsonConvert.SerializeObject(value, _json_serializer_settings);
 		}
 
-		internal class ActionConverter : JsonConverter
+		private class ActionConverter : JsonConverter
 		{
-			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+			public override void WriteJson([NotNull] JsonWriter writer, object value, JsonSerializer serializer)
 			{
 				if (value == null)
 				{
@@ -37,29 +40,32 @@ namespace Fools.cs.builtins
 				writer.WriteValue(_get_target(value));
 			}
 
-			private static string _get_target(object action)
+			private static string _get_target([NotNull] object action)
 			{
 				var method_property_info = action.GetType()
 					.GetProperty("Method");
+				Debug.Assert(method_property_info != null, "method_property_info != null");
 				var target = ((MethodInfo) method_property_info.GetValue(action, null));
+				Debug.Assert(target != null, "target != null");
+				Debug.Assert(target.DeclaringType != null, "target.DeclaringType != null");
 				return string.Format("{0}:{1}", target.DeclaringType.FullName, target);
 			}
 
 			public override bool CanRead { get { return false; } }
 
-			public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+			public override object ReadJson(JsonReader reader, Type object_type, object existing_value, JsonSerializer serializer)
 			{
 				throw new NotImplementedException();
 			}
 
-			public override bool CanConvert(Type objectType)
+			public override bool CanConvert([NotNull] Type object_type)
 			{
-				if (objectType.IsGenericType)
+				if (object_type.IsGenericType)
 				{
-					var non_generic_name = objectType.FullName.Split('`')[0];
+					var non_generic_name = object_type.FullName.Split('`')[0];
 					return non_generic_name == "System.Action" || non_generic_name == "System.Func";
 				}
-				return objectType == typeof (Action);
+				return object_type == typeof (Action);
 			}
 		}
 	}

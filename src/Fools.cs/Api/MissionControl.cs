@@ -6,15 +6,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Fools.cs.Utilities;
 using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
 	public class MissionControl : IDisposable
 	{
-		private readonly MailRoom _mail_room = new MailRoom();
-		private readonly TaskFactory _task_factory;
-		private readonly CancellationTokenSource _cancellation;
+		[NotNull] private readonly MailRoom _mail_room = new MailRoom();
+		[NotNull] private readonly TaskFactory _task_factory;
+		[NotNull] private readonly CancellationTokenSource _cancellation;
 
 		public MissionControl()
 		{
@@ -38,17 +39,18 @@ namespace Fools.cs.Api
 			return new Building(this, _mail_room);
 		}
 
+		[NotNull]
 		public TestRun create_test_run()
 		{
 			return new TestRun(this, _mail_room);
 		}
 
-		public void accomplish(MissionSpecification mission)
+		public void accomplish([NotNull] MissionSpecification mission)
 		{
 			new Minion(mission, this).schedule_active_missions();
 		}
 
-		internal void schedule(MissionSpecification.Requirements requirements, Action operation)
+		internal void schedule([NotNull] Action operation)
 		{
 			_task_factory.StartNew(operation);
 		}

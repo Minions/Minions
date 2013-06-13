@@ -5,17 +5,19 @@
 
 using System;
 using Fools.cs.Api;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.builtins
 {
 	public class TestFoundMessage : MailMessage, IEquatable<TestFoundMessage>
 	{
-		public TestFoundMessage(MissionSpecification mission)
+		public TestFoundMessage([NotNull] MissionSpecification mission)
 		{
 			this.mission = mission;
 		}
 
-		public MissionSpecification mission { get; private set; }
+		[NotNull]
+		public MissionSpecification mission { get; set; }
 
 		protected override bool _compare(MailMessage obj)
 		{

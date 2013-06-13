@@ -5,17 +5,19 @@
 
 using System;
 using Fools.cs.Api;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.builtins
 {
 	public class SinglePartMission : MissionSpecification, IEquatable<SinglePartMission>
 	{
-		public SinglePartMission(string name, Action operation):base(name)
+		public SinglePartMission([NotNull] string name,[NotNull] Action operation):base(name)
 		{
 			this.operation = operation;
 			is_complete = false;
 		}
 
+		[NotNull]
 		public Action operation { get; private set; }
 		public bool is_complete { get; set; }
 
@@ -40,9 +42,9 @@ namespace Fools.cs.builtins
 			}
 		}
 
-		public override void execute(MissionOperator operation)
+		public override void execute([NotNull] MissionOperator @operator)
 		{
-			operation.execute(this);
+			@operator.execute(this);
 		}
 	}
 }

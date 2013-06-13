@@ -6,14 +6,15 @@
 using System;
 using Fools.cs.Api;
 using Fools.cs.Tests.TestFramework;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.builtins
 {
 	public abstract class TestDiscovery
 	{
-		public void discover_tests(MailRoom destination)
+		public void discover_tests([NotNull] MailRoom destination)
 		{
-			_locate_tests((mission) => destination.announce(new TestFoundMessage(mission)),
+			_locate_tests(mission => destination.announce(new TestFoundMessage(mission)),
 				() => destination.announce(new NoMoreTestsMessage()));
 		}
 
