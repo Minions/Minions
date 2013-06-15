@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fools.cs.Tests", "Fools.cs.Tests\Fools.cs.Tests.csproj", "{5D8ECBE5-0149-4FF2-98B2-9ACA18BFFD44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fools.cs", "Fools.cs\Fools.cs.csproj", "{917ECD06-9ABF-4DE2-AA39-D19981577246}"
@@ -17,6 +17,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D3B89D
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code_samples", "code_samples", "{2178DE83-BE32-4D15-9137-8231867D23C4}"
+	ProjectSection(SolutionItems) = preProject
+		code_samples\final_syntax_examples.minion = code_samples\final_syntax_examples.minion
+		code_samples\http.minion = code_samples\http.minion
+		code_samples\http.tests.minion = code_samples\http.tests.minion
+		code_samples\resourceful.minion = code_samples\resourceful.minion
+		code_samples\resources.minion = code_samples\resources.minion
+		code_samples\shared_legal_docs.minion = code_samples\shared_legal_docs.minion
+		code_samples\sketchy.minion = code_samples\sketchy.minion
+		code_samples\socket.minion = code_samples\socket.minion
+		code_samples\special_handlers.minion = code_samples\special_handlers.minion
 	EndProjectSection
 EndProject
 Global
@@ -62,5 +75,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2178DE83-BE32-4D15-9137-8231867D23C4} = {74F4A32F-F4DD-49F2-BAC9-D9232A1E5E56}
 	EndGlobalSection
 EndGlobal

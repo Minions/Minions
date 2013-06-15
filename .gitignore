@@ -37,7 +37,8 @@ src/packages/*/
 #Tooling
 _ReSharper*/
 *.resharper
-[Tt]est[Rr]esult*
+[Tt]est[Rr]esult*/
+[Tt]est[Rr]esult*.xml
 
 #Project files
 [Bb]uild/
@@ -56,3 +57,5 @@ node_modules/
 build/
 dist/
 
+# Generated code
+*.peg.cs
