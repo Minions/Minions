@@ -5,6 +5,7 @@
 
 using FluentAssertions;
 using Fools.cs.Interpret;
+using Fools.cs.builtins;
 using NUnit.Framework;
 
 namespace Fools.cs.Tests.CoreLanguage
