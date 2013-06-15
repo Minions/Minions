@@ -80,7 +80,9 @@ The language is designed to be strongly type-safe. As such, there are several un
 
 Pure by default. By default, each function/generator/whatever is required to be pure. A particular function may declare itself to follow a different constraint; this becomes part of its type signature. The compiler verifies function purity recursively.
 
-Functions can also declare themselves to be "tell, don't ask." These functions never query any value that is not passed in directly as a parameter or a field on their object instance. They never even refer to any value that is reachable from one of those values. They have tons of side effects; they basically exist to call other functions and to send messages. They don't have return values. The compiler verifies this property recursively.
+Functions can also declare themselves to be "tell, don't ask." These functions never query any value that is not passed in directly as a parameter or a field on their object instance. They never even refer to any value that is reachable from one of those values. They have tons of side effects; they basically exist to call other functions and to send messages. They don't have return values. The compiler verifies this property recursively. In this style, there is no way to use getter properties or to read fields of any object. It is possible to ask an object to send back a value.
+
+The underlying execution engine is weakly tell, don't ask. No continuations ever have return values. They do access values that are not direct parameters - but only if they are reachable via direct parameters. Thus they can use getters (even chained) and public fields of objects. However, they still use trampolines to pass out all return values (which means they can support multiple return).
 
 Everything is designed for verifiability. The order of preference for verification is:
 
@@ -102,7 +104,7 @@ The language assumes that it will be used with tools. The language includes buil
 	* Manipulating language elements. This impacts:
 		* Refactoring tools.
 		* IDE.
-	* Multiple displays of the same information. This impacts:
+	* Multiple displays of the same source code. This impacts:
 		* IDE
 		* Source control.
 		* Debugger.

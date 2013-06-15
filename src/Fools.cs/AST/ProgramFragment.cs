@@ -12,5 +12,19 @@ namespace Fools.cs.AST
     {
         public List<Declaration> declarations = new List<Declaration>();
         public List<ErrorReport> errors = new List<ErrorReport>();
+
+	    public static ProgramFragment with_declarations(params Declaration[] data)
+	    {
+		    var result = new ProgramFragment();
+			 result.declarations.AddRange(data);
+		    return result;
+	    }
+
+	    public static ProgramFragment with_declarations(IEnumerable<Declaration> data)
+	    {
+			 var result = new ProgramFragment();
+			 result.declarations.AddRange(data);
+			 return result;
+		 }
     }
 }

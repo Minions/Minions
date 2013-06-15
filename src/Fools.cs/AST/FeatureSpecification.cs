@@ -13,7 +13,13 @@ namespace Fools.cs.AST
         public string feature { get; set; }
         private IList<Node> _body;
 
-        public IList<Node> body
+	    public FeatureSpecification(string feature, IEnumerable<Node> body)
+	    {
+		    _body = body.ToList();
+		    this.feature = feature;
+	    }
+
+	    public IList<Node> body
         {
             get { return _body; }
             set
