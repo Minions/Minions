@@ -4,15 +4,15 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Fools.cs.Utilities;
 using Fools.cs.builtins;
 
 namespace Fools.cs.Interpret
 {
 	public class TestControlCenter : IDisposable
 	{
-		private readonly List<TestResult> _results = new List<TestResult>();
+		[NotNull] private readonly NonNullList<TestResult> _results = new NonNullList<TestResult>();
 
 		public ReadOnlyCollection<TestResult> results { get { return _results.AsReadOnly(); } }
 

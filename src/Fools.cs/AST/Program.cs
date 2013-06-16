@@ -3,25 +3,25 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
 	public class Program
 	{
-		private readonly List<Declaration> _declarations;
+		[NotNull] private readonly NonNullList<Declaration> _declarations;
 
-		private Program(Program program, ProgramFragment new_data)
+		private Program([NotNull] Program program, [NotNull] ProgramFragment new_data)
 		{
 			_declarations = program._declarations.Concat(new_data.declarations)
-				.ToList();
+				.ToNonNullList();
 		}
 
 		private Program()
 		{
-			_declarations = new List<Declaration>();
+			_declarations = new NonNullList<Declaration>();
 		}
 
 		public static Program empty()
@@ -29,9 +29,13 @@ namespace Fools.cs.AST
 			return new Program();
 		}
 
+		// ReSharper disable ReturnTypeCanBeEnumerable.Global
+		[NotNull]
 		public ReadOnlyCollection<Declaration> declarations { get { return _declarations.AsReadOnly(); } }
+		// ReSharper restore ReturnTypeCanBeEnumerable.Global
 
-		public Program merge(ProgramFragment new_data)
+		[NotNull]
+		public Program merge([NotNull] ProgramFragment new_data)
 		{
 			return new Program(this, new_data);
 		}

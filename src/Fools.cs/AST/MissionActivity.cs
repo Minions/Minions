@@ -5,23 +5,27 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
-    public class MissionActivity : Declaration
-    {
-        public string name { get; set; }
-        public Mission.Purpose special_purpose { get; set; }
-        private IList<Node> _body;
+	public class MissionActivity : Declaration
+	{
+		[NotNull]
+		public string name { get; set; }
 
-        public IList<Node> body
-        {
-            get { return _body; }
-            set
-            {
-                _body = value.without_nulls()
-                    .ToList();
-            }
-        }
-    }
+		public Mission.Purpose special_purpose { get; set; }
+		[NotNull] private IList<Node> _body;
+
+		[NotNull]
+		public IList<Node> body
+		{
+			get { return _body; }
+			set
+			{
+				_body = value.without_nulls()
+					.ToList();
+			}
+		}
+	}
 }

@@ -4,29 +4,33 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System.Collections.Generic;
-using System.Linq;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
-    public class FeatureSpecification : Declaration
-    {
-        public string feature { get; set; }
-        private IList<Node> _body;
+	public class FeatureSpecification : Declaration
+	{
+		[NotNull]
+		public string feature { get; set; }
 
-	    public FeatureSpecification(string feature, IEnumerable<Node> body)
-	    {
-		    _body = body.ToList();
-		    this.feature = feature;
-	    }
+		[NotNull] private NonNullList<Node> _body;
 
-	    public IList<Node> body
-        {
-            get { return _body; }
-            set
-            {
-                _body = value.without_nulls()
-                    .ToList();
-            }
-        }
-    }
+		public FeatureSpecification([NotNull] string feature, [NotNull] IEnumerable<Node> body)
+		{
+			_body = body.without_nulls()
+				.ToNonNullList();
+			this.feature = feature;
+		}
+
+		[NotNull]
+		public NonNullList<Node> body
+		{
+			get { return _body; }
+			set
+			{
+				_body = value.without_nulls()
+					.ToNonNullList();
+			}
+		}
+	}
 }

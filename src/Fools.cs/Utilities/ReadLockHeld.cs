@@ -3,13 +3,15 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
+using Fools.cs.Utilities;
+
 namespace System.Threading
 {
 	public class ReadLockHeld : IDisposable
 	{
-		private readonly ReaderWriterLockSlim _guard;
+		[NotNull] private readonly ReaderWriterLockSlim _guard;
 
-		public ReadLockHeld(ReaderWriterLockSlim guard)
+		public ReadLockHeld([NotNull] ReaderWriterLockSlim guard)
 		{
 			_guard = guard;
 			guard.EnterReadLock();
@@ -23,9 +25,9 @@ namespace System.Threading
 
 	public class UpgradableLockHeld : IDisposable
 	{
-		private readonly ReaderWriterLockSlim _guard;
+		[NotNull] private readonly ReaderWriterLockSlim _guard;
 
-		public UpgradableLockHeld(ReaderWriterLockSlim guard)
+		public UpgradableLockHeld([NotNull] ReaderWriterLockSlim guard)
 		{
 			_guard = guard;
 			guard.EnterUpgradeableReadLock();
@@ -44,9 +46,9 @@ namespace System.Threading
 
 	public class WriteLockHeld : IDisposable
 	{
-		private readonly ReaderWriterLockSlim _guard;
+		[NotNull] private readonly ReaderWriterLockSlim _guard;
 
-		public WriteLockHeld(ReaderWriterLockSlim guard)
+		public WriteLockHeld([NotNull] ReaderWriterLockSlim guard)
 		{
 			_guard = guard;
 			guard.EnterWriteLock();

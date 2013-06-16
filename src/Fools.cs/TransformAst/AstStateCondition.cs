@@ -3,26 +3,27 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using System.Collections.Generic;
 using System.Threading;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.TransformAst
 {
 	public class AstStateCondition
 	{
-		private readonly string _name;
+		[NotNull, UsedImplicitly] private readonly string _name;
 
-		private static readonly Dictionary<string, AstStateCondition> _existing_condition =
-			new Dictionary<string, AstStateCondition>();
+		[NotNull] private static readonly NonNullDictionary<string, AstStateCondition> _existing_condition =
+			new NonNullDictionary<string, AstStateCondition>();
 
-		private static readonly ReaderWriterLockSlim _cache_guard = new ReaderWriterLockSlim();
+		[NotNull] private static readonly ReaderWriterLockSlim _cache_guard = new ReaderWriterLockSlim();
 
-		private AstStateCondition(string name)
+		private AstStateCondition([NotNull] string name)
 		{
 			_name = name;
 		}
 
-		public static AstStateCondition named(string name)
+		[NotNull]
+		public static AstStateCondition named([NotNull] string name)
 		{
 			using (_cache_guard.acquire_read_access())
 			{
@@ -32,7 +33,8 @@ namespace Fools.cs.TransformAst
 			return _create_and_cache(name);
 		}
 
-		private static AstStateCondition _create_and_cache(string name)
+		[NotNull]
+		private static AstStateCondition _create_and_cache([NotNull] string name)
 		{
 			using (var access_token = _cache_guard.acquire_blocking_read_access())
 			{
