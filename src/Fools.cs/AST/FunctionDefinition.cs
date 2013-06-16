@@ -5,22 +5,26 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
-    public class FunctionDefinition : Declaration
-    {
-        public string name { get; set; }
-        private IList<Node> _body;
+	public class FunctionDefinition : Declaration
+	{
+		[NotNull]
+		public string name { get; set; }
 
-        public IList<Node> body
-        {
-            get { return _body; }
-            set
-            {
-                _body = value.without_nulls()
-                    .ToList();
-            }
-        }
-    }
+		[NotNull] private IList<Node> _body;
+
+		[NotNull]
+		public IList<Node> body
+		{
+			get { return _body; }
+			set
+			{
+				_body = value.without_nulls()
+					.ToList();
+			}
+		}
+	}
 }

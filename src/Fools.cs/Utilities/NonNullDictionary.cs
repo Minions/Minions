@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 // ReSharper disable InconsistentNaming
 namespace Fools.cs.Utilities
 {
-	public class NonNullDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+	public sealed class NonNullDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 	{
 		[NotNull] private readonly Dictionary<TKey, TValue> _impl = new Dictionary<TKey, TValue>();
 
