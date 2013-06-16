@@ -57,3 +57,5 @@ node_modules/
 build/
 dist/
 
+# Generated code
+*.peg.cs
