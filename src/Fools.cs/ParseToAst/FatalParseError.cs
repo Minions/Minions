@@ -4,17 +4,20 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.ParseToAst
 {
-	 [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
-	 public class FatalParseError : Exception
-    {
-        public ErrorReport error { get; private set; }
+	[SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
+	public class FatalParseError : Exception
+	{
+		[NotNull]
+		public ErrorReport error { get; private set; }
 
-        public FatalParseError(ErrorReport error) : base(error.ToString())
-        {
-            this.error = error;
-        }
-    }
+		public FatalParseError([NotNull] ErrorReport error) : base(error.ToString())
+		{
+			this.error = error;
+		}
+	}
 }

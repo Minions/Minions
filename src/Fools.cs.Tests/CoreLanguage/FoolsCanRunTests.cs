@@ -18,7 +18,7 @@ namespace Fools.cs.Tests.CoreLanguage
         {
             using (var test_subject = new Interpreter())
             {
-                var tests = @"
+                const string tests = @"
 specify feature - the test framework:
 	requires a simple empty test should pass:
 		pass

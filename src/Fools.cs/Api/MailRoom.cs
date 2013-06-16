@@ -3,18 +3,18 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using System.Collections.Generic;
 using Fools.cs.Interpret;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.Api
 {
 	public class MailRoom
 	{
-		private readonly MailRoom _home_office;
-		private readonly List<MessageRecipient> _universal_listeners = new List<MessageRecipient>();
+		[CanBeNull] private readonly MailRoom _home_office;
+		[NotNull] private readonly NonNullList<MessageRecipient> _universal_listeners = new NonNullList<MessageRecipient>();
 
-		private readonly Dictionary<string, List<MessageRecipient>> _listeners =
-			new Dictionary<string, List<MessageRecipient>>();
+		[NotNull] private readonly NonNullDictionary<string, NonNullList<MessageRecipient>> _listeners =
+			new NonNullDictionary<string, NonNullList<MessageRecipient>>();
 
 		private MailRoom(MailRoom home_office)
 		{
@@ -28,29 +28,29 @@ namespace Fools.cs.Api
 
 		public MailRoom home_office { get { return _home_office; } }
 
+		[NotNull]
 		public MailRoom create_satellite_office()
 		{
 			return new MailRoom(this);
 		}
 
-		public void subscribe(MessageRecipient listener, string message_type)
+		public void subscribe([NotNull] MessageRecipient listener, [NotNull] string message_type)
 		{
-			List<MessageRecipient> subscribers;
-			if (_listeners.ContainsKey(message_type)) subscribers = _listeners[message_type];
-			else
+			NonNullList<MessageRecipient> subscribers;
+			if (!_listeners.TryGetValue(message_type, out subscribers))
 			{
-				subscribers = new List<MessageRecipient>();
+				subscribers = new NonNullList<MessageRecipient>();
 				_listeners[message_type] = subscribers;
 			}
 			subscribers.Add(listener);
 		}
 
-		public void subscribe_to_all(MessageRecipient listener)
+		public void subscribe_to_all([NotNull] MessageRecipient listener)
 		{
 			_universal_listeners.Add(listener);
 		}
 
-		public void announce(MailMessage what_happened)
+		public void announce([NotNull] MailMessage what_happened)
 		{
 			_announce_to_specific_listeners(what_happened);
 			_announce_to_universal_listeners(what_happened);
@@ -59,20 +59,25 @@ namespace Fools.cs.Api
 
 		private void _announce_to_universal_listeners(MailMessage what_happened)
 		{
-			_universal_listeners.ForEach(recipient => recipient.accept(what_happened));
+			_universal_listeners.ForEach( // ReSharper disable PossibleNullReferenceException
+				recipient => recipient. // ReSharper restore PossibleNullReferenceException
+					accept(what_happened));
 		}
 
-		private void _forward_to_home_office(MailMessage what_happened)
+		private void _forward_to_home_office([NotNull] MailMessage what_happened)
 		{
 			if (_home_office != null) _home_office.announce(what_happened);
 		}
 
-		private void _announce_to_specific_listeners(MailMessage what_happened)
+		private void _announce_to_specific_listeners([NotNull] MailMessage what_happened)
 		{
 			var mesage_type = what_happened.GetType()
 				.Name;
-			if (!_listeners.ContainsKey(mesage_type)) return;
-			_listeners[mesage_type].ForEach(recipient => recipient.accept(what_happened));
+			NonNullList<MessageRecipient> recipients;
+			if (!_listeners.TryGetValue(mesage_type, out recipients)) return;
+			recipients.ForEach(recipient => // ReSharper disable PossibleNullReferenceException
+				recipient. // ReSharper restore PossibleNullReferenceException
+					accept(what_happened));
 		}
 	}
 }

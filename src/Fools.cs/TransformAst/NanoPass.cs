@@ -6,35 +6,51 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.TransformAst
 {
 	public abstract class NanoPass<TTarget>
 	{
-		private static readonly ReadOnlyCollection<NanoPass<TTarget>> ALL;
-		private readonly ReadOnlyCollection<AstStateCondition> _requires;
+		[NotNull] private static readonly ReadOnlyCollection<NanoPass<TTarget>> _all;
+		[NotNull] private readonly ReadOnlyCollection<AstStateCondition> _requires;
 
 		static NanoPass()
 		{
-			ALL = Assembly.GetExecutingAssembly()
+			_all = Assembly.GetExecutingAssembly()
 				.GetTypes()
-				.Where(t => t.IsSubclassOf(typeof(NanoPass<TTarget>)) && !t.IsAbstract)
-				.Select(t => (NanoPass<TTarget>)t.GetConstructor(new Type[] { })
-					.Invoke(new object[] {}))
+				.Where(t => {
+					Debug.Assert(t != null, "t != null");
+					return t.IsSubclassOf(typeof (NanoPass<TTarget>)) && !t.IsAbstract;
+				})
+				.Select(t => {
+					Debug.Assert(t != null, "t != null");
+					var constructor = t.GetConstructor(new Type[] {});
+					Debug.Assert(constructor != null, "constructor != null");
+					return (NanoPass<TTarget>) constructor.Invoke(new object[] {});
+				})
 				.ToList()
 				.AsReadOnly();
 		}
 
-		protected NanoPass(IEnumerable<AstStateCondition> requires)
+		protected NanoPass([NotNull] IEnumerable<AstStateCondition> requires)
 		{
-			_requires = requires.ToList().AsReadOnly();
+			_requires = requires.ToList()
+				.AsReadOnly();
 		}
 
-		public static ReadOnlyCollection<NanoPass<TTarget>> all { get { return ALL; } }
-		public ReadOnlyCollection<AstStateCondition> requires { get { return _requires; } }
+		[NotNull]
+		public static ReadOnlyCollection<NanoPass<TTarget>> all { get { return _all; } }
 
-		public abstract TTarget run(TTarget data, Action<AstStateCondition> add_condition);
+		[NotNull]
+// ReSharper disable ReturnTypeCanBeEnumerable.Global
+		public ReadOnlyCollection<AstStateCondition> requires { get { return _requires; } }
+// ReSharper restore ReturnTypeCanBeEnumerable.Global
+
+		[NotNull]
+		public abstract TTarget run([NotNull] TTarget data, [NotNull] Action<AstStateCondition> add_condition);
 	}
 }

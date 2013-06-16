@@ -73,6 +73,36 @@ Secret Agents have time control technology. This allows things like efficient wa
 
 Because rules don't apply to them, it is very easy for Agents to cause trouble. Therefore, most people cannot recruit Agents. In fact, Evil Overlords are not allowed to interact with Agents at all.
 
+Platform: Fools
+-------------------
+
+Minions and Secret Agents are simply trained Fools. Fools make up the core execution environment. When porting to a new environment, you simply need to ensure that it is possible to recruit and communicate with Fools. Everything else is built by Fools.
+
+Fools differ from both Agents and Minions in that they are:
+ * Not well behaved.
+ * Do not guarantee when they will execute.
+ * Have no constraints on what they can see.
+ * Do not know about access control, buildings, or the like.
+ * Speak only an extremely simple language. They do not understand even core Minion.
+ * Have access to fewer platform libraries (only the low-level ones that we have to directly port to each platform).
+
+This is designed to make it easy to spread Minions to wherever your Evil Overlords are. It is easy to make Fools out of any system. And once you have Fools, this project can upgradde them to full Minions.
+
+The most complex part of a Fools platform is the graphics. This is why Fools defines N+1 graphics libraries. The 1 is the common library. It supports simple window-oriented graphics and is intended to be easy to port. Graphics created using it will not look native on any platform. There are two alternatives for this library; each platform chooses one. Generally it will choose whichever is easiest.
+
+ * Expose the databinding API with the minimum set of core controls (the same thing that Fools exposes to the outside world).
+ * Expose a simple 2D drawing API and input handlers and let Fools build the rest.
+
+Because of this choice, even the portable graphics library is not guaranteed to look or behave the same on all platforms. Attempts will be made to keep it similar, but it will be run by Fools so don't expect too much. That said, each graphics library is required to have the same API. You will be able to interact with your UI in exactly the same way regardless of platform. It will just look different to any humans involved.
+
+This brings us to the N libraries. These are all intended to be native implementations. They are required to expose the same API as any other graphics library so that Evil Overlords can easily switch between libraries. Among other constraints, this means:
+
+ * All native libraries need to support allocating a surface that can then be used by the generic library. Therefore, if someone uses a special control in some other native library, your library can display the information using the generic fallback.
+ * Platform-unique controls may only be introduced if the library developer also introduces a control to the genericc graphics library that:
+   * Runs anywhere, based on the 2D drawing.
+	* Is information-equivalent (takes the same view models and displays the same info).
+	* Plays the same role in layout of the UI, though it does not need to look the same. For example, the Windows Metro Pivot control could be implemented as a tab panel on other platforms.
+
 Additional Language Constraints
 -----------------------------------------
 

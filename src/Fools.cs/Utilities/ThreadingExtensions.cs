@@ -3,19 +3,28 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
+using Fools.cs.Utilities;
+
+// ReSharper disable CheckNamespace
 namespace System.Threading
+// ReSharper restore CheckNamespace
 {
 	public static class ThreadingExtensions
 	{
-		public static ReadLockHeld acquire_read_access(this ReaderWriterLockSlim guard)
+		[NotNull]
+		public static ReadLockHeld acquire_read_access([NotNull] this ReaderWriterLockSlim guard)
 		{
 			return new ReadLockHeld(guard);
 		}
-		public static UpgradableLockHeld acquire_blocking_read_access(this ReaderWriterLockSlim guard)
+
+		[NotNull]
+		public static UpgradableLockHeld acquire_blocking_read_access([NotNull] this ReaderWriterLockSlim guard)
 		{
 			return new UpgradableLockHeld(guard);
 		}
-		public static WriteLockHeld acquire_write_access(this ReaderWriterLockSlim guard)
+
+		[NotNull, UsedImplicitly]
+		public static WriteLockHeld acquire_write_access([NotNull] this ReaderWriterLockSlim guard)
 		{
 			return new WriteLockHeld(guard);
 		}

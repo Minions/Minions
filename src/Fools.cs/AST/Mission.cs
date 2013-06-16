@@ -5,29 +5,33 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
-    public class Mission : Declaration
-    {
-        public enum Purpose
-        {
-            Normal,
-            Preparation,
-            CleanUp
-        }
+	public class Mission : Declaration
+	{
+		public enum Purpose
+		{
+			Normal,
+			Preparation,
+			CleanUp
+		}
 
-        public string name { get; set; }
-        private IList<Node> _body;
+		[NotNull]
+		public string name { get; set; }
 
-        public IList<Node> body
-        {
-            get { return _body; }
-            set
-            {
-                _body = value.without_nulls()
-                    .ToList();
-            }
-        }
-    }
+		[NotNull] private IList<Node> _body;
+
+		[NotNull]
+		public IList<Node> body
+		{
+			get { return _body; }
+			set
+			{
+				_body = value.without_nulls()
+					.ToList();
+			}
+		}
+	}
 }

@@ -5,26 +5,29 @@
 
 using System.Collections.Generic;
 using Fools.cs.ParseToAst;
+using Fools.cs.Utilities;
 
 namespace Fools.cs.AST
 {
-    public class ProgramFragment
-    {
-        public List<Declaration> declarations = new List<Declaration>();
-        public List<ErrorReport> errors = new List<ErrorReport>();
+	public class ProgramFragment
+	{
+		[NotNull] public readonly NonNullList<Declaration> declarations = new NonNullList<Declaration>();
+		[NotNull] public readonly NonNullList<ErrorReport> errors = new NonNullList<ErrorReport>();
 
-	    public static ProgramFragment with_declarations(params Declaration[] data)
-	    {
-		    var result = new ProgramFragment();
-			 result.declarations.AddRange(data);
-		    return result;
-	    }
+		[NotNull]
+		public static ProgramFragment with_declarations([NotNull] params Declaration[] data)
+		{
+			var result = new ProgramFragment();
+			result.declarations.AddRange(data);
+			return result;
+		}
 
-	    public static ProgramFragment with_declarations(IEnumerable<Declaration> data)
-	    {
-			 var result = new ProgramFragment();
-			 result.declarations.AddRange(data);
-			 return result;
-		 }
-    }
+		[NotNull]
+		public static ProgramFragment with_declarations([NotNull] IEnumerable<Declaration> data)
+		{
+			var result = new ProgramFragment();
+			result.declarations.AddRange(data);
+			return result;
+		}
+	}
 }
