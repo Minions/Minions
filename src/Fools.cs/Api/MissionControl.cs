@@ -41,12 +41,6 @@ namespace Fools.cs.Api
 			return new Building(this, _mail_room);
 		}
 
-		[NotNull]
-		public TestRun create_test_run()
-		{
-			return new TestRun(this, _mail_room);
-		}
-
 		public void accomplish([NotNull] MissionSpecification mission)
 		{
 			new Minion(mission, this).schedule_active_missions();
