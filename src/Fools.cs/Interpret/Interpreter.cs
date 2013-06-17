@@ -12,11 +12,8 @@ namespace Fools.cs.Interpret
 {
 	public class Interpreter : IDisposable
 	{
-		[NotNull] public readonly TestControlCenter tests = new TestControlCenter();
-
 		public void Dispose()
 		{
-			tests.Dispose();
 		}
 
 		public void take_commands([NotNull] string fools_command_file_contents)
