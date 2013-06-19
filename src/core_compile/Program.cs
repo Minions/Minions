@@ -27,9 +27,9 @@ namespace core_compile
 			return (int) execute();
 		}
 
-// ReSharper disable UnusedParameter.Local
+		// ReSharper disable UnusedParameter.Local
 		private static void prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
-// ReSharper restore UnusedParameter.Local
+			// ReSharper restore UnusedParameter.Local
 		{
 			// if errors or -help, set up those missions. Else a compile mission.
 			// Also set up ports, such as binding view model to view.
@@ -62,6 +62,9 @@ namespace core_compile
 	{
 		[ArgDescription("Print this usage info and exit."), ArgShortcut("--help"), ArgShortcut("/?")]
 		public string help { get; set; }
+
+		[ArgDescription("Run all built-in tests for this program and exit."), ArgShortcut("--run-tests")]
+		public string test { get; set; }
 	}
 
 	public class Commands<T>
