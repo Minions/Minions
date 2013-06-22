@@ -33,7 +33,7 @@ namespace Fools.cs.builtins
 
 		protected virtual bool _compare([NotNull] MissionSpecification other)
 		{
-			return name.Equals(other.name);
+			return GetType() == other.GetType() && name.Equals(other.name);
 		}
 
 		public override int GetHashCode()
@@ -50,7 +50,7 @@ namespace Fools.cs.builtins
 		{
 			return !Equals(left, right);
 		}
-
-		public abstract void execute(MissionOperator operation);
+		
+		public abstract void execute([NotNull] MissionOperator operation);
 	}
 }

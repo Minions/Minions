@@ -4,7 +4,10 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using System.Threading;
+using Fools.cs.Api;
 using Fools.cs.Utilities;
+using Fools.cs.builtins;
 using PowerArgs;
 
 namespace core_compile
@@ -12,6 +15,10 @@ namespace core_compile
 	[UsedImplicitly]
 	public class Program
 	{
+		[NotNull] private readonly MissionControl _mission_control = new MissionControl();
+		private ErrorLevel _result = ErrorLevel.Ok;
+		[NotNull] private readonly ManualResetEventSlim _program_complete = new ManualResetEventSlim(false);
+
 		public enum ErrorLevel
 		{
 			Ok = 0,
@@ -23,21 +30,48 @@ namespace core_compile
 		private static int Main([NotNull] string[] args) // ReSharper restore InconsistentNaming
 		{
 			var commands = figure_out_what_user_wants_to_do<CompilerUserInteractionModel>(args);
-			prepare_missions(commands);
-			return (int) execute();
+			return (int) prepare_missions(commands)
+				.execute();
 		}
 
 		// ReSharper disable UnusedParameter.Local
-		private static void prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
+		[NotNull]
+		private static Program prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
 			// ReSharper restore UnusedParameter.Local
 		{
-			// if errors or -help, set up those missions. Else a compile mission.
-			// Also set up ports, such as binding view model to view.
+			var program = new Program();
+			SinglePartMission mission;
+			if (commands.args == null || commands.args.help) mission = new SinglePartMission("Print usage", () => program.print_usage(commands.exception, commands.error_level));
+			else mission = new SinglePartMission("Parse the project file and find work to do", program.parse_project_file);
+			program._mission_control.accomplish(mission);
+			return program;
 		}
 
-		private static ErrorLevel execute()
+		private void parse_project_file()
 		{
-			return ErrorLevel.Ok;
+			Console.WriteLine("I would be parsing the project file here.");
+			exit(ErrorLevel.Ok);
+		}
+
+		private void exit(ErrorLevel result)
+		{
+			_result = result;
+			_program_complete.Set();
+		}
+
+		private void print_usage([CanBeNull] Exception exception, ErrorLevel error_level)
+		{
+			if (exception != null) Console.WriteLine(exception.Message);
+			ArgUsage.GetStyledUsage<CompilerUserInteractionModel>()
+				.Write();
+			exit(error_level);
+		}
+
+		private ErrorLevel execute()
+		{
+			_program_complete.Wait();
+			_mission_control.Dispose();
+			return _result;
 		}
 
 		[NotNull]
@@ -45,7 +79,7 @@ namespace core_compile
 		{
 			try
 			{
-				return Args.Parse<Commands<T>>(args);
+				return Commands<T>.run(Args.Parse<T>(args));
 			}
 			catch (ArgException ex)
 			{
@@ -61,19 +95,24 @@ namespace core_compile
 	public class UniversalCommands
 	{
 		[ArgDescription("Print this usage info and exit."), ArgShortcut("--help"), ArgShortcut("/?")]
-		public string help { get; set; }
+		public bool help { get; set; }
 
 		[ArgDescription("Run all built-in tests for this program and exit."), ArgShortcut("--run-tests")]
 		public string test { get; set; }
 	}
 
-	public class Commands<T>
+	public class Commands<T> where T : class
 	{
-		private Program.ErrorLevel _error_level;
+		private Program.ErrorLevel _error_level = Program.ErrorLevel.Ok;
 		[CanBeNull] private Exception _exception;
 
+		private Commands(T args)
+		{
+			this.args = args;
+		}
+
 		[CanBeNull]
-		public T data { get; set; }
+		public T args { get; private set; }
 
 		public Program.ErrorLevel error_level { get { return _error_level; } }
 
@@ -83,8 +122,14 @@ namespace core_compile
 		[NotNull]
 		public static Commands<T> quit(Program.ErrorLevel error_level, [CanBeNull] Exception exception)
 		{
-			var commands = new Commands<T> {_error_level = error_level, _exception = exception};
+			var commands = new Commands<T>(null) {_error_level = error_level, _exception = exception};
 			return commands;
+		}
+
+		[NotNull]
+		public static Commands<T> run([NotNull] T args)
+		{
+			return new Commands<T>(args);
 		}
 	}
 }

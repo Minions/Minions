@@ -32,5 +32,12 @@ namespace Fools.cs.Api
 					mission.is_complete = true;
 				});
 		}
+
+		public void execute(SequentialMission mission)
+		{
+			var next_mission = mission.next_mission;
+			if (next_mission == null) return;
+			execute(next_mission);
+		}
 	}
 }
