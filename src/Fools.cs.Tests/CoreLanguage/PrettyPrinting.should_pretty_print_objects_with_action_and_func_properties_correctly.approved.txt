@@ -1,7 +1,7 @@
 ﻿{
   "$type": "Fools.cs.Tests.CoreLanguage.PrettyPrinting+ClassWithManyProperties, Fools.cs.Tests",
   "integer": 3,
-  "named_action": "Fools.cs.builtins.Missions:Void pass()",
+  "named_action": "Fools.cs.Tests.CoreLanguage.PrettyPrinting+ClassWithManyProperties:Void pass()",
   "lambda_action": "Fools.cs.Tests.CoreLanguage.PrettyPrinting+ClassWithManyProperties:Void <.ctor>b__0(Double, System.String)",
   "named_function": "Fools.cs.Tests.CoreLanguage.PrettyPrinting+ClassWithManyProperties:Int32 big_fun(Int32, System.String)"
 }

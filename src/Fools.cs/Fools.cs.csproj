@@ -129,7 +129,6 @@
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
     <Compile Include="builtins\BuiltinExtensions.cs" />
-    <Compile Include="builtins\Missions.cs" />
     <Compile Include="builtins\MissionSpecification.cs" />
     <Compile Include="builtins\SinglePartMission.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
