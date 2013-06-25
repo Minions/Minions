@@ -43,7 +43,7 @@ namespace Fools.cs.Api
 
 		public void accomplish([NotNull] MissionSpecification mission)
 		{
-			new Minion(mission, this).schedule_active_missions();
+			new Fool(mission, this).schedule_active_missions();
 		}
 
 		internal void schedule([NotNull] Action operation)

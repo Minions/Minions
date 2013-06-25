@@ -112,7 +112,7 @@
     <Compile Include="Api\FoolsCompiler.cs" />
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
-    <Compile Include="Api\Minion.cs" />
+    <Compile Include="Api\Fool.cs" />
     <Compile Include="Api\MissionControl.cs" />
     <Compile Include="Api\MissionOperator.cs" />
     <Compile Include="builtins\SequentialMission.cs" />

@@ -1,4 +1,4 @@
-﻿// Minion.cs
+﻿// Fool.cs
 // 
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
@@ -8,12 +8,12 @@ using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
-	public class Minion : MissionOperator
+	public class Fool : MissionOperator
 	{
 		[NotNull] private readonly MissionSpecification _mission;
 		[NotNull] private readonly MissionControl _mission_control;
 
-		public Minion([NotNull] MissionSpecification mission, [NotNull] MissionControl mission_control)
+		public Fool([NotNull] MissionSpecification mission, [NotNull] MissionControl mission_control)
 		{
 			_mission = mission;
 			_mission_control = mission_control;
