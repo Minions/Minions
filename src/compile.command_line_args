@@ -1,0 +1,11 @@
+
+purpose:
+	"Compile one or more projects. Skips unchanged projects by default."
+
+options:
+	--rebuild-all, -a as switch:
+		"Force the compiler to rebuild all projects even if it thinks they are unchanged."
+
+positional:
+	1+ File.Path called project_file_names:
+		"Paths to the projects you wish to compile."

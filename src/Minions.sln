@@ -23,6 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D3B89D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code_samples", "code_samples", "{2178DE83-BE32-4D15-9137-8231867D23C4}"
 	ProjectSection(SolutionItems) = preProject
+		compile.command_line_args = compile.command_line_args
+		compile.fool = compile.fool
+		compile.fools.foolsproj = compile.fools.foolsproj
 		code_samples\final_syntax_examples.minion = code_samples\final_syntax_examples.minion
 		code_samples\http.minion = code_samples\http.minion
 		code_samples\http.tests.minion = code_samples\http.tests.minion
