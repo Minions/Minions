@@ -1,9 +1,11 @@
+// Read more about pi-calculus and system d.
 
-one fool begins interacting.with.the.user at mission_control
-several fools begin finding.files.to.compile at mission_control
+the evil overlord commands:
+	fools! interact.with.the.user
+	fools! find.files.to.compile
 
-mission interacting.with.the.user is:
-	when app.init:
+mission interact.with.the.user is:
+	send new fool on this mission whenever app.init:
 		my.projects_to_build = message.project_file_names
 		for each project_file in message.project_file_names:
 			broadcast project_file.found(project=project_file, rebuild.all=message.rebuild_all)
@@ -14,37 +16,75 @@ mission interacting.with.the.user is:
 		if my.projects_to_build.is.empty():
 			tell mission_control app.quit(0)
 
-mission finding.files.to.compile is:
-	requires:
-		new building named code_factory with:
-			compiler = fools.add.compiler_passes(Fools.Compiler())
-			Eventual(NameTable) names
-		send.mail.access to code_factory
-		several fools begin compiling.a.file at code_factory
+a CodeFactory building has:
+	compiler = fools.add.compiler_passes(Fools.Compiler())
+	names = Eventual(NameTable) # An Eventual() is supplied when setting up the building (typically during mission creation for some mission). Eventuals ensure at runtime that no access happens until a value is supplied. If early access is attempted, they kill the mission.
+	fools to compile.a.file
 
-	prepare my.lab:
+mission find.files.to.compile is:
+	my.lab has:
+		_code_factory = CodeFactory()
 		_program = Fools.Program()
-		_fragments = []
+		_fragments = [<ProgramFragment>]
+		_build_info = Eventual(ProjectFile.BuildInfo)
 
-	started by project_file.found:
-		project = message.file.path
-		read.file(project) |<1> project_file.parse{contents=message.contents} | code_factory:
+	send new fool on this mission whenever project_file.found:
+		project = __message.file.path
+		read.file(project) |<1> project_file.parse{contents=__message.contents} | _code_factory:
 			on file.not.found at <1>:
 				tell user error(strings.missing_project_file, project)
 				broadcast compilation.finished(project, False)
 
-	whenever fools.local.compilation.complete at code_factory:
-		my.lab._program.add_names_from(message.fragment)
-		my.lab._fragments.add(message.fragment)
+	inside the _code_factory:
+		whenever project_file.build_info:
+			_build_info = message
+
+		whenever fools.local.names.defined:
+			_program.names.merge_from(message.names)
+
+		after fools.local.names.defined from everyone compiling.a.file:
+			code_factory.names = _program.names
+			tell code_factory.fools.on_mission(compiling.a.file) names.are.defined()
+
+		whenever fools.local.compilation.complete:
+			_program.add_names_from(message.fragment)
+
+		after fools.local.compilation.complete from everyone compiling.a.file:
+			build(_build_info, _program) | __mission.hq
 
 mission compiling.a.file is:
-	started by new.fools.file:
-		broadcast mission.location.compiler.compile_local(message.code)
+	my.lab will have:
+		_local_code = a Fools.ProgramFragment # = a Foo means the handler for the initial message is required to fill in a value for this field. Therefore, no value is supplied when setting up the lab.
 
-	when
+	send new fool on this mission whenever new.fools.file:
+		_local_code = __mission.location.compiler.compile_local(message.code)
+		broadcast fools.local.names.defined(_local_code.names)
 
-def project_file.parse(string contents, mail_room factory):
-	ssdf
+	the first names.are.defined:
+		_local_code.resolve_names(message.name_table)
+		broadcast fools.local.compilation.complete(_local_code)
+
+def build(Fools.Program program, ProjectFile.BuildInfo build_info):
+	program.finish_compilation()
+	program.generate_assembly(build_info)
+	broadcast compilation.finished(build_info.project.file_name)
+
+def project_file.parse(String contents):
+	data = parse_fools_project(contents)
+	broadcast build_info_from(data)
+	announce_files_to_compile(data, new.fools.file):
+
+def build_info_from(ProjectFile proj):
+	return project_file.build_info(
+		output_type=proj.output_type,
+		user_port=proj.user_port,
+		command_line=proj.command_line,
+		language=proj.language
+	)
+
+def announce_files_to_compile(ProjectFile proj):
+	for each glob in proj.include:
+		glob.announce_matches(new.fools.file)
 
 new message compilation.finished:
 	project as File.Path
@@ -59,8 +99,45 @@ new message new.fools.file:
 new message fools.local.compilation.complete:
 	program as Fools.Program.Fragment
 
+new message project_file.build_info:
+	ProgramExecutionType output_type
+	UserIoPortType user_port
+	Maybe(String) command_line
+	LanguageDescription language
+
 copy type String to File.Path
 copy type String to File.Contents
+
+new type ProjectFile:
+	ProgramExecutionType output_type
+	UserIoPortType user_port
+	Maybe(String) command_line
+	LanguageDescription language
+	List(FileGlob) include
+
+new type LanguageDescription:
+	String base
+	List(String) universal_extensions
+
+new type ProgramExecutionTypeDecl:
+	ConsoleProgramType program.console
+
+computed type ProgramExecutionType = Enumeration(ProgramExecutionTypeDecl)
+
+new type ConsoleProgramType:
+	pass
+
+new type UserIoPortTypeDecl:
+	StreamToConsoleType console.streaming
+	InteractViaConsoleType console.interactive
+
+computed type UserIoPortType = Enumeration(UserIoPortTypeDecl)
+
+new type StreamToConsoleType:
+	pass
+
+new type InteractViaConsoleType:
+	pass
 
 // I would like to be able to state the overall process. All of these are ways that Minions
 // might do this work. But it probably doesn't make sense to define these for Fools.
@@ -99,7 +176,7 @@ This is a sequence of map/reduce operations, with some parallel carry-over betwe
 				failed W destroys factory
 				failed C destroys factory
 			start on C:
-				read.file(project) | generate.files.to.compile{} | spawn.fool W per message
+				read.file(project) | generate.files.to.compile{} | spawn.fool.per_message(W)
 			compile.fool on W:
 				compile.fools(message.code) |-> C
 			names.computed on C:
@@ -136,7 +213,7 @@ This is a sequence of map/reduce operations, with some parallel carry-over betwe
 			requires:
 				new building named code_factory with:
 					compiler = fools.add.compiler_passes(Fools.Compiler())
-					names = eventual name.table
+					names = eventual name.table)
 			generate:
 				read.file(project) | generate.files.to.compile
 			map and retain fools as local.compilers:
