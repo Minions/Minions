@@ -40,20 +40,14 @@ namespace core_compile
 			// ReSharper restore UnusedParameter.Local
 		{
 			var program = new Program();
-			SinglePartMission mission;
+			MissionSpecification mission;
 			if (commands.args == null || commands.args.help) mission = new SinglePartMission("Print usage", () => program.print_usage(commands.exception, commands.error_level));
-			else mission = new SinglePartMission("Parse the project file and find work to do", program.parse_project_file);
+			else mission = FoolsCompilerProgram.make_primary_mission(program);
 			program._mission_control.accomplish(mission);
 			return program;
 		}
 
-		private void parse_project_file()
-		{
-			Console.WriteLine("I would be parsing the project file here.");
-			exit(ErrorLevel.Ok);
-		}
-
-		private void exit(ErrorLevel result)
+		public void exit(ErrorLevel result)
 		{
 			_result = result;
 			_program_complete.Set();
@@ -89,47 +83,6 @@ namespace core_compile
 			{
 				return Commands<T>.quit(ErrorLevel.Unknown, ex);
 			}
-		}
-	}
-
-	public class UniversalCommands
-	{
-		[ArgDescription("Print this usage info and exit."), ArgShortcut("--help"), ArgShortcut("/?")]
-		public bool help { get; set; }
-
-		[ArgDescription("Run all built-in tests for this program and exit."), ArgShortcut("--run-tests")]
-		public string test { get; set; }
-	}
-
-	public class Commands<T> where T : class
-	{
-		private Program.ErrorLevel _error_level = Program.ErrorLevel.Ok;
-		[CanBeNull] private Exception _exception;
-
-		private Commands(T args)
-		{
-			this.args = args;
-		}
-
-		[CanBeNull]
-		public T args { get; private set; }
-
-		public Program.ErrorLevel error_level { get { return _error_level; } }
-
-		[CanBeNull]
-		public Exception exception { get { return _exception; } }
-
-		[NotNull]
-		public static Commands<T> quit(Program.ErrorLevel error_level, [CanBeNull] Exception exception)
-		{
-			var commands = new Commands<T>(null) {_error_level = error_level, _exception = exception};
-			return commands;
-		}
-
-		[NotNull]
-		public static Commands<T> run([NotNull] T args)
-		{
-			return new Commands<T>(args);
 		}
 	}
 }

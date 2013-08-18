@@ -112,10 +112,12 @@
     <Compile Include="Api\FoolsCompiler.cs" />
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
-    <Compile Include="Api\Fool.cs" />
+    <Compile Include="Api\OldFool.cs" />
     <Compile Include="Api\MissionControl.cs" />
+    <Compile Include="Api\MissionDescription.cs" />
     <Compile Include="Api\MissionOperator.cs" />
     <Compile Include="builtins\SequentialMission.cs" />
+    <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\NonNullDictionary.cs" />
     <Compile Include="AST\Program.cs" />
     <Compile Include="AST\AssignmentStatement.cs" />
@@ -133,7 +135,6 @@
     <Compile Include="builtins\SinglePartMission.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
     <Compile Include="Interpret\MessageLog.cs" />
-    <Compile Include="Interpret\MessageRecipient.cs" />
     <Compile Include="ParseToAst\ErrorReport.cs" />
     <Compile Include="ParseToAst\FatalParseError.cs" />
     <Compile Include="ParseToAst\Fools.peg.cs" />

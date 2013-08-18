@@ -4,6 +4,7 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fools.cs.Utilities;
@@ -43,12 +44,32 @@ namespace Fools.cs.Api
 
 		public void accomplish([NotNull] MissionSpecification mission)
 		{
-			new Fool(mission, this).schedule_active_missions();
+			new OldFool(mission, this).schedule_active_missions();
 		}
 
 		internal void schedule([NotNull] Action operation)
 		{
 			_task_factory.StartNew(operation);
+		}
+
+		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class, new()
+		{
+			// ReSharper disable AssignNullToNotNullAttribute
+			mission.spawning_messages.Each(message_type => _mail_room.subscribe(message_type, _spawn_fool(mission)));
+			// ReSharper restore AssignNullToNotNullAttribute
+		}
+
+		[NotNull]
+		private Action<MailMessage> _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class, new()
+		{
+			return m => {
+				var lab = new TLab();
+				mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
+					kv.Key,
+					// ReSharper restore AssignNullToNotNullAttribute
+					// ReSharper disable PossibleNullReferenceException
+					m2 => kv.Value(lab, m2))); // ReSharper restore PossibleNullReferenceException
+			};
 		}
 	}
 }

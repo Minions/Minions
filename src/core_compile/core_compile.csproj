@@ -46,9 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands.cs" />
     <Compile Include="CompilerUserInteractionModel.cs" />
+    <Compile Include="FoolsCompilerProgram.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UniversalCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
