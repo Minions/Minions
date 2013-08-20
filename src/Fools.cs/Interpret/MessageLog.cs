@@ -19,11 +19,12 @@ namespace Fools.cs.Interpret
 			_convert = convert;
 		}
 
-		public void accept([NotNull] TMessage message)
+		public void accept([NotNull] TMessage message, [NotNull] Action done)
 		{
 			// ReSharper disable AssignNullToNotNullAttribute
 			_received.Add(_convert(message));
 			// ReSharper restore AssignNullToNotNullAttribute
+			done();
 		}
 
 		public IEnumerable<TStoredValue> received { get { return _received; } }

@@ -42,8 +42,8 @@ namespace Fools.cs.Tests.CoreLanguage
 				var mission = orc_raid();
 				should_be_no_orcs();
 				test_subject.execute_as_needed(mission);
-				test_subject.mail_room.announce(new ElvesFound());
-				test_subject.mail_room.announce(new ElvesFound());
+				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
+				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
 				should_have_spawned_orcs(2);
 			}
 		}

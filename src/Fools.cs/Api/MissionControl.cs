@@ -60,15 +60,24 @@ namespace Fools.cs.Api
 		}
 
 		[NotNull]
-		private Action<MailMessage> _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class, new()
+		private MailRoom.MessageHandler _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission)
+			where TLab : class, new()
 		{
-			return m => {
+			return (m, done) => {
 				var lab = new TLab();
 				mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
 					kv.Key,
 					// ReSharper restore AssignNullToNotNullAttribute
-					// ReSharper disable PossibleNullReferenceException
-					m2 => kv.Value(lab, m2))); // ReSharper restore PossibleNullReferenceException
+					(m2, done2) => {
+						// ReSharper disable PossibleNullReferenceException
+						kv.Value(lab, m2); // ReSharper restore PossibleNullReferenceException
+						// ReSharper disable PossibleNullReferenceException
+						done2();
+						// ReSharper restore PossibleNullReferenceException
+					}));
+				// ReSharper disable PossibleNullReferenceException
+				done();
+				// ReSharper restore PossibleNullReferenceException
 			};
 		}
 	}
