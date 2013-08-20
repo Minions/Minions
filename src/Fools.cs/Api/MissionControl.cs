@@ -47,9 +47,10 @@ namespace Fools.cs.Api
 			new OldFool(mission, this).schedule_active_missions();
 		}
 
-		internal void schedule([NotNull] Action operation)
+		[NotNull]
+		internal Task schedule([NotNull] Action operation)
 		{
-			_task_factory.StartNew(operation);
+			return _task_factory.StartNew(operation);
 		}
 
 		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class, new()
@@ -64,17 +65,10 @@ namespace Fools.cs.Api
 			where TLab : class, new()
 		{
 			return (m, done) => {
-				var lab = new TLab();
+				var fool = new Fool<TLab>(schedule(() => { }));
 				mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
-					kv.Key,
-					// ReSharper restore AssignNullToNotNullAttribute
-					(m2, done2) => {
-						// ReSharper disable PossibleNullReferenceException
-						kv.Value(lab, m2); // ReSharper restore PossibleNullReferenceException
-						// ReSharper disable PossibleNullReferenceException
-						done2();
-						// ReSharper restore PossibleNullReferenceException
-					}));
+					kv.Key, fool.execute_action(kv.Value)));
+				// ReSharper restore AssignNullToNotNullAttribute
 				// ReSharper disable PossibleNullReferenceException
 				done();
 				// ReSharper restore PossibleNullReferenceException
