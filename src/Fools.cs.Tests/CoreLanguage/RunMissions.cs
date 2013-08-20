@@ -35,7 +35,7 @@ namespace Fools.cs.Tests.CoreLanguage
 		}
 
 		[Test]
-		public void mission_control_should_execute_mission_parts_when_messages_arrive()
+		public void mission_control_should_spawn_missions_parts_when_spawn_messages_arrive()
 		{
 			using (var test_subject = new MissionControl())
 			{
@@ -45,6 +45,20 @@ namespace Fools.cs.Tests.CoreLanguage
 				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
 				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
 				should_have_spawned_orcs(2);
+			}
+		}
+
+		[Test]
+		public void mission_control_should_execute_mission_parts_when_messages_arrive()
+		{
+			using (var test_subject = new MissionControl())
+			{
+				var mission = orc_raid();
+				test_subject.execute_as_needed(mission);
+				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.Zero);
+				test_subject.mail_room.announce_and_wait(new SayGo(), TimeSpan.Zero);
+				should_have_spawned_orcs(1);
+				all_orcs_should_have_raided();
 			}
 		}
 
@@ -95,6 +109,15 @@ namespace Fools.cs.Tests.CoreLanguage
 				.BeTrue();
 		}
 
+		private void all_orcs_should_have_raided()
+		{
+			lock (_orc_counter)
+			{
+				_orcs.Should()
+					.OnlyContain(o => o.went_raiding.IsSet);
+			}
+		}
+
 		[NotNull]
 		private MissionDescription<OrcishRaidProgress> orc_raid()
 		{
@@ -121,8 +144,11 @@ namespace Fools.cs.Tests.CoreLanguage
 
 		private void should_be_no_orcs()
 		{
-			_orcs.Count.Should()
-				.Be(0);
+			lock (_orc_counter)
+			{
+				_orcs.Count.Should()
+					.Be(0);
+			}
 		}
 	}
 

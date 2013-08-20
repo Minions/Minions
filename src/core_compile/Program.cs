@@ -34,10 +34,8 @@ namespace core_compile
 				.execute();
 		}
 
-		// ReSharper disable UnusedParameter.Local
 		[NotNull]
 		private static Program prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
-			// ReSharper restore UnusedParameter.Local
 		{
 			var program = new Program();
 			MissionSpecification mission;
