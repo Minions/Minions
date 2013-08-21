@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppAbort.cs" />
+    <Compile Include="AppInit.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="CompileProjects.cs" />
     <Compile Include="CompilerUserInteractionModel.cs" />
     <Compile Include="FoolsCompilerProgram.cs" />
     <Compile Include="Program.cs" />

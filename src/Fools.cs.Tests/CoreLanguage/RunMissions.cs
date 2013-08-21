@@ -85,6 +85,8 @@ namespace Fools.cs.Tests.CoreLanguage
 		{
 			[NotNull] internal readonly ManualResetEventSlim went_raiding = new ManualResetEventSlim(false);
 
+			public OrcishRaidProgress(int value_just_to_make_sure_lab_is_not_default_constructed_by_framework) {}
+
 			public void Dispose()
 			{
 				went_raiding.Dispose();
@@ -121,7 +123,7 @@ namespace Fools.cs.Tests.CoreLanguage
 		[NotNull]
 		private MissionDescription<OrcishRaidProgress> orc_raid()
 		{
-			var raid = new MissionDescription<OrcishRaidProgress>();
+			var raid = new MissionDescription<OrcishRaidProgress>(() => new OrcishRaidProgress(9));
 			raid.spawns_when<ElvesFound>()
 				.and_does(_started_new_raid);
 			raid.responds_to_message<SayGo>(_begin_raiding);

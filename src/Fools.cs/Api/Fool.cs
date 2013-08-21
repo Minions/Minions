@@ -9,16 +9,16 @@ using Fools.cs.Utilities;
 
 namespace Fools.cs.Api
 {
-	public class Fool<TLab> where TLab : class, new()
+	public class Fool<TLab> where TLab : class
 	{
 		[NotNull] private Task _previous_operation;
 
 		[NotNull] private readonly TLab _lab;
 
-		public Fool([NotNull] Task previous_operation)
+		public Fool([NotNull] Task previous_operation, [NotNull] TLab lab)
 		{
 			_previous_operation = previous_operation;
-			_lab = new TLab();
+			_lab = lab;
 		}
 
 		[NotNull]

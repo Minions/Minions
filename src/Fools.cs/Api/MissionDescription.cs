@@ -11,10 +11,17 @@ namespace Fools.cs.Api
 {
 	public class MissionDescription<TLab> where TLab : class
 	{
+		[NotNull] private readonly Func<TLab> _lab_constructor;
+
 		[NotNull] private readonly List<Type> _spawning_messages = new List<Type>();
 
 		[NotNull] private readonly Dictionary<Type, Action<TLab, object>> _responses =
 			new Dictionary<Type, Action<TLab, object>>();
+
+		public MissionDescription([NotNull] Func<TLab> lab_constructor)
+		{
+			_lab_constructor = lab_constructor;
+		}
 
 		[NotNull]
 		public IEnumerable<Type> spawning_messages { get { return _spawning_messages; } }
@@ -52,6 +59,14 @@ namespace Fools.cs.Api
 		{
 			_responses[typeof (TMessage)] = (lab, m) => message_response(lab, (TMessage) m);
 			return this;
+		}
+
+		[NotNull]
+		public TLab make_lab()
+		{
+			// ReSharper disable AssignNullToNotNullAttribute
+			return _lab_constructor();
+			// ReSharper restore AssignNullToNotNullAttribute
 		}
 	}
 }

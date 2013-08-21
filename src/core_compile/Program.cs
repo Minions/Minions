@@ -7,7 +7,6 @@ using System;
 using System.Threading;
 using Fools.cs.Api;
 using Fools.cs.Utilities;
-using Fools.cs.builtins;
 using PowerArgs;
 
 namespace core_compile
@@ -38,10 +37,18 @@ namespace core_compile
 		private static Program prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
 		{
 			var program = new Program();
-			MissionSpecification mission;
-			if (commands.args == null || commands.args.help) mission = new SinglePartMission("Print usage", () => program.print_usage(commands.exception, commands.error_level));
-			else mission = FoolsCompilerProgram.make_primary_mission(program);
-			program._mission_control.accomplish(mission);
+
+			var mission = new MissionDescription<CompileProjects>(() => new CompileProjects(program));
+			mission.spawns_when<AppAbort>()
+				.and_does(CompileProjects.print_usage);
+			mission.spawns_when<AppInit>()
+				.and_does(CompileProjects.run);
+
+			program._mission_control.execute_as_needed(mission);
+
+			if (commands.args == null || commands.args.help) program._mission_control.mail_room.announce(new AppAbort(commands.exception, commands.error_level));
+			else program._mission_control.mail_room.announce(new AppInit(commands));
+
 			return program;
 		}
 
@@ -49,14 +56,6 @@ namespace core_compile
 		{
 			_result = result;
 			_program_complete.Set();
-		}
-
-		private void print_usage([CanBeNull] Exception exception, ErrorLevel error_level)
-		{
-			if (exception != null) Console.WriteLine(exception.Message);
-			ArgUsage.GetStyledUsage<CompilerUserInteractionModel>()
-				.Write();
-			exit(error_level);
 		}
 
 		private ErrorLevel execute()

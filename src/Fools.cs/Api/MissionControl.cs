@@ -53,7 +53,7 @@ namespace Fools.cs.Api
 			return _task_factory.StartNew(operation);
 		}
 
-		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class, new()
+		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
 		{
 			// ReSharper disable AssignNullToNotNullAttribute
 			mission.spawning_messages.Each(message_type => _mail_room.subscribe(message_type, _spawn_fool(mission)));
@@ -62,10 +62,10 @@ namespace Fools.cs.Api
 
 		[NotNull]
 		private MailRoom.MessageHandler _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission)
-			where TLab : class, new()
+			where TLab : class
 		{
 			return (m, done) => {
-				var fool = new Fool<TLab>(schedule(() => { }));
+				var fool = new Fool<TLab>(schedule(() => { }), mission.make_lab());
 				mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
 					kv.Key, fool.execute_action(kv.Value)));
 				// ReSharper restore AssignNullToNotNullAttribute
