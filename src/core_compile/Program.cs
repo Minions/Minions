@@ -41,13 +41,13 @@ namespace core_compile
 			var mission = new MissionDescription<CompileProjects>(() => new CompileProjects(program));
 			mission.spawns_when<AppAbort>()
 				.and_does(CompileProjects.print_usage);
-			mission.spawns_when<AppInit>()
+			mission.spawns_when<AppRun>()
 				.and_does(CompileProjects.run);
 
 			program._mission_control.execute_as_needed(mission);
 
-			if (commands.args == null || commands.args.help) program._mission_control.mail_room.announce(new AppAbort(commands.exception, commands.error_level));
-			else program._mission_control.mail_room.announce(new AppInit(commands));
+			if (commands.args == null || commands.args.help) program._mission_control.announce(new AppAbort(commands.exception, commands.error_level));
+			else program._mission_control.announce(new AppRun(commands));
 
 			return program;
 		}

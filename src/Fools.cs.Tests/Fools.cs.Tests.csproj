@@ -69,6 +69,7 @@
     <Compile Include="CoreLanguage\PrettyPrinting.cs" />
     <Compile Include="CoreLanguage\RunMissions.cs" />
     <Compile Include="ImplementationConcerns\ProcessCounter.cs" />
+    <Compile Include="ImplementationConcerns\SetsOfListeners.cs" />
     <Compile Include="Parsing\FindBlocksAndLines.cs" />
     <Compile Include="Parsing\FindTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

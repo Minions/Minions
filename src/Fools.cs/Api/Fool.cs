@@ -21,18 +21,20 @@ namespace Fools.cs.Api
 			_lab = lab;
 		}
 
-		[NotNull]
-		public MailRoom.MessageHandler execute_action([NotNull] Action<TLab, object> action)
+		public void run_action([NotNull] Action<TLab, object> action, [NotNull] MailMessage message, [NotNull] Action done)
 		{
-			// TODO: What about exceptions thrown by action? When should they be observed?
-			return (message, done) => {
-				_previous_operation = _previous_operation.ContinueWith(r => {
+			_previous_operation = _previous_operation.ContinueWith(r => {
+				try
+				{
 					action(_lab, message);
-					// ReSharper disable PossibleNullReferenceException
-					done();
-					// ReSharper restore PossibleNullReferenceException
-				});
-			};
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex);
+					// TODO: What about exceptions thrown by action? When should they be observed?
+				}
+				done();
+			});
 		}
 	}
 }

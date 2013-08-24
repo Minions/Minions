@@ -42,8 +42,8 @@ namespace Fools.cs.Tests.CoreLanguage
 				var mission = orc_raid();
 				should_be_no_orcs();
 				test_subject.execute_as_needed(mission);
-				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
-				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(50));
+				test_subject.announce(new ElvesFound());
+				test_subject.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(100)).Should().BeTrue();
 				should_have_spawned_orcs(2);
 			}
 		}
@@ -55,8 +55,8 @@ namespace Fools.cs.Tests.CoreLanguage
 			{
 				var mission = orc_raid();
 				test_subject.execute_as_needed(mission);
-				test_subject.mail_room.announce_and_wait(new ElvesFound(), TimeSpan.Zero);
-				test_subject.mail_room.announce_and_wait(new SayGo(), TimeSpan.Zero);
+				test_subject.announce(new ElvesFound());
+				test_subject.announce_and_wait(new SayGo(), TimeSpan.FromMilliseconds(100)).Should().BeTrue();
 				should_have_spawned_orcs(1);
 				all_orcs_should_have_raided();
 			}

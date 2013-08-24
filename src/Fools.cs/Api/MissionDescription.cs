@@ -12,7 +12,6 @@ namespace Fools.cs.Api
 	public class MissionDescription<TLab> where TLab : class
 	{
 		[NotNull] private readonly Func<TLab> _lab_constructor;
-
 		[NotNull] private readonly List<Type> _spawning_messages = new List<Type>();
 
 		[NotNull] private readonly Dictionary<Type, Action<TLab, object>> _responses =

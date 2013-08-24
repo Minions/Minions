@@ -34,7 +34,7 @@ namespace Fools.cs.Api
 		}
 
 		[NotNull]
-		public MailRoom mail_room { get { return _mail_room; } }
+		internal MailRoom test_access_to_mail_room { get { return _mail_room; } }
 
 		[NotNull]
 		public Building create_building()
@@ -56,23 +56,31 @@ namespace Fools.cs.Api
 		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
 		{
 			// ReSharper disable AssignNullToNotNullAttribute
-			mission.spawning_messages.Each(message_type => _mail_room.subscribe(message_type, _spawn_fool(mission)));
+			mission.spawning_messages.Each(
+				message_type => _mail_room.subscribe(message_type, (_, done) => _spawn_fool(mission, done)));
 			// ReSharper restore AssignNullToNotNullAttribute
 		}
 
-		[NotNull]
-		private MailRoom.MessageHandler _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission)
+		private void _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission, [NotNull] Action done_creating_fool)
 			where TLab : class
 		{
-			return (m, done) => {
-				var fool = new Fool<TLab>(schedule(() => { }), mission.make_lab());
-				mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
-					kv.Key, fool.execute_action(kv.Value)));
-				// ReSharper restore AssignNullToNotNullAttribute
-				// ReSharper disable PossibleNullReferenceException
-				done();
-				// ReSharper restore PossibleNullReferenceException
-			};
+			var fool = new Fool<TLab>(schedule(_noop), mission.make_lab());
+			mission.message_handlers.Each(kv => _mail_room.subscribe( // ReSharper disable AssignNullToNotNullAttribute
+				kv.Key, (message, done_handling_message) => fool.run_action(kv.Value, message, done_handling_message)));
+			// ReSharper restore AssignNullToNotNullAttribute
+			done_creating_fool();
+		}
+
+		private void _noop() {}
+
+		public void announce([NotNull] MailMessage what_happened)
+		{
+			_mail_room.announce(what_happened);
+		}
+
+		public bool announce_and_wait([NotNull] MailMessage what_happened, TimeSpan wait_duration)
+		{
+			return _mail_room.announce_and_wait(what_happened, wait_duration);
 		}
 	}
 }

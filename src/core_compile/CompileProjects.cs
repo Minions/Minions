@@ -23,7 +23,7 @@ namespace core_compile
 			lab.print_usage(message.exception, message.error_level);
 		}
 
-		public static void run([NotNull] CompileProjects lab, AppInit message)
+		public static void run([NotNull] CompileProjects lab, AppRun message)
 		{
 			Console.WriteLine("I would be parsing the project file here.");
 			lab._program.exit(Program.ErrorLevel.Ok);

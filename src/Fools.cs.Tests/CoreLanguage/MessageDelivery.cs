@@ -21,7 +21,6 @@ namespace Fools.cs.Tests.CoreLanguage
 		public void announce_and_wait_should_only_return_after_all_recipients_have_completed()
 		{
 			var test_subject = new MailRoom();
-			set_up();
 			test_subject.subscribe<SillyMessage>(message_handler_that_finishes);
 			test_subject.announce_and_wait(new SillyMessage("hi"), TimeSpan.FromMilliseconds(50))
 				.Should()
@@ -70,7 +69,7 @@ namespace Fools.cs.Tests.CoreLanguage
 			var mission_control = new MissionControl();
 			var test_subject = mission_control.create_building();
 			test_subject.mail_room.home_office.Should()
-				.BeSameAs(mission_control.mail_room);
+				.BeSameAs(mission_control.test_access_to_mail_room);
 		}
 
 		[Test]
@@ -98,13 +97,30 @@ namespace Fools.cs.Tests.CoreLanguage
 		}
 
 		[Test]
+		public void subscribing_for_a_message_while_processing_that_message_should_result_in_new_subscriber_receiving_message()
+		{
+			var test_subject = new MailRoom();
+			test_subject.subscribe<SillyMessage>(new RecursiveSubscriber(3, test_subject, _log).subscribe_recursively_until_counter_expires);
+			test_subject.subscribe<SillyMessage>(new RecursiveSubscriber(3, test_subject, _log).subscribe_recursively_until_counter_expires);
+			test_subject.announce_and_wait(new SillyMessage("hi"), TimeSpan.FromMilliseconds(100))
+				.Should()
+				.BeTrue();
+			_log.Should()
+				.BeEquivalentTo(new object[] {
+					"Counted 3: hi", "Counted 3: hi", "Counted 2: hi", "Counted 2: hi", "Counted 2: hi", "Counted 2: hi",
+					"Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi",
+					"Counted 1: hi", "Counted 1: hi"
+				});
+		}
+
+		[Test]
 		public void universal_subscribers_should_receive_all_messages()
 		{
 			var test_subject = new MailRoom();
 			var log = store_all_values();
 			test_subject.subscribe_to_all(log.accept);
-			test_subject.announce_and_wait(new SillyMessage("silly"), TimeSpan.FromMilliseconds(50));
-			test_subject.announce_and_wait(new SeriousMessage("serious"), TimeSpan.FromMilliseconds(50));
+			test_subject.announce(new SillyMessage("silly"));
+			test_subject.announce_and_wait(new SeriousMessage("serious"), TimeSpan.Zero);
 			log.received.Should()
 				.ContainInOrder(new object[] {"silly", "serious"});
 		}
@@ -113,6 +129,45 @@ namespace Fools.cs.Tests.CoreLanguage
 		public void set_up()
 		{
 			_log = new List<string>();
+		}
+
+		private class RecursiveSubscriber
+		{
+			[NotNull] private readonly List<string> _log;
+			[NotNull] private readonly MailRoom _mail_room_for_recursive_subscriptions;
+			private readonly int _counter;
+
+			public RecursiveSubscriber(int counter,
+				[NotNull] MailRoom mail_room_for_recursive_subscriptions,
+				[NotNull] List<string> log)
+			{
+				_counter = counter;
+				_mail_room_for_recursive_subscriptions = mail_room_for_recursive_subscriptions;
+				_log = log;
+			}
+
+			public void subscribe_recursively_until_counter_expires([NotNull] SillyMessage message, [NotNull] Action done)
+			{
+				_log.Add(string.Format("Counted {0}: {1}", _counter, message.value));
+				var next = _counter - 1;
+				if (next <= 0)
+				{
+					done();
+					return;
+				}
+				_recurse(next);
+				new Task(() => {
+					_recurse(next);
+					done();
+				}).Start();
+			}
+
+			private void _recurse(int next)
+			{
+				_mail_room_for_recursive_subscriptions.subscribe<SillyMessage>(
+					new RecursiveSubscriber(next, _mail_room_for_recursive_subscriptions, _log)
+						.subscribe_recursively_until_counter_expires);
+			}
 		}
 
 		private void message_handler_that_finishes([NotNull] SillyMessage m, [NotNull] Action done)
