@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fools.cs.Utilities;
-using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
@@ -44,11 +43,6 @@ namespace Fools.cs.Api
 			return new Building(this, _mail_room);
 		}
 
-		public void accomplish([NotNull] MissionSpecification mission)
-		{
-			new OldFool(mission, this).schedule_active_missions();
-		}
-
 		[NotNull]
 		internal Task schedule([NotNull] Action operation)
 		{
@@ -65,14 +59,23 @@ namespace Fools.cs.Api
 
 		public void announce([NotNull] MailMessage what_happened)
 		{
-			_postal_carrier.do_work(mail_room => mail_room.announce(what_happened), _noop);
+			_postal_carrier.do_work(mail_room => // ReSharper disable PossibleNullReferenceException
+				mail_room
+					// ReSharper restore PossibleNullReferenceException
+					.announce(what_happened),
+				_noop);
 		}
 
 		public bool announce_and_wait([NotNull] MailMessage what_happened, TimeSpan wait_duration)
 		{
 			bool? result = null;
-			return _postal_carrier.do_work_and_wait(mail_room => { result = mail_room.announce_and_wait(what_happened, wait_duration); },
-				wait_duration) && result.Value;
+			return _postal_carrier.do_work_and_wait(mail_room => {
+				result = // ReSharper disable PossibleNullReferenceException
+					mail_room
+						// ReSharper restore PossibleNullReferenceException
+						.announce_and_wait(what_happened, wait_duration);
+			},
+				wait_duration) && result.GetValueOrDefault(false);
 		}
 
 		private void _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission, [NotNull] Action done_creating_fool)

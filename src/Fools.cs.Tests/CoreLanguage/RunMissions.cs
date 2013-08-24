@@ -8,7 +8,6 @@ using System.Threading;
 using FluentAssertions;
 using Fools.cs.Api;
 using Fools.cs.Utilities;
-using Fools.cs.builtins;
 using NUnit.Framework;
 
 namespace Fools.cs.Tests.CoreLanguage
@@ -16,24 +15,6 @@ namespace Fools.cs.Tests.CoreLanguage
 	[TestFixture]
 	public class RunMissions
 	{
-		[Test]
-		public void mission_control_should_execute_a_simple_mission()
-		{
-			using (var test_subject = new MissionControl())
-			{
-				var mission_ran = new ManualResetEventSlim();
-				var mission = new SinglePartMission("signal the test", mission_ran.Set);
-				mission_ran.IsSet.Should()
-					.BeFalse();
-				test_subject.accomplish(mission);
-				mission_ran.Wait(TimeSpan.FromMilliseconds(100))
-					.Should()
-					.BeTrue();
-				mission.is_complete.Should()
-					.BeTrue();
-			}
-		}
-
 		[Test]
 		public void mission_control_should_spawn_missions_parts_when_spawn_messages_arrive()
 		{

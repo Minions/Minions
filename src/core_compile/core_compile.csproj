@@ -51,7 +51,6 @@
     <Compile Include="Commands.cs" />
     <Compile Include="CompileProjects.cs" />
     <Compile Include="CompilerUserInteractionModel.cs" />
-    <Compile Include="FoolsCompilerProgram.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniversalCommands.cs" />

@@ -114,12 +114,9 @@
     <Compile Include="Utilities\ListenerSet.cs" />
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
-    <Compile Include="Api\OldFool.cs" />
     <Compile Include="Api\MissionControl.cs" />
     <Compile Include="Api\MissionDescription.cs" />
-    <Compile Include="Api\MissionOperator.cs" />
     <Compile Include="Utilities\WaitableCounter.cs" />
-    <Compile Include="builtins\SequentialMission.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\NonNullDictionary.cs" />
     <Compile Include="AST\Program.cs" />
@@ -134,8 +131,6 @@
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\ConditionalStatement.cs" />
     <Compile Include="builtins\BuiltinExtensions.cs" />
-    <Compile Include="builtins\MissionSpecification.cs" />
-    <Compile Include="builtins\SinglePartMission.cs" />
     <Compile Include="Interpret\Interpreter.cs" />
     <Compile Include="Interpret\MessageLog.cs" />
     <Compile Include="ParseToAst\ErrorReport.cs" />
