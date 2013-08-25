@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<assembly>
+	<member name="P:PowerArgs.ArgAction.Value">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ArgAction.ActionArgs">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ArgAction.ActionArgsProperty">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ArgAction.HandledException">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.ArgAction`1.ResolveMethod(System.Reflection.PropertyInfo)">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ArgAction`1.Args">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.GetAmbientArgs``1">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.GetAmbientArgs(System.Type)">
+		<attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.ParseAction``1(System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.ParseAction(System.Type,System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.InvokeMain(System.Type,System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.InvokeMain``1(System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.InvokeAction``1(System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.Parse``1(System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.Args.Parse(System.Type,System.String[])">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ParseResult.ExplicitParameters">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="P:PowerArgs.ParseResult.ImplicitParameters">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.ArgUsage.GetUsage``1(System.String,PowerArgs.ArgUsageOptions)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.ArgUsage.GetStyledUsage``1(System.String,PowerArgs.ArgUsageOptions)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+	<member name="M:PowerArgs.ArgUsage.GetStyledUsage(System.Type,System.String,PowerArgs.ArgUsageOptions)">
+		<attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+	</member>
+</assembly>

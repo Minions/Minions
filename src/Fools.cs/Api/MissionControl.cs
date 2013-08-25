@@ -4,18 +4,18 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fools.cs.Utilities;
-using Fools.cs.builtins;
 
 namespace Fools.cs.Api
 {
 	public class MissionControl : IDisposable
 	{
-		[NotNull] private readonly MailRoom _mail_room = new MailRoom();
 		[NotNull] private readonly TaskFactory _task_factory;
 		[NotNull] private readonly CancellationTokenSource _cancellation;
+		[NotNull] private readonly Fool<MailRoom> _postal_carrier;
 
 		public MissionControl()
 		{
@@ -24,6 +24,7 @@ namespace Fools.cs.Api
 				TaskCreationOptions.PreferFairness,
 				TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);
+			_postal_carrier = new Fool<MailRoom>(_create_starting_task(), new MailRoom());
 		}
 
 		public void Dispose()
@@ -32,23 +33,62 @@ namespace Fools.cs.Api
 			_cancellation.Dispose();
 		}
 
+		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
+		{
+			_postal_carrier.do_work(
+				mail_room => mission.spawning_messages.Each(message_type => // ReSharper disable PossibleNullReferenceException
+					mail_room
+						// ReSharper restore PossibleNullReferenceException
+						// ReSharper disable AssignNullToNotNullAttribute
+						.subscribe(message_type, (message, done) => _spawn_fool(mission, done, message))),
+				// ReSharper restore AssignNullToNotNullAttribute
+				_noop);
+		}
+
+		public void announce([NotNull] MailMessage what_happened)
+		{
+			_postal_carrier.do_work(mail_room => // ReSharper disable PossibleNullReferenceException
+				mail_room
+					// ReSharper restore PossibleNullReferenceException
+					.announce(what_happened),
+				_noop);
+		}
+
+		public bool announce_and_wait([NotNull] MailMessage what_happened, TimeSpan wait_duration)
+		{
+			bool? result = null;
+			return _postal_carrier.do_work_and_wait(mail_room => {
+				result = // ReSharper disable PossibleNullReferenceException
+					mail_room
+						// ReSharper restore PossibleNullReferenceException
+						.announce_and_wait(what_happened, wait_duration);
+			},
+				wait_duration) && result.GetValueOrDefault(false);
+		}
+
 		[NotNull]
-		public MailRoom mail_room { get { return _mail_room; } }
-
-		[NotNull]
-		public Building create_building()
+		private Task _create_starting_task()
 		{
-			return new Building(this, _mail_room);
+			return _task_factory.StartNew(_noop);
 		}
 
-		public void accomplish([NotNull] MissionSpecification mission)
+		private void _spawn_fool<TLab>([NotNull] MissionDescription<TLab> mission,
+			[NotNull] Action done_creating_fool,
+			[NotNull] MailMessage constructor_message) where TLab : class
 		{
-			new Minion(mission, this).schedule_active_missions();
+			var fool = new Fool<TLab>(_create_starting_task(), mission.make_lab());
+			var constructor_impl = mission.message_handlers.FirstOrDefault(item => item.Key == constructor_message.GetType());
+			if (constructor_impl.Value == null) done_creating_fool();
+			else fool.process_message(constructor_impl.Value, constructor_message, done_creating_fool);
+			_postal_carrier.upon_completion_of_this_task(
+				mail_room => mission.message_handlers.Each(kv => // ReSharper disable PossibleNullReferenceException
+					mail_room
+						// ReSharper restore PossibleNullReferenceException
+						.subscribe( // ReSharper disable AssignNullToNotNullAttribute
+							kv.Key, (message, done_handling_message) => fool.process_message(kv.Value, message, done_handling_message))));
+			// ReSharper restore AssignNullToNotNullAttribute
 		}
 
-		internal void schedule([NotNull] Action operation)
-		{
-			_task_factory.StartNew(operation);
-		}
+		private static void _noop() {}
 	}
 }

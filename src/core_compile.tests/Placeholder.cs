@@ -1,14 +1,16 @@
-﻿// MessageRecipient.cs
+﻿// Placeholder.cs
 // 
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using Fools.cs.Api;
+using NUnit.Framework;
 
-namespace Fools.cs.Interpret
+namespace core_compile.tests
 {
-	public abstract class MessageRecipient
+	[TestFixture]
+	public class Placeholder
 	{
-		public abstract void accept(MailMessage message);
+		[Test]
+		public void should_do_nothing() {}
 	}
 }

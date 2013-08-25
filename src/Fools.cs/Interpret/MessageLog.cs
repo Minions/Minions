@@ -5,28 +5,28 @@
 
 using System;
 using System.Collections.Generic;
-using Fools.cs.Api;
 using Fools.cs.Utilities;
 
 namespace Fools.cs.Interpret
 {
-	public class MessageLog<T> : MessageRecipient
+	public class MessageLog<TStoredValue, TMessage>
 	{
-		[NotNull] private readonly NonNullList<T> _received = new NonNullList<T>();
-		[NotNull] private readonly Func<MailMessage, T> _convert;
+		[NotNull] private readonly NonNullList<TStoredValue> _received = new NonNullList<TStoredValue>();
+		[NotNull] private readonly Func<TMessage, TStoredValue> _convert;
 
-		public MessageLog([NotNull] Func<MailMessage, T> convert)
+		public MessageLog([NotNull] Func<TMessage, TStoredValue> convert)
 		{
 			_convert = convert;
 		}
 
-		public override void accept([NotNull] MailMessage message)
+		public void accept([NotNull] TMessage message, [NotNull] Action done)
 		{
 			// ReSharper disable AssignNullToNotNullAttribute
 			_received.Add(_convert(message));
 			// ReSharper restore AssignNullToNotNullAttribute
+			done();
 		}
 
-		public IEnumerable<T> received { get { return _received; } }
+		public IEnumerable<TStoredValue> received { get { return _received; } }
 	}
 }
