@@ -14,10 +14,11 @@ namespace Fools.cs.Api
 
 		[CanBeNull] private readonly MailRoom _home_office;
 
-		[NotNull] private readonly NonNullDictionary<string, ListenerSet> _listeners =
-			new NonNullDictionary<string, ListenerSet>();
+		[NotNull] private readonly NonNullDictionary<string, NonNullList<MessageHandler>> _listeners =
+			new NonNullDictionary<string, NonNullList<MessageHandler>>();
 
-		[NotNull] private readonly ListenerSet _universal_listeners = new ListenerSet();
+		[NotNull]
+		private readonly NonNullList<MessageHandler> _universal_listeners = new NonNullList<MessageHandler>();
 
 		private MailRoom(MailRoom home_office)
 		{
@@ -25,8 +26,6 @@ namespace Fools.cs.Api
 		}
 
 		public MailRoom() : this(null) {}
-
-		public MailRoom home_office { get { return _home_office; } }
 
 		[NotNull]
 		public MailRoom create_satellite_office()
@@ -42,18 +41,18 @@ namespace Fools.cs.Api
 		public void subscribe([NotNull] Type message_type, [NotNull] MessageHandler on_message)
 		{
 			var key = key_for(message_type);
-			ListenerSet subscribers;
+			NonNullList<MessageHandler> subscribers;
 			if (!_listeners.TryGetValue(key, out subscribers))
 			{
-				subscribers = new ListenerSet();
+				subscribers = new NonNullList<MessageHandler>();
 				_listeners[key] = subscribers;
 			}
-			subscribers.add(on_message);
+			subscribers.Add(on_message);
 		}
 
 		public void subscribe_to_all([NotNull] MessageHandler listener)
 		{
-			_universal_listeners.add(listener);
+			_universal_listeners.Add(listener);
 		}
 
 		public bool announce_and_wait([NotNull] MailMessage what_happened, TimeSpan wait_duration)
@@ -86,7 +85,7 @@ namespace Fools.cs.Api
 			[NotNull] WaitableCounter items_being_processed)
 		{
 			var mesage_type = key_for(what_happened.GetType());
-			ListenerSet recipients;
+			NonNullList<MessageHandler> recipients;
 			if (!_listeners.TryGetValue(mesage_type, out recipients)) return;
 			_send_to_all(recipients, what_happened, items_being_processed);
 		}
@@ -97,11 +96,11 @@ namespace Fools.cs.Api
 			if (_home_office != null) _home_office._announce_impl(what_happened, items_being_processed);
 		}
 
-		private void _send_to_all([NotNull] ListenerSet listeners,
+		private void _send_to_all([NotNull] NonNullList<MessageHandler> listeners,
 			[NotNull] MailMessage what_happened,
 			[NotNull] WaitableCounter items_being_processed)
 		{
-			listeners.each(recipient => {
+			listeners.ForEach(recipient => {
 				items_being_processed.begin();
 				// ReSharper disable PossibleNullReferenceException
 				recipient // ReSharper restore PossibleNullReferenceException
