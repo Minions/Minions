@@ -110,7 +110,6 @@
   <ItemGroup>
     <Compile Include="Api\Fool.cs" />
     <Compile Include="Api\FoolsCompiler.cs" />
-    <Compile Include="Utilities\ListenerSet.cs" />
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
     <Compile Include="Api\MissionControl.cs" />
