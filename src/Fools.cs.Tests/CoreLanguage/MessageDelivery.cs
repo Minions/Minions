@@ -64,15 +64,6 @@ namespace Fools.cs.Tests.CoreLanguage
 		}
 
 		[Test]
-		public void buildings_should_have_mail_rooms_that_are_satellites_of_the_mission_control_mail_room()
-		{
-			var mission_control = new MissionControl();
-			var test_subject = mission_control.create_building();
-			test_subject.mail_room.home_office.Should()
-				.BeSameAs(mission_control.test_access_to_mail_room);
-		}
-
-		[Test]
 		public void mail_sent_to_a_mail_room_should_also_be_announced_to_all_more_central_mail_rooms()
 		{
 			var home_office = new MailRoom();

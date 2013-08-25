@@ -37,7 +37,7 @@ namespace Fools.cs.Tests.CoreLanguage
 				var mission = orc_raid();
 				test_subject.execute_as_needed(mission);
 				test_subject.announce(new ElvesFound());
-				test_subject.announce_and_wait(new SayGo(), TimeSpan.FromMilliseconds(100)).Should().BeTrue();
+				test_subject.announce_and_wait(new SayGo(), TimeSpan.FromMinutes(100)).Should().BeTrue();
 				should_have_spawned_orcs(1);
 				all_orcs_should_have_raided();
 			}
@@ -72,6 +72,11 @@ namespace Fools.cs.Tests.CoreLanguage
 			{
 				went_raiding.Dispose();
 			}
+
+			public override string ToString()
+			{
+				return string.Format("went_raiding: {0}", went_raiding.IsSet);
+			}
 		}
 
 		[NotNull] private NonNullList<OrcishRaidProgress> _orcs;
@@ -87,7 +92,7 @@ namespace Fools.cs.Tests.CoreLanguage
 				_target_number_of_orcs = count;
 				if (_target_number_of_orcs <= _orcs.Count) _all_orcs_are_sent.Set();
 			}
-			_all_orcs_are_sent.Wait(TimeSpan.FromMilliseconds(100))
+			_all_orcs_are_sent.Wait(TimeSpan.FromMinutes(100))
 				.Should()
 				.BeTrue();
 		}

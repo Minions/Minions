@@ -108,7 +108,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Building.cs" />
     <Compile Include="Api\Fool.cs" />
     <Compile Include="Api\FoolsCompiler.cs" />
     <Compile Include="Utilities\ListenerSet.cs" />

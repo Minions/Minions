@@ -17,5 +17,15 @@ namespace System.Linq
 				op(item);
 			}
 		}
+
+		public static void if_valid<T>([CanBeNull] this T arg, [NotNull] Action<T> op) where T : class
+		{
+			if (null != arg) op(arg);
+		}
+
+		public static TResult if_valid<TArg, TResult>([CanBeNull] this TArg arg, [NotNull] Func<TArg, TResult> op) where TArg : class
+		{
+			return null == arg ? default(TResult) : op(arg);
+		}
 	}
 }
