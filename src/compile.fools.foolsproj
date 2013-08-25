@@ -1,0 +1,14 @@
+parse as Fools.Project 0.1.0
+
+{
+	output_type: "program.console",
+	user_port: "console.streaming",
+	command_line: "compile.command_line_args",
+	language: {
+		base: "fools_core",
+		universal_extensions: []
+	},
+	include: [
+		"*.fool"
+	]
+}
