@@ -9,9 +9,9 @@ namespace core_compile
 {
 	internal class AppRun : MailMessage
 	{
-		public readonly Commands<CompilerUserInteractionModel> commands;
+		public readonly CompilerUserInteractionModel commands;
 
-		public AppRun(Commands<CompilerUserInteractionModel> commands)
+		public AppRun(CompilerUserInteractionModel commands)
 		{
 			this.commands = commands;
 		}

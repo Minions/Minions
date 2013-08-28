@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="AppAbort.cs" />
     <Compile Include="AppRun.cs" />
-    <Compile Include="Commands.cs" />
     <Compile Include="CompileProjects.cs" />
     <Compile Include="CompilerUserInteractionModel.cs" />
     <Compile Include="Program.cs" />

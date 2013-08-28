@@ -28,28 +28,47 @@ namespace core_compile
 		// ReSharper disable InconsistentNaming
 		private static int Main([NotNull] string[] args) // ReSharper restore InconsistentNaming
 		{
-			var commands = figure_out_what_user_wants_to_do<CompilerUserInteractionModel>(args);
-			return (int) prepare_missions(commands)
-				.execute();
+			var program = new Program();
+			prepare_missions(program);
+			program.begin_execution(args);
+			return (int) program.execute_until_program_terminates();
 		}
 
-		[NotNull]
-		private static Program prepare_missions([NotNull] Commands<CompilerUserInteractionModel> commands)
+		private void begin_execution([NotNull] string[] args)
 		{
-			var program = new Program();
+			CompilerUserInteractionModel user_commands;
+			try
+			{
+				user_commands = Args.Parse<CompilerUserInteractionModel>(args);
+			}
+			catch (ArgException ex)
+			{
+				_mission_control.announce(new AppAbort(ex, ErrorLevel.BadCommandArgs));
+				return;
+			}
+			catch (Exception ex)
+			{
+				_mission_control.announce(new AppAbort(ex, ErrorLevel.Unknown));
+				return;
+			}
+			if (user_commands.help) _mission_control.announce(new AppAbort(null, ErrorLevel.Ok));
+			else _mission_control.announce(new AppRun(user_commands));
+		}
 
+		private static void prepare_missions([NotNull] Program program)
+		{
 			var mission = new MissionDescription<CompileProjects>(() => new CompileProjects(program));
 			mission.spawns_when<AppAbort>()
 				.and_does(CompileProjects.print_usage);
 			mission.spawns_when<AppRun>()
 				.and_does(CompileProjects.run);
 
-			program._mission_control.execute_as_needed(mission);
+			program.add_mission(mission);
+		}
 
-			if (commands.args == null || commands.args.help) program._mission_control.announce(new AppAbort(commands.exception, commands.error_level));
-			else program._mission_control.announce(new AppRun(commands));
-
-			return program;
+		public void add_mission<T>([NotNull] MissionDescription<T> mission) where T : class
+		{
+			_mission_control.execute_as_needed(mission);
 		}
 
 		public void exit(ErrorLevel result)
@@ -58,28 +77,11 @@ namespace core_compile
 			_program_complete.Set();
 		}
 
-		private ErrorLevel execute()
+		private ErrorLevel execute_until_program_terminates()
 		{
 			_program_complete.Wait();
 			_mission_control.Dispose();
 			return _result;
-		}
-
-		[NotNull]
-		private static Commands<T> figure_out_what_user_wants_to_do<T>([NotNull] string[] args) where T : UniversalCommands
-		{
-			try
-			{
-				return Commands<T>.run(Args.Parse<T>(args));
-			}
-			catch (ArgException ex)
-			{
-				return Commands<T>.quit(ErrorLevel.BadCommandArgs, ex);
-			}
-			catch (Exception ex)
-			{
-				return Commands<T>.quit(ErrorLevel.Unknown, ex);
-			}
 		}
 	}
 }
