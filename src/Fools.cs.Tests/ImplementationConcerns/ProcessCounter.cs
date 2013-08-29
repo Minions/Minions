@@ -4,7 +4,6 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using FluentAssertions;
-using Fools.cs.Api;
 using Fools.cs.Utilities;
 using NUnit.Framework;
 

@@ -43,7 +43,7 @@ namespace Fools.cs.Api
 		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
 		{
 			_postal_carrier.do_work(
-				mail_room => mission.spawning_messages.Each(message_type => // ReSharper disable PossibleNullReferenceException
+				mail_room => mission.spawning_messages.each(message_type => // ReSharper disable PossibleNullReferenceException
 					mail_room
 						// ReSharper restore PossibleNullReferenceException
 						// ReSharper disable AssignNullToNotNullAttribute
@@ -102,7 +102,7 @@ namespace Fools.cs.Api
 			[NotNull] Fool<TLab> fool) where TLab : class
 		{
 			_postal_carrier.upon_completion_of_this_task(
-				mail_room => mission.message_handlers.Each(kv => // ReSharper disable PossibleNullReferenceException
+				mail_room => mission.message_handlers.each(kv => // ReSharper disable PossibleNullReferenceException
 					mail_room
 						// ReSharper restore PossibleNullReferenceException
 						.subscribe( // ReSharper disable AssignNullToNotNullAttribute

@@ -10,7 +10,7 @@ namespace System.Linq
 {
 	public static class LinqExtensions
 	{
-		public static void Each<T>([NotNull] this IEnumerable<T> items, [NotNull] Action<T> op)
+		public static void each<T>([NotNull] this IEnumerable<T> items, [NotNull] Action<T> op)
 		{
 			foreach (var item in items)
 			{
