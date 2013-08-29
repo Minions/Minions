@@ -3,15 +3,13 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using Fools.cs.Api;
-
-namespace core_compile
+namespace Fools.cs.Api
 {
-	internal class AppRun : MailMessage
+	public class AppRun<TCommands> : MailMessage
 	{
-		public readonly CompilerUserInteractionModel commands;
+		public readonly TCommands commands;
 
-		public AppRun(CompilerUserInteractionModel commands)
+		public AppRun(TCommands commands)
 		{
 			this.commands = commands;
 		}

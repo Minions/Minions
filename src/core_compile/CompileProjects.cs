@@ -4,37 +4,32 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using System;
+using Fools.cs.Api;
 using Fools.cs.Utilities;
-using PowerArgs;
 
 namespace core_compile
 {
 	internal class CompileProjects
 	{
-		[NotNull] private readonly Program _program;
+		[NotNull] private readonly MissionControl _mission_control;
 
-		public CompileProjects([NotNull] Program program)
+		private CompileProjects([NotNull] MissionControl mission_control)
 		{
-			_program = program;
+			_mission_control = mission_control;
 		}
 
-		public static void print_usage([NotNull] CompileProjects lab, [NotNull] AppAbort message)
+		public static void prepare_missions([NotNull] MissionControl mission_control)
 		{
-			lab.print_usage(message.exception, message.error_level);
+			var watch_for_projects_to_compile = new MissionDescription<CompileProjects>(() => new CompileProjects(mission_control));
+			watch_for_projects_to_compile.spawns_when<AppRun<CompilerUserInteractionModel>>()
+				.and_does(run);
+			mission_control.execute_as_needed(watch_for_projects_to_compile);
 		}
 
-		public static void run([NotNull] CompileProjects lab, AppRun message)
+		private static void run([NotNull] CompileProjects lab, AppRun<CompilerUserInteractionModel> message)
 		{
 			Console.WriteLine("I would be parsing the project file here.");
-			lab._program.exit(Program.ErrorLevel.Ok);
-		}
-
-		private void print_usage([CanBeNull] Exception exception, Program.ErrorLevel error_level)
-		{
-			if (exception != null) Console.WriteLine(exception.Message);
-			ArgUsage.GetStyledUsage<CompilerUserInteractionModel>()
-				.Write();
-			_program.exit(error_level);
+			lab._mission_control.announce(new AppQuit(AppErrorLevel.Ok));
 		}
 	}
 }

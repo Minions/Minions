@@ -99,6 +99,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Pegasus.2.3.2\lib\net40\Pegasus.Common.dll</HintPath>
     </Reference>
+    <Reference Include="PowerArgs">
+      <HintPath>..\packages\PowerArgs.1.7.0.0\lib\net40\PowerArgs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -108,12 +111,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\AppAbort.cs" />
+    <Compile Include="Api\AppErrorLevel.cs" />
+    <Compile Include="Api\AppInit.cs" />
+    <Compile Include="Api\AppQuit.cs" />
+    <Compile Include="Api\AppRun.cs" />
     <Compile Include="Api\Fool.cs" />
     <Compile Include="Api\FoolsCompiler.cs" />
     <Compile Include="Api\MailMessage.cs" />
     <Compile Include="Api\MailRoom.cs" />
     <Compile Include="Api\MissionControl.cs" />
     <Compile Include="Api\MissionDescription.cs" />
+    <Compile Include="Api\OverlordThrone.cs" />
+    <Compile Include="Api\UniversalCommands.cs" />
     <Compile Include="Utilities\WaitableCounter.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\NonNullDictionary.cs" />
