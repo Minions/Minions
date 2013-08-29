@@ -3,7 +3,7 @@
 // Copyright 2012 The Minions Project (http:/github.com/Minions).
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-using Fools.cs.Api;
+using Fools.cs.Api.CommandLineApp;
 using Fools.cs.Utilities;
 using PowerArgs;
 

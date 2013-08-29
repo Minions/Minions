@@ -19,10 +19,10 @@ namespace Fools.cs.Api
 			return _result;
 		}
 
-		public void prepare_missions([NotNull] MissionControl mission_control)
+		public void submit_missions_to([NotNull] MissionControl mission_control)
 		{
 			var stop = new MissionDescription<OverlordThrone>(() => this);
-			stop.spawns_when<AppInit>();
+			stop.spawns_when<DoMyBidding>();
 			stop.responds_to_message<AppQuit>(stop_program);
 			mission_control.execute_as_needed(stop);
 		}

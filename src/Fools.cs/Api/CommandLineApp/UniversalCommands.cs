@@ -5,7 +5,7 @@
 
 using PowerArgs;
 
-namespace Fools.cs.Api
+namespace Fools.cs.Api.CommandLineApp
 {
 	public class UniversalCommands
 	{

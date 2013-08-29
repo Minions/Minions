@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Fools.cs.Api
+namespace Fools.cs.Api.CommandLineApp
 {
 	public class AppAbort : MailMessage
 	{

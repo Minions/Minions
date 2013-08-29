@@ -4,6 +4,7 @@
 // All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
 using Fools.cs.Api;
+using Fools.cs.Api.CommandLineApp;
 using Fools.cs.Utilities;
 
 namespace core_compile
@@ -16,10 +17,10 @@ namespace core_compile
 		{
 			using (var mission_control = new MissionControl())
 			{
-				CommandLineProgram<CompilerUserInteractionModel>.prepare_missions(mission_control);
-				CompileProjects.prepare_missions(mission_control);
+				CommandLineProgram<CompilerUserInteractionModel>.submit_missions_to(mission_control);
+				CompileProjects.submit_missions_to(mission_control);
 
-				mission_control.announce(new AppInit(args));
+				mission_control.announce(new DoMyBidding(args));
 				return (int) mission_control.overlord_throne.watch_the_fools_dance();
 			}
 		}

@@ -5,6 +5,7 @@
 
 using System;
 using Fools.cs.Api;
+using Fools.cs.Api.CommandLineApp;
 using Fools.cs.Utilities;
 
 namespace core_compile
@@ -18,7 +19,7 @@ namespace core_compile
 			_mission_control = mission_control;
 		}
 
-		public static void prepare_missions([NotNull] MissionControl mission_control)
+		public static void submit_missions_to([NotNull] MissionControl mission_control)
 		{
 			var watch_for_projects_to_compile = new MissionDescription<CompileProjects>(() => new CompileProjects(mission_control));
 			watch_for_projects_to_compile.spawns_when<AppRun<CompilerUserInteractionModel>>()

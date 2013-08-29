@@ -28,7 +28,7 @@ namespace Fools.cs.Api
 				TaskScheduler.Default);
 			_postal_carrier = new Fool<MailRoom>(_create_starting_task(), new MailRoom());
 
-			_overlord_throne.prepare_missions(this);
+			_overlord_throne.submit_missions_to(this);
 		}
 
 		[NotNull]
