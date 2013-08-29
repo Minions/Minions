@@ -22,9 +22,9 @@ namespace core_compile
 		public static void submit_missions_to([NotNull] MissionControl mission_control)
 		{
 			var watch_for_projects_to_compile = new MissionDescription<CompileProjects>(() => new CompileProjects(mission_control));
-			watch_for_projects_to_compile.spawns_when<AppRun<CompilerUserInteractionModel>>()
-				.and_does(run);
-			mission_control.execute_as_needed(watch_for_projects_to_compile);
+			watch_for_projects_to_compile.send_new_fool_when<AppRun<CompilerUserInteractionModel>>()
+				.and_have_it(run);
+			mission_control.send_out_fools_to(watch_for_projects_to_compile);
 		}
 
 		private static void run([NotNull] CompileProjects lab, AppRun<CompilerUserInteractionModel> message)

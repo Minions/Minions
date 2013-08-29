@@ -21,10 +21,10 @@ namespace Fools.cs.Api
 
 		public void submit_missions_to([NotNull] MissionControl mission_control)
 		{
-			var stop = new MissionDescription<OverlordThrone>(() => this);
-			stop.spawns_when<DoMyBidding>();
-			stop.responds_to_message<AppQuit>(stop_program);
-			mission_control.execute_as_needed(stop);
+			var tell_overlord_when_all_work_is_done = new MissionDescription<OverlordThrone>(() => this);
+			tell_overlord_when_all_work_is_done.send_new_fool_when<DoMyBidding>();
+			tell_overlord_when_all_work_is_done.fools_shall_do<AppQuit>(stop_program);
+			mission_control.send_out_fools_to(tell_overlord_when_all_work_is_done);
 		}
 
 		private static void stop_program([NotNull] OverlordThrone lab, [NotNull] AppQuit message)

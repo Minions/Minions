@@ -22,10 +22,10 @@ namespace Fools.cs.Api.CommandLineApp
 		public static void submit_missions_to([NotNull] MissionControl mission_control)
 		{
 			var interact_with_user = new MissionDescription<CommandLineProgram<TViewModel>>(() => new CommandLineProgram<TViewModel>(mission_control));
-			interact_with_user.spawns_when<DoMyBidding>()
-				.and_does(figure_out_what_the_user_wants);
-			interact_with_user.responds_to_message<AppAbort>(print_usage);
-			mission_control.execute_as_needed(interact_with_user);
+			interact_with_user.send_new_fool_when<DoMyBidding>()
+				.and_have_it(figure_out_what_the_user_wants);
+			interact_with_user.fools_shall_do<AppAbort>(print_usage);
+			mission_control.send_out_fools_to(interact_with_user);
 		}
 
 		private static void figure_out_what_the_user_wants([NotNull] CommandLineProgram<TViewModel> lab,

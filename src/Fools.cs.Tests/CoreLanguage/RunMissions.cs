@@ -20,11 +20,13 @@ namespace Fools.cs.Tests.CoreLanguage
 		{
 			using (var test_subject = new MissionControl())
 			{
-				var mission = orc_raid();
+				var raid = orc_raid();
 				should_be_no_orcs();
-				test_subject.execute_as_needed(mission);
+				test_subject.send_out_fools_to(raid);
 				test_subject.announce(new ElvesFound());
-				test_subject.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(100)).Should().BeTrue();
+				test_subject.announce_and_wait(new ElvesFound(), TimeSpan.FromMilliseconds(100))
+					.Should()
+					.BeTrue();
 				should_have_spawned_orcs(2);
 			}
 		}
@@ -34,10 +36,11 @@ namespace Fools.cs.Tests.CoreLanguage
 		{
 			using (var test_subject = new MissionControl())
 			{
-				var mission = orc_raid();
-				test_subject.execute_as_needed(mission);
+				test_subject.send_out_fools_to(orc_raid());
 				test_subject.announce(new ElvesFound());
-				test_subject.announce_and_wait(new SayGo(), TimeSpan.FromMinutes(100)).Should().BeTrue();
+				test_subject.announce_and_wait(new SayGo(), TimeSpan.FromMinutes(100))
+					.Should()
+					.BeTrue();
 				should_have_spawned_orcs(1);
 				all_orcs_should_have_raided();
 			}
@@ -61,12 +64,13 @@ namespace Fools.cs.Tests.CoreLanguage
 			_orcs.Clear();
 		}
 
-		[UsedImplicitly]
 		private class OrcishRaidProgress : IDisposable
 		{
 			[NotNull] internal readonly ManualResetEventSlim went_raiding = new ManualResetEventSlim(false);
 
+			// ReSharper disable UnusedParameter.Local
 			public OrcishRaidProgress(int value_just_to_make_sure_lab_is_not_default_constructed_by_framework) {}
+			// ReSharper restore UnusedParameter.Local
 
 			public void Dispose()
 			{
@@ -110,9 +114,9 @@ namespace Fools.cs.Tests.CoreLanguage
 		private MissionDescription<OrcishRaidProgress> orc_raid()
 		{
 			var raid = new MissionDescription<OrcishRaidProgress>(() => new OrcishRaidProgress(9));
-			raid.spawns_when<ElvesFound>()
-				.and_does(_started_new_raid);
-			raid.responds_to_message<SayGo>(_begin_raiding);
+			raid.send_new_fool_when<ElvesFound>()
+				.and_have_it(_start_new_raid);
+			raid.fools_shall_do<SayGo>(_begin_raiding);
 			return raid;
 		}
 
@@ -121,7 +125,7 @@ namespace Fools.cs.Tests.CoreLanguage
 			lab.went_raiding.Set();
 		}
 
-		private void _started_new_raid([NotNull] OrcishRaidProgress lab, [NotNull] ElvesFound message)
+		private void _start_new_raid([NotNull] OrcishRaidProgress lab, [NotNull] ElvesFound message)
 		{
 			lock (_orc_counter)
 			{

@@ -40,7 +40,7 @@ namespace Fools.cs.Api
 			_cancellation.Dispose();
 		}
 
-		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
+		public void send_out_fools_to<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
 		{
 			_postal_carrier.do_work(
 				mail_room => mission.spawning_messages.each(message_type => // ReSharper disable PossibleNullReferenceException
