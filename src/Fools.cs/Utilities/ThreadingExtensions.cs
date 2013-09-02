@@ -9,6 +9,7 @@ using Fools.cs.Utilities;
 namespace System.Threading
 // ReSharper restore CheckNamespace
 {
+	[PublicAPI]
 	public static class ThreadingExtensions
 	{
 		[NotNull]
@@ -23,7 +24,7 @@ namespace System.Threading
 			return new UpgradableLockHeld(guard);
 		}
 
-		[NotNull, UsedImplicitly]
+		[NotNull]
 		public static WriteLockHeld acquire_write_access([NotNull] this ReaderWriterLockSlim guard)
 		{
 			return new WriteLockHeld(guard);

@@ -9,7 +9,7 @@ using Fools.cs.Utilities;
 
 namespace core_compile
 {
-	[UsedImplicitly]
+	[PublicAPI]
 	public class Program
 	{
 		// ReSharper disable InconsistentNaming

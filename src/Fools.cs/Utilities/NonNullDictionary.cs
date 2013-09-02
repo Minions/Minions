@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 // ReSharper disable InconsistentNaming
 namespace Fools.cs.Utilities
 {
+	[PublicAPI]
 	public sealed class NonNullDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 	{
 		[NotNull] private readonly Dictionary<TKey, TValue> _impl = new Dictionary<TKey, TValue>();
@@ -21,25 +22,20 @@ namespace Fools.cs.Utilities
 			((IDictionary<TKey, TValue>) _impl).CopyTo(array, index);
 		}
 
-		[UsedImplicitly]
 		public void CopyTo([NotNull] Array array, int index)
 		{
 			((ICollection) _impl).CopyTo(array, index);
 		}
 
-		[NotNull, UsedImplicitly]
+		[NotNull]
 		public object SyncRoot { get { return ((IDictionary) _impl).SyncRoot; } }
 
-		[UsedImplicitly]
 		public bool IsSynchronized { get { return ((IDictionary) _impl).IsSynchronized; } }
 
-		[UsedImplicitly]
 		public ICollection<TKey> Keys { get { return _impl.Keys; } }
 
-		[UsedImplicitly]
 		public ICollection<TValue> Values { get { return _impl.Values; } }
 
-		[UsedImplicitly]
 		public void Add([NotNull] TKey key, [NotNull] TValue value)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -58,7 +54,6 @@ namespace Fools.cs.Utilities
 			_impl.Add(item.Key, item.Value);
 		}
 
-		[UsedImplicitly]
 		public void Clear()
 		{
 			_impl.Clear();
@@ -90,7 +85,6 @@ namespace Fools.cs.Utilities
 			return ((IDictionary<TKey, TValue>) _impl).Remove(item);
 		}
 
-		[UsedImplicitly]
 		public bool ContainsKey([NotNull] TKey key)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -99,7 +93,6 @@ namespace Fools.cs.Utilities
 			return _impl.ContainsKey(key);
 		}
 
-		[UsedImplicitly]
 		public bool ContainsValue([NotNull] TValue value)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -108,13 +101,11 @@ namespace Fools.cs.Utilities
 			return _impl.ContainsValue(value);
 		}
 
-		[UsedImplicitly]
 		public void GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
 		{
 			_impl.GetObjectData(info, context);
 		}
 
-		[UsedImplicitly]
 		public void OnDeserialization(object sender)
 		{
 			_impl.OnDeserialization(sender);
@@ -128,7 +119,6 @@ namespace Fools.cs.Utilities
 			return _impl.TryGetValue(key, out value);
 		}
 
-		[UsedImplicitly]
 		public IEqualityComparer<TKey> Comparer { get { return _impl.Comparer; } }
 
 		public int Count { get { return _impl.Count; } }

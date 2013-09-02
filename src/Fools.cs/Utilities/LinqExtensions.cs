@@ -6,7 +6,9 @@
 using System.Collections.Generic;
 using Fools.cs.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace System.Linq
+// ReSharper restore CheckNamespace
 {
 	public static class LinqExtensions
 	{
