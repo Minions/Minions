@@ -84,11 +84,11 @@ namespace Fools.cs.Api
 			[NotNull] MailMessage constructor_message) where TLab : class
 		{
 			var fool = new Fool<TLab>(_create_starting_task(), mission.make_lab());
-			fool_proces_ctor(mission, done_creating_fool, constructor_message, fool);
+			execute_fool_ctor(mission, done_creating_fool, constructor_message, fool);
 			subscribe_handlers_for_rest_of_mission(mission, fool);
 		}
 
-		private static void fool_proces_ctor<TLab>([NotNull] MissionDescription<TLab> mission,
+		private static void execute_fool_ctor<TLab>([NotNull] MissionDescription<TLab> mission,
 			[NotNull] Action done_creating_fool,
 			[NotNull] MailMessage constructor_message,
 			[NotNull] Fool<TLab> fool) where TLab : class
