@@ -1,6 +1,11 @@
-﻿using PowerArgs;
+﻿// UniversalCommands.cs
+// 
+// Copyright 2012 The Minions Project (http:/github.com/Minions).
+// All rights reserved. Usage as permitted by the LICENSE.txt file for this project.
 
-namespace core_compile
+using PowerArgs;
+
+namespace Fools.cs.Api.CommandLineApp
 {
 	public class UniversalCommands
 	{

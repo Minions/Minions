@@ -16,6 +16,7 @@
 
 using System;
 
+// ReSharper disable InconsistentNaming
 namespace Fools.cs.Utilities
 {
 	/// <summary>
@@ -31,6 +32,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class LocalizationRequiredAttribute : Attribute
 	{
 		/// <summary>
@@ -100,6 +102,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class StringFormatMethodAttribute : Attribute
 	{
 		/// <summary>
@@ -133,6 +136,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class InvokerParameterNameAttribute : Attribute { }
 
 	/// <summary>
@@ -181,6 +185,7 @@ namespace Fools.cs.Utilities
 	/// </list>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
 	{
 		public NotifyPropertyChangedInvocatorAttribute() { }
@@ -213,6 +218,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class CanBeNullAttribute : Attribute { }
 
 	/// <summary>
@@ -228,6 +234,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class NotNullAttribute : Attribute { }
 
 	/// <summary>
@@ -273,14 +280,10 @@ namespace Fools.cs.Utilities
 	/// </list>
 	/// </examples>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+	[PublicAPI]
 	public sealed class ContractAnnotationAttribute : Attribute
 	{
-		public ContractAnnotationAttribute([NotNull] string fdt)
-			: this(fdt, false)
-		{
-		}
-
-		public ContractAnnotationAttribute([NotNull] string fdt, bool forceFullStates)
+		public ContractAnnotationAttribute([NotNull] string fdt, bool forceFullStates = false)
 		{
 			FDT = fdt;
 			ForceFullStates = forceFullStates;
@@ -318,6 +321,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
+	[PublicAPI]
 	public sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
 
 	/// <summary>
@@ -337,6 +341,7 @@ namespace Fools.cs.Utilities
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	[BaseTypeRequired(typeof(Attribute))]
+	[PublicAPI]
 	public sealed class BaseTypeRequiredAttribute : Attribute
 	{
 		/// <summary>
@@ -363,18 +368,14 @@ namespace Fools.cs.Utilities
 	{
 		[UsedImplicitly]
 		public UsedImplicitlyAttribute()
-			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+			: this(ImplicitUseKindFlags.Default) { }
 
 		[UsedImplicitly]
-		public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+		public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags = ImplicitUseTargetFlags.Default)
 		{
 			UseKindFlags = useKindFlags;
 			TargetFlags = targetFlags;
 		}
-
-		[UsedImplicitly]
-		public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags)
-			: this(useKindFlags, ImplicitUseTargetFlags.Default) { }
 
 		[UsedImplicitly]
 		public UsedImplicitlyAttribute(ImplicitUseTargetFlags targetFlags)
@@ -399,19 +400,13 @@ namespace Fools.cs.Utilities
 	{
 		[UsedImplicitly]
 		public MeansImplicitUseAttribute()
-			: this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+			: this(ImplicitUseKindFlags.Default) { }
 
 		[UsedImplicitly]
-		public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+		public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags = ImplicitUseTargetFlags.Default)
 		{
 			UseKindFlags = useKindFlags;
 			TargetFlags = targetFlags;
-		}
-
-		[UsedImplicitly]
-		public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags)
-			: this(useKindFlags, ImplicitUseTargetFlags.Default)
-		{
 		}
 
 		[UsedImplicitly]
@@ -429,6 +424,7 @@ namespace Fools.cs.Utilities
 	}
 
 	[Flags]
+	[PublicAPI]
 	public enum ImplicitUseKindFlags
 	{
 		Default = Access | Assign | InstantiatedWithFixedConstructorSignature,
@@ -459,6 +455,7 @@ namespace Fools.cs.Utilities
 	/// Specify what is considered used implicitly when marked with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>
 	/// </summary>
 	[Flags]
+	[PublicAPI]
 	public enum ImplicitUseTargetFlags
 	{
 		Default = Itself,
@@ -479,11 +476,17 @@ namespace Fools.cs.Utilities
 	/// <summary>
 	/// This attribute is intended to mark publicly available API which should not be removed and so is treated as used.
 	/// </summary>
-	[MeansImplicitUse]
+	[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
+	[PublicAPI]
 	public sealed class PublicAPIAttribute : Attribute
 	{
+		public string comment { get; private set; }
+
 		public PublicAPIAttribute() { }
-		public PublicAPIAttribute(string comment) { }
+		public PublicAPIAttribute(string comment)
+		{
+			this.comment = comment;
+		}
 	}
 
 	/// <summary>
@@ -492,6 +495,7 @@ namespace Fools.cs.Utilities
 	/// If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, Inherited = true)]
+	[PublicAPI]
 	public sealed class InstantHandleAttribute : Attribute { }
 
 
@@ -515,6 +519,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true)]
+	[PublicAPI]
 	public sealed class PureAttribute : Attribute { }
 
 	/// <summary>
@@ -522,6 +527,7 @@ namespace Fools.cs.Utilities
 	/// Path can be relative or absolute, starting from web root (~).
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public class PathReferenceAttribute : Attribute
 	{
 		public PathReferenceAttribute() { }
@@ -537,6 +543,7 @@ namespace Fools.cs.Utilities
 	}
 
 	// ASP.NET MVC attributes
+#pragma warning disable 1584
 
 	/// <summary>
 	/// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC action.
@@ -545,6 +552,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+	[PublicAPI]
 	public sealed class AspMvcActionAttribute : Attribute
 	{
 		[UsedImplicitly]
@@ -564,6 +572,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public sealed class AspMvcAreaAttribute : PathReferenceAttribute
 	{
 		[UsedImplicitly]
@@ -585,6 +594,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String, String)"/> 
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+	[PublicAPI]
 	public sealed class AspMvcControllerAttribute : Attribute
 	{
 		[UsedImplicitly]
@@ -604,6 +614,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Controller.View(String, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public sealed class AspMvcMasterAttribute : Attribute { }
 
 	/// <summary>
@@ -612,6 +623,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Controller.View(String, Object)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public sealed class AspMvcModelTypeAttribute : Attribute { }
 
 	/// <summary>
@@ -621,12 +633,14 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+	[PublicAPI]
 	public sealed class AspMvcPartialViewAttribute : PathReferenceAttribute { }
 
 	/// <summary>
 	/// ASP.NET MVC attribute. Allows disabling all inspections for MVC views within a class or a method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+	[PublicAPI]
 	public sealed class AspMvcSupressViewErrorAttribute : Attribute { }
 
 	/// <summary>
@@ -635,6 +649,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public sealed class AspMvcDisplayTemplateAttribute : Attribute { }
 
 	/// <summary>
@@ -643,6 +658,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Html.EditorExtensions.EditorForModel(HtmlHelper, String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
+	[PublicAPI]
 	public sealed class AspMvcEditorTemplateAttribute : Attribute { }
 
 	/// <summary>
@@ -652,6 +668,7 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.Mvc.Controller.View(Object)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+	[PublicAPI]
 	public sealed class AspMvcViewAttribute : PathReferenceAttribute { }
 
 	/// <summary>
@@ -669,6 +686,7 @@ namespace Fools.cs.Utilities
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
+	[PublicAPI]
 	public sealed class AspMvcActionSelectorAttribute : Attribute { }
 
 	// Razor attributes
@@ -679,6 +697,9 @@ namespace Fools.cs.Utilities
 	/// <see cref="System.Web.WebPages.WebPageBase.RenderSection(String)"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method, Inherited = true)]
+	[PublicAPI]
 	public sealed class RazorSectionAttribute : Attribute { }
 
+#pragma warning restore 1584
 }
+// ReSharper restore InconsistentNaming

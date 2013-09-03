@@ -22,14 +22,13 @@ namespace Fools.cs.Tests.CoreLanguage
 			Approvals.Verify(result + "\r\n");
 		}
 
+		[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 		private class ClassWithManyProperties
 		{
-			// ReSharper disable MemberCanBePrivate.Local
-			public int integer { [UsedImplicitly] get; private set; }
-			public Action named_action { [UsedImplicitly] get; set; }
-			public Action<double, string> lambda_action { [UsedImplicitly] get; set; }
-			public Func<int, string, int> named_function { [UsedImplicitly] get; set; }
-			// ReSharper restore MemberCanBePrivate.Local
+			public int integer { get; private set; }
+			public Action named_action { get; set; }
+			public Action<double, string> lambda_action { get; set; }
+			public Func<int, string, int> named_function { get; set; }
 
 			public ClassWithManyProperties()
 			{

@@ -88,7 +88,7 @@ namespace Fools.cs.Tests.CoreLanguage
 		}
 
 		[Test]
-		public void subscribing_for_a_message_while_processing_that_message_should_result_in_new_subscriber_receiving_message()
+		public void subscribing_for_a_message_while_processing_that_message_should_result_in_new_subscriber_not_receiving_message()
 		{
 			var test_subject = new MailRoom();
 			test_subject.subscribe<SillyMessage>(new RecursiveSubscriber(3, test_subject, _log).subscribe_recursively_until_counter_expires);
@@ -97,11 +97,7 @@ namespace Fools.cs.Tests.CoreLanguage
 				.Should()
 				.BeTrue();
 			_log.Should()
-				.BeEquivalentTo(new object[] {
-					"Counted 3: hi", "Counted 3: hi", "Counted 2: hi", "Counted 2: hi", "Counted 2: hi", "Counted 2: hi",
-					"Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi", "Counted 1: hi",
-					"Counted 1: hi", "Counted 1: hi"
-				});
+				.ContainInOrder(new object[] {"Counted 3: hi", "Counted 3: hi"});
 		}
 
 		[Test]

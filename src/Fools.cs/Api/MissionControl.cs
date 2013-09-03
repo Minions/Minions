@@ -16,16 +16,23 @@ namespace Fools.cs.Api
 		[NotNull] private readonly TaskFactory _task_factory;
 		[NotNull] private readonly CancellationTokenSource _cancellation;
 		[NotNull] private readonly Fool<MailRoom> _postal_carrier;
+		[NotNull] private readonly OverlordThrone _overlord_throne;
 
 		public MissionControl()
 		{
+			_overlord_throne = new OverlordThrone();
 			_cancellation = new CancellationTokenSource();
 			_task_factory = new TaskFactory(_cancellation.Token,
 				TaskCreationOptions.PreferFairness,
 				TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);
 			_postal_carrier = new Fool<MailRoom>(_create_starting_task(), new MailRoom());
+
+			_overlord_throne.submit_missions_to(this);
 		}
+
+		[NotNull]
+		public OverlordThrone overlord_throne { get { return _overlord_throne; } }
 
 		public void Dispose()
 		{
@@ -33,10 +40,10 @@ namespace Fools.cs.Api
 			_cancellation.Dispose();
 		}
 
-		public void execute_as_needed<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
+		public void send_out_fools_to<TLab>([NotNull] MissionDescription<TLab> mission) where TLab : class
 		{
 			_postal_carrier.do_work(
-				mail_room => mission.spawning_messages.Each(message_type => // ReSharper disable PossibleNullReferenceException
+				mail_room => mission.spawning_messages.each(message_type => // ReSharper disable PossibleNullReferenceException
 					mail_room
 						// ReSharper restore PossibleNullReferenceException
 						// ReSharper disable AssignNullToNotNullAttribute
@@ -77,11 +84,25 @@ namespace Fools.cs.Api
 			[NotNull] MailMessage constructor_message) where TLab : class
 		{
 			var fool = new Fool<TLab>(_create_starting_task(), mission.make_lab());
+			execute_fool_ctor(mission, done_creating_fool, constructor_message, fool);
+			subscribe_handlers_for_rest_of_mission(mission, fool);
+		}
+
+		private static void execute_fool_ctor<TLab>([NotNull] MissionDescription<TLab> mission,
+			[NotNull] Action done_creating_fool,
+			[NotNull] MailMessage constructor_message,
+			[NotNull] Fool<TLab> fool) where TLab : class
+		{
 			var constructor_impl = mission.message_handlers.FirstOrDefault(item => item.Key == constructor_message.GetType());
 			if (constructor_impl.Value == null) done_creating_fool();
 			else fool.process_message(constructor_impl.Value, constructor_message, done_creating_fool);
+		}
+
+		private void subscribe_handlers_for_rest_of_mission<TLab>([NotNull] MissionDescription<TLab> mission,
+			[NotNull] Fool<TLab> fool) where TLab : class
+		{
 			_postal_carrier.upon_completion_of_this_task(
-				mail_room => mission.message_handlers.Each(kv => // ReSharper disable PossibleNullReferenceException
+				mail_room => mission.message_handlers.each(kv => // ReSharper disable PossibleNullReferenceException
 					mail_room
 						// ReSharper restore PossibleNullReferenceException
 						.subscribe( // ReSharper disable AssignNullToNotNullAttribute
