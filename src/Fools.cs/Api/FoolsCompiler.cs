@@ -13,10 +13,11 @@ using Fools.cs.Utilities;
 
 namespace Fools.cs.Api
 {
+	[PublicAPI]
 	public class FoolsCompiler
 	{
 		[NotNull] private readonly ReadOnlyCollection<NanoPass<ProgramFragment>> _local_passes;
-		[NotNull, UsedImplicitly] private readonly ReadOnlyCollection<NanoPass<Program>> _global_passes;
+		[NotNull] private readonly ReadOnlyCollection<NanoPass<Program>> _global_passes;
 		[NotNull] private Program _result = Program.empty();
 
 		public FoolsCompiler([NotNull] ReadOnlyCollection<NanoPass<ProgramFragment>> local_passes,

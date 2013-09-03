@@ -29,10 +29,18 @@ namespace Fools.cs.Api
 		public IEnumerable<KeyValuePair<Type, Action<TLab, object>>> message_handlers { get { return _responses; } }
 
 		[NotNull]
-		public MissionSpawnOptions<TStartMessage> spawns_when<TStartMessage>() where TStartMessage : MailMessage
+		public MissionSpawnOptions<TStartMessage> send_new_fool_when<TStartMessage>() where TStartMessage : MailMessage
 		{
 			_spawning_messages.Add(typeof (TStartMessage));
 			return new MissionSpawnOptions<TStartMessage>(this);
+		}
+
+		[NotNull]
+		public MissionDescription<TLab> fools_shall_do<TMessage>([NotNull] Action<TLab, TMessage> message_response)
+			where TMessage : MailMessage
+		{
+			_responses[typeof (TMessage)] = (lab, m) => message_response(lab, (TMessage) m);
+			return this;
 		}
 
 		public class MissionSpawnOptions<TMessage> where TMessage : MailMessage
@@ -45,19 +53,11 @@ namespace Fools.cs.Api
 			}
 
 			[NotNull]
-			public MissionSpawnOptions<TMessage> and_does([NotNull] Action<TLab, TMessage> message_response)
+			public MissionSpawnOptions<TMessage> and_have_it([NotNull] Action<TLab, TMessage> message_response)
 			{
-				_mission_to_update.responds_to_message(message_response);
+				_mission_to_update.fools_shall_do(message_response);
 				return this;
 			}
-		}
-
-		[NotNull]
-		public MissionDescription<TLab> responds_to_message<TMessage>([NotNull] Action<TLab, TMessage> message_response)
-			where TMessage : MailMessage
-		{
-			_responses[typeof (TMessage)] = (lab, m) => message_response(lab, (TMessage) m);
-			return this;
 		}
 
 		[NotNull]

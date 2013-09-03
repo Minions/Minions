@@ -5,6 +5,7 @@
 
 using System;
 using Fools.cs.Utilities;
+using System.Linq;
 
 namespace Fools.cs.Api
 {
@@ -100,7 +101,7 @@ namespace Fools.cs.Api
 			[NotNull] MailMessage what_happened,
 			[NotNull] WaitableCounter items_being_processed)
 		{
-			listeners.ForEach(recipient => {
+			listeners.ToArray().each(recipient => {
 				items_being_processed.begin();
 				// ReSharper disable PossibleNullReferenceException
 				recipient // ReSharper restore PossibleNullReferenceException

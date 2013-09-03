@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PowerArgs">
-      <HintPath>..\packages\PowerArgs.1.7.0.0\lib\net40\PowerArgs.dll</HintPath>
+    <Reference Include="PowerArgs, Version=1.8.0.0, Culture=neutral, PublicKeyToken=54832990a0812961, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PowerArgs.1.8.0.0\lib\net40\PowerArgs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,14 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppAbort.cs" />
-    <Compile Include="AppRun.cs" />
-    <Compile Include="Commands.cs" />
     <Compile Include="CompileProjects.cs" />
     <Compile Include="CompilerUserInteractionModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UniversalCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

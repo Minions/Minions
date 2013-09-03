@@ -14,23 +14,20 @@ using System.Linq;
 
 namespace Fools.cs.Utilities
 {
+	[PublicAPI]
 	public class NonNullList<T> : IList<T>
 	{
 		[NotNull] private readonly List<T> _impl = new List<T>();
 
-		[UsedImplicitly]
 		public void CopyTo([NotNull] Array array, int index)
 		{
 			((ICollection) _impl).CopyTo(array, index);
 		}
 
-		[UsedImplicitly]
 		public object SyncRoot { get { return ((IList) _impl).SyncRoot; } }
 
-		[UsedImplicitly]
 		public bool IsSynchronized { get { return ((IList) _impl).IsSynchronized; } }
 
-		[UsedImplicitly]
 		public bool IsFixedSize { get { return ((IList) _impl).IsFixedSize; } }
 
 		public void Add([NotNull] T item)
@@ -41,7 +38,6 @@ namespace Fools.cs.Utilities
 			_impl.Add(item);
 		}
 
-		[UsedImplicitly]
 		public void AddRange([NotNull] IEnumerable<T> collection)
 		{
 			var items = collection.ToList();
@@ -54,13 +50,12 @@ namespace Fools.cs.Utilities
 			_impl.AddRange(items);
 		}
 
-		[UsedImplicitly, NotNull]
+		[NotNull]
 		public ReadOnlyCollection<T> AsReadOnly()
 		{
 			return _impl.AsReadOnly();
 		}
 
-		[UsedImplicitly]
 		public int BinarySearch(int index, int count, [NotNull] T item, IComparer<T> comparer)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -69,7 +64,6 @@ namespace Fools.cs.Utilities
 			return _impl.BinarySearch(index, count, item, comparer);
 		}
 
-		[UsedImplicitly]
 		public int BinarySearch([NotNull] T item)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -78,7 +72,6 @@ namespace Fools.cs.Utilities
 			return _impl.BinarySearch(item);
 		}
 
-		[UsedImplicitly]
 		public int BinarySearch([NotNull] T item, IComparer<T> comparer)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -100,19 +93,17 @@ namespace Fools.cs.Utilities
 			return _impl.Contains(item);
 		}
 
-		[UsedImplicitly, NotNull]
+		[NotNull]
 		public List<TOutput> ConvertAll<TOutput>([NotNull] Converter<T, TOutput> converter)
 		{
 			return _impl.ConvertAll(converter);
 		}
 
-		[UsedImplicitly]
 		public void CopyTo([NotNull] T[] array)
 		{
 			_impl.CopyTo(array);
 		}
 
-		[UsedImplicitly]
 		public void CopyTo(int index, [NotNull] T[] array, int array_index, int count)
 		{
 			_impl.CopyTo(index, array, array_index, count);
@@ -123,73 +114,61 @@ namespace Fools.cs.Utilities
 			_impl.CopyTo(array, array_index);
 		}
 
-		[UsedImplicitly]
 		public bool Exists([NotNull] Predicate<T> match)
 		{
 			return _impl.Exists(match);
 		}
 
-		[UsedImplicitly]
 		public T Find([NotNull] Predicate<T> match)
 		{
 			return _impl.Find(match);
 		}
 
-		[UsedImplicitly]
 		public List<T> FindAll([NotNull] Predicate<T> match)
 		{
 			return _impl.FindAll(match);
 		}
 
-		[UsedImplicitly]
 		public int FindIndex([NotNull] Predicate<T> match)
 		{
 			return _impl.FindIndex(match);
 		}
 
-		[UsedImplicitly]
 		public int FindIndex(int start_index, [NotNull] Predicate<T> match)
 		{
 			return _impl.FindIndex(start_index, match);
 		}
 
-		[UsedImplicitly]
 		public int FindIndex(int start_index, int count, [NotNull] Predicate<T> match)
 		{
 			return _impl.FindIndex(start_index, count, match);
 		}
 
-		[UsedImplicitly]
 		public T FindLast([NotNull] Predicate<T> match)
 		{
 			return _impl.FindLast(match);
 		}
 
-		[UsedImplicitly]
 		public int FindLastIndex([NotNull] Predicate<T> match)
 		{
 			return _impl.FindLastIndex(match);
 		}
 
-		[UsedImplicitly]
 		public int FindLastIndex(int start_index, [NotNull] Predicate<T> match)
 		{
 			return _impl.FindLastIndex(start_index, match);
 		}
 
-		[UsedImplicitly]
 		public int FindLastIndex(int start_index, int count, [NotNull] Predicate<T> match)
 		{
 			return _impl.FindLastIndex(start_index, count, match);
 		}
 
-		[UsedImplicitly]
 		public void ForEach([NotNull] Action<T> action)
 		{
 			_impl.ForEach(action);
 		}
 
-		[UsedImplicitly]
 		public List<T> GetRange(int index, int count)
 		{
 			return _impl.GetRange(index, count);
@@ -200,13 +179,11 @@ namespace Fools.cs.Utilities
 			return _impl.IndexOf(item);
 		}
 
-		[UsedImplicitly]
 		public int IndexOf([NotNull] T item, int index)
 		{
 			return _impl.IndexOf(item, index);
 		}
 
-		[UsedImplicitly]
 		public int IndexOf([NotNull] T item, int index, int count)
 		{
 			return _impl.IndexOf(item, index, count);
@@ -220,7 +197,6 @@ namespace Fools.cs.Utilities
 			_impl.Insert(index, item);
 		}
 
-		[UsedImplicitly]
 		public void InsertRange(int index, [NotNull] IEnumerable<T> collection)
 		{
 			var items = collection.ToList();
@@ -233,7 +209,6 @@ namespace Fools.cs.Utilities
 			_impl.InsertRange(index, items);
 		}
 
-		[UsedImplicitly]
 		public int LastIndexOf([NotNull] T item)
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
@@ -242,13 +217,11 @@ namespace Fools.cs.Utilities
 			return _impl.LastIndexOf(item);
 		}
 
-		[UsedImplicitly]
 		public int LastIndexOf([NotNull] T item, int index)
 		{
 			return _impl.LastIndexOf(item, index);
 		}
 
-		[UsedImplicitly]
 		public int LastIndexOf([NotNull] T item, int index, int count)
 		{
 			return _impl.LastIndexOf(item, index, count);
@@ -259,7 +232,6 @@ namespace Fools.cs.Utilities
 			return _impl.Remove(item);
 		}
 
-		[UsedImplicitly]
 		public int RemoveAll([NotNull] Predicate<T> match)
 		{
 			return _impl.RemoveAll(match);
@@ -270,67 +242,57 @@ namespace Fools.cs.Utilities
 			_impl.RemoveAt(index);
 		}
 
-		[UsedImplicitly]
 		public void RemoveRange(int index, int count)
 		{
 			_impl.RemoveRange(index, count);
 		}
 
-		[UsedImplicitly]
 		public void Reverse()
 		{
 			_impl.Reverse();
 		}
 
-		[UsedImplicitly]
 		public void Reverse(int index, int count)
 		{
 			_impl.Reverse(index, count);
 		}
 
-		[UsedImplicitly]
 		public void Sort()
 		{
 			_impl.Sort();
 		}
 
-		[UsedImplicitly]
 		public void Sort([NotNull] IComparer<T> comparer)
 		{
 			_impl.Sort(comparer);
 		}
 
-		[UsedImplicitly]
 		public void Sort(int index, int count, [NotNull] IComparer<T> comparer)
 		{
 			_impl.Sort(index, count, comparer);
 		}
 
-		[UsedImplicitly]
 		public void Sort([NotNull] Comparison<T> comparison)
 		{
 			_impl.Sort(comparison);
 		}
 
-		[NotNull, UsedImplicitly]
+		[NotNull]
 		public T[] ToArray()
 		{
 			return _impl.ToArray();
 		}
 
-		[UsedImplicitly]
 		public void TrimExcess()
 		{
 			_impl.TrimExcess();
 		}
 
-		[UsedImplicitly]
 		public bool TrueForAll([NotNull] Predicate<T> match)
 		{
 			return _impl.TrueForAll(match);
 		}
 
-		[UsedImplicitly]
 		public int Capacity { get { return _impl.Capacity; } set { _impl.Capacity = value; } }
 
 		public int Count { get { return _impl.Count; } }

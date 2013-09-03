@@ -8,9 +8,10 @@ using Fools.cs.Utilities;
 
 namespace Fools.cs.TransformAst
 {
+	[PublicAPI]
 	public class AstStateCondition
 	{
-		[NotNull, UsedImplicitly] private readonly string _name;
+		[NotNull] private readonly string _name;
 
 		[NotNull] private static readonly NonNullDictionary<string, AstStateCondition> _existing_condition =
 			new NonNullDictionary<string, AstStateCondition>();
