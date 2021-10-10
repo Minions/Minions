@@ -100,8 +100,8 @@ This brings us to the N libraries. These are all intended to be native implement
  * All native libraries need to support allocating a surface that can then be used by the generic library. Therefore, if someone uses a special control in some other native library, your library can display the information using the generic fallback.
  * Platform-unique controls may only be introduced if the library developer also introduces a control to the genericc graphics library that:
    * Runs anywhere, based on the 2D drawing.
-	* Is information-equivalent (takes the same view models and displays the same info).
-	* Plays the same role in layout of the UI, though it does not need to look the same. For example, the Windows Metro Pivot control could be implemented as a tab panel on other platforms.
+	 * Is information-equivalent (takes the same view models and displays the same info).
+	 * Plays the same role in layout of the UI, though it does not need to look the same. For example, the Windows Metro Pivot control could be implemented as a tab panel on other platforms.
 
 Additional Language Constraints
 -----------------------------------------
@@ -161,4 +161,3 @@ Chief among these are string manipulations. Therefore, the string class is a bit
 Strings are defined this way to make 2 kinds of programs highly efficient:
 	1. Parsers.
 	2. Web services.
-
