@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model ref="r:5e9e321d-c831-4a9b-bc97-aa3bd0c647db(Minions.constraints)">
+<model ref="r:a9098fb5-d0d6-4c19-a20c-a4384eaa9ad0(Minions.constraints)">
   <persistence version="9" />
   <languages>
     <use id="5dae8159-ab99-46bb-a40d-0cee30ee7018" name="jetbrains.mps.lang.constraints.rules.kinds" version="0" />

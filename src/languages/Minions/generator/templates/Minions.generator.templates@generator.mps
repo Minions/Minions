@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model ref="r:de66db6b-c207-4896-9129-4b1f60a40f21(Minions.generator.templates@generator)">
+<model ref="r:81cb3fd8-c007-4735-bc71-6bc7e8400c1b(Minions.generator.templates@generator)">
   <persistence version="9" />
   <languages>
     <devkit ref="a2eb3a43-fcc2-4200-80dc-c60110c4862d(jetbrains.mps.devkit.templates)" />
   </languages>
   <imports>
-    <import index="h1lk" ref="r:abdf6b57-f2f9-4a8c-8e37-7217b64a3d94(Minions.structure)" />
+    <import index="5dmh" ref="r:4c3ca078-e10a-45e8-abe8-f2ab8e251802(Minions.structure)" />
   </imports>
   <registry>
     <language id="b401a680-8325-4110-8fd3-84331ff25bef" name="jetbrains.mps.lang.generator">
@@ -17,7 +17,7 @@
       </concept>
     </language>
   </registry>
-  <node concept="bUwia" id="4FzNFpaGCUF">
+  <node concept="bUwia" id="5NYwLb2syij">
     <property role="TrG5h" value="main" />
   </node>
 </model>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language namespace="Minions" uuid="a05174d9-0e29-4305-a68b-13d5d3001f2c" languageVersion="0" moduleVersion="0">
+<language namespace="Minions" uuid="204bb934-7eb4-4076-9731-aed6f7fa27a8" languageVersion="0" moduleVersion="0">
   <models>
     <modelRoot contentPath="${module}" type="default">
       <sourceRoot location="models" />
@@ -12,7 +12,7 @@
   </facets>
   <accessoryModels />
   <generators>
-    <generator alias="main" namespace="Minions.generator" uuid="163b6854-4029-437f-8bf1-01193130837d">
+    <generator alias="main" namespace="Minions.generator" uuid="5dab4125-d500-424e-96c8-e98419abe4c5">
       <models>
         <modelRoot contentPath="${module}/generator" type="default">
           <sourceRoot location="templates" />
@@ -47,9 +47,9 @@
         <module reference="6354ebe7-c22a-4a0f-ac54-50b52ab9b065(JDK)" version="0" />
         <module reference="6ed54515-acc8-4d1e-a16c-9fd6cfe951ea(MPS.Core)" version="0" />
         <module reference="8865b7a8-5271-43d3-884c-6fd1d9cfdd34(MPS.OpenAPI)" version="0" />
-        <module reference="a05174d9-0e29-4305-a68b-13d5d3001f2c(Minions)" version="0" />
-        <module reference="163b6854-4029-437f-8bf1-01193130837d(Minions.generator)" version="0" />
-        <module reference="700c3aaf-a00e-4dff-a429-5c40252f0b86(Minions.runtime)" version="0" />
+        <module reference="204bb934-7eb4-4076-9731-aed6f7fa27a8(Minions)" version="0" />
+        <module reference="5dab4125-d500-424e-96c8-e98419abe4c5(Minions.generator)" version="0" />
+        <module reference="47dfd715-9e01-4f69-a459-9024ededacda(Minions.runtime)" version="0" />
         <module reference="ceab5195-25ea-4f22-9b92-103b95ca8c0c(jetbrains.mps.lang.core)" version="0" />
       </dependencyVersions>
       <mapping-priorities />
@@ -95,12 +95,12 @@
     <module reference="6354ebe7-c22a-4a0f-ac54-50b52ab9b065(JDK)" version="0" />
     <module reference="6ed54515-acc8-4d1e-a16c-9fd6cfe951ea(MPS.Core)" version="0" />
     <module reference="8865b7a8-5271-43d3-884c-6fd1d9cfdd34(MPS.OpenAPI)" version="0" />
-    <module reference="a05174d9-0e29-4305-a68b-13d5d3001f2c(Minions)" version="0" />
+    <module reference="204bb934-7eb4-4076-9731-aed6f7fa27a8(Minions)" version="0" />
     <module reference="ceab5195-25ea-4f22-9b92-103b95ca8c0c(jetbrains.mps.lang.core)" version="0" />
     <module reference="a9e4c532-c5f5-4bb7-99ef-42abb73bbb70(jetbrains.mps.lang.descriptor.aspects)" version="0" />
   </dependencyVersions>
   <runtime>
-    <dependency reexport="false">700c3aaf-a00e-4dff-a429-5c40252f0b86(Minions.runtime)</dependency>
+    <dependency reexport="false">47dfd715-9e01-4f69-a459-9024ededacda(Minions.runtime)</dependency>
   </runtime>
   <extendedLanguages />
 </language>

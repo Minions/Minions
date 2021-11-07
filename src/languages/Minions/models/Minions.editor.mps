@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model ref="r:4c0dd07e-5afc-49b7-a140-cb5088dc8522(Minions.editor)">
+<model ref="r:4906b207-2a8d-4c65-85a6-7e2b164e0756(Minions.editor)">
   <persistence version="9" />
   <languages>
     <use id="18bc6592-03a6-4e29-a83a-7ff23bde13ba" name="jetbrains.mps.lang.editor" version="14" />

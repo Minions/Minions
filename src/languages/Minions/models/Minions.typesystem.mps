@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model ref="r:e6e35eb8-1f73-43f9-a82c-2ab4f26d1c85(Minions.typesystem)">
+<model ref="r:53e21467-77ea-479d-a1de-91ddcb3283fa(Minions.typesystem)">
   <persistence version="9" />
   <languages>
     <use id="7a5dda62-9140-4668-ab76-d5ed1746f2b2" name="jetbrains.mps.lang.typesystem" version="5" />
